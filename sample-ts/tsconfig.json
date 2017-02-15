@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "outDir": "./game/script"
+  },
+  "files": [
+    "typings/index.d.ts",
+    "typings/box2dweb.d.ts",
+    "node_modules/@akashic/akashic-engine/lib/main.d.ts",
+    "node_modules/@akashic-extension/akashic-box2d/lib/index.d.ts",
+    "src/mainScene.ts"
+  ]
+}

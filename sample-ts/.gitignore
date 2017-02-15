@@ -1,0 +1,12 @@
+node_modules
+.DS_Store*
+npm-debug.log
+*.iml
+coverage
+junitresults.xml
+lib
+tmp
+.idea
+game/script
+typings/globals
+typings/index.d.ts

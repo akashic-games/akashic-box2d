@@ -1,0 +1,33 @@
+{
+	"width": 320,
+	"height": 320,
+	"fps": 30,
+	"assets": {
+		"mainScene": {
+			"type": "script",
+			"path": "script/mainScene.js",
+			"global": true
+		},
+		"soccer": {
+			"type": "image",
+			"width": 100,
+			"height": 98,
+			"path": "image/soccer.png"
+		},
+		"pentagon": {
+			"type": "image",
+			"width": 100,
+			"height": 95,
+			"path": "image/pentagon.png"
+		}
+	},
+	"globalScripts": [
+		"node_modules/@akashic-extension/akashic-box2d/lib/BodyType.js",
+		"node_modules/@akashic-extension/akashic-box2d/lib/Box2D.js",
+		"node_modules/@akashic-extension/akashic-box2d/lib/Box2DOptions.js",
+		"node_modules/@akashic-extension/akashic-box2d/lib/index.js",
+		"node_modules/box2dweb/box2d.js",
+		"node_modules/@akashic-extension/akashic-box2d/package.json",
+		"node_modules/box2dweb/package.json"
+	]
+}

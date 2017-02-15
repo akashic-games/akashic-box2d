@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "declaration": true,
+    "noImplicitAny": true,
+    "outDir": "lib",
+    "module": "commonjs"
+  },
+  "files": [
+    "typings/index.d.ts",
+    "typings/box2dweb.d.ts",
+    "node_modules/@akashic/akashic-engine/lib/main.d.ts",
+    "src/index.ts"
+  ]
+}
