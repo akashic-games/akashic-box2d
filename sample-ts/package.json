@@ -4,35 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run install:typings",
-    "build": "gulp build && cd game && akashic scan asset script && akashic scan globalScripts",
-    "install:typings": "typings install",
-    "lint": "gulp lint",
+    "prepublish": "npm run build",
+    "build": "tsc && cd game && akashic scan asset script",
     "start": "akashic-sandbox game",
-    "test": "gulp test lint"
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "test": "jasmine ./spec/**/*.js && npm run lint"
   },
   "author": "",
   "license": "",
   "devDependencies": {
-    "del": "^1.1.1",
-    "gulp": "~3.9.1",
-    "gulp-istanbul": "~0.10.4",
-    "gulp-jasmine": "~2.3.0",
-    "gulp-shell": "~0.5.2",
-    "gulp-tslint": "4.3.5",
-    "gulp-util": "^3.0.7",
-    "jasmine": "~2.1.1",
-    "jasmine-reporters": "~2.0.4",
-    "jasmine-terminal-reporter": "~0.9.1",
-    "tslint": "^3.10.2",
-    "typescript": "1.7.5",
-    "typings": "1.0.4",
-    "@akashic/akashic-cli": "~1.0.8",
-    "@akashic/akashic-engine": "~1.10.1"
+    "@akashic/akashic-cli": "~1.1.0",
+    "@akashic/akashic-engine": "~1.12.0",
+    "@akashic/akashic-sandbox": "~0.11.0",
+    "@types/node": "^7.0.11",
+    "tslint": "~4.5.0",
+    "typescript": "~2.2.0"
   },
   "dependencies": {
     "@akashic-extension/akashic-box2d": "~0.1.3",
-    "@akashic/akashic-sandbox": "^0.10.1",
     "box2dweb": "~2.1.0-b"
   }
 }

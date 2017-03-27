@@ -4,14 +4,12 @@
   "description": "Box2D physics engine for Akashic",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "gulp clean && npm run install:typings && gulp compile && npm run doc",
-    "install:typings": "gulp install:typings",
-    "clean:typings": "gulp clean:typings",
-    "clean": "gulp clean",
-    "build": "gulp",
-    "doc": "gulp typedoc && gulp typedoc:copy",
-    "lint": "gulp lint && gulp lint-md",
-    "test": "gulp test && npm run lint"
+    "prepublish": "npm run build && npm run doc",
+    "clean": "rm -rf lib && rm -rf doc",
+    "build": "tsc",
+    "doc": "typedoc --out ./doc --mode file && cp -r ./img ./doc",
+    "lint": "tslint -c tslint.json src/**/*.ts spec/src/**/*.ts",
+    "test": "npm run build && jasmine ./spec/**/*.js && npm run lint"
   },
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
@@ -24,30 +22,20 @@
   },
   "files": [
     "lib",
+    "typings",
     "doc",
     "README.md"
   ],
   "devDependencies": {
-    "del": "~2.2.2",
-    "gulp": "~3.9.1",
-    "gulp-istanbul": "~1.1.1",
-    "gulp-jasmine": "~2.4.2",
-    "gulp-shell": "~0.5.2",
-    "gulp-tslint": "~4.3.5",
-    "gulp-typedoc": "^2.0.2",
+    "@types/node": "~7.0.10",
     "jasmine": "~2.5.2",
-    "jasmine-reporters": "~2.2.0",
-    "jasmine-terminal-reporter": "~1.0.3",
-    "mdast": "~2.0.0",
-    "mdast-lint": "~1.1.1",
-    "tslint": "~3.7.4",
-    "typedoc": "~0.4.4",
-    "typings": "^1.0.4",
-    "typescript": "~1.7.5"
+    "tslint": "~4.5.0",
+    "typedoc": "0.5.5",
+    "typescript": "^2.2.0"
   },
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@akashic/akashic-engine": "~1.10.2",
+    "@akashic/akashic-engine": "~1.12.0",
     "box2dweb": "~2.1.0-b"
   }
 }
