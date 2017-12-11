@@ -39,12 +39,12 @@ var b2 = require("@akashic-extension/akashic-box2d");
 
 ## 初期化
 
-まず、`scene.loaded.handle` 内で `Box2D` クラスのインスタンスである `box2d` を生成します。
+まず、`scene.loaded` 時に `Box2D` クラスのインスタンスである `box2d` を生成します。
 
 `Box2D` は、Box2DWebの機能をAkashic上で管理するためのクラスです。
 
 ```javascript
-scene.loaded.handle(function() {
+scene.loaded.add(function() {
     var box2d = new b2.Box2D({
       gravity: [0, 9.8],
       scale: 50,
@@ -137,7 +137,7 @@ var body = box2d.createBody(entity, entityDef, entityFixDef);
 このメソッド内では暗黙的に `E#modified()` が呼ばれるため、ユーザが明示的に `E#modified()` を呼び出す必要はありません。
 
 ```javascript
-scene.update.handle(function(){
+scene.update.add(function() {
   // 物理エンジンの世界を進める
   box2d.step(1/game.fps);
 });
@@ -155,7 +155,7 @@ scene.update.handle(function(){
 まず地面となるエンティティを作成します。
 
 ```javascript
-var floorEntity = new g.FilledRect({scene: scene, cssColor: "black", width: game.width, height: 50, y: game.height - floorEntity.height});
+var floorEntity = new g.FilledRect({scene: scene, cssColor: "black", width: game.width, height: 50, y: game.height - 50});
 scene.append(floorEntity);
 floorEntity.modified();
 ```
@@ -286,7 +286,7 @@ Box2DWebでは、例えばボディに対して瞬間的な力を加える `Appl
 
 ```javascript
 entity.touchable = true;
-entity.pointDown.handle(function(o) {
+entity.pointDown.add(function(o) {
   b2body.ApplyImpulse(box2d.vec2(50, -50), body.GetPosition());
 });
 ```
@@ -299,7 +299,7 @@ entity.pointDown.handle(function(o) {
 
 ```javascript
 entity.touchable = true;
-entity.pointDown.handle(function(o) {
+entity.pointDown.add(function(o) {
   b2body.ApplyImpulse(box2d.vec2(50, -50), box2d.vec2(body.x, body.y));
 });
 ```
@@ -312,7 +312,7 @@ Akashicの座標基準で指定するには、 `ApplyImpulse()` の第2引数を
 
 ```javascript
 entity.touchable = true;
-entity.pointDown.handle(function(o) {
+entity.pointDown.add(function(o) {
   b2body.ApplyImpulse(box2d.vec2(50, -50), box2d.vec2(body.x + body.width / 2, body.y + body.height / 2));
 });
 ```
@@ -321,7 +321,7 @@ entity.pointDown.handle(function(o) {
 
 ```javascript
 entity.touchable = true;
-entity.pointDown.handle(function(o) {
+entity.pointDown.add(function(o) {
   b2body.SetLinearVelocity(box2d.vec2(50, -50));
 });
 ```

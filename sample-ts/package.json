@@ -1,27 +1,26 @@
 {
-  "name": "typescript-game-sample",
+  "name": "akashic-box2d-sample",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "prepublish": "npm run build",
-    "build": "tsc && cd game && akashic scan asset script",
+    "build": "tsc && cd game && akashic scan asset script && akashic scan globalScripts",
     "start": "akashic-sandbox game",
-    "lint": "tslint -c tslint.json src/**/*.ts",
-    "test": "jasmine ./spec/**/*.js && npm run lint"
+    "test": "run lint"
   },
   "author": "",
   "license": "",
   "devDependencies": {
-    "@akashic/akashic-cli": "~1.1.0",
-    "@akashic/akashic-engine": "~1.12.0",
-    "@akashic/akashic-sandbox": "~0.11.0",
+    "@akashic/akashic-cli": "~1.3.0",
+    "@akashic/akashic-engine": "~2.0.0",
+    "@akashic/akashic-sandbox": "~0.13.7",
     "@types/node": "^7.0.11",
     "tslint": "~4.5.0",
-    "typescript": "~2.2.0"
+    "typescript": "~2.6.2"
   },
   "dependencies": {
-    "@akashic-extension/akashic-box2d": "~0.2.0",
+    "@akashic-extension/akashic-box2d": "~2.0.0",
     "box2dweb": "~2.1.0-b"
   }
 }

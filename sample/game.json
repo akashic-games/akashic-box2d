@@ -29,5 +29,8 @@
 		"node_modules/box2dweb/box2d.js",
 		"node_modules/@akashic-extension/akashic-box2d/package.json",
 		"node_modules/box2dweb/package.json"
-	]
+	],
+	"environment": {
+		"sandbox-runtime": "2"
+	}
 }

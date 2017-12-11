@@ -5,7 +5,7 @@ var Box2D = require("@akashic-extension/akashic-box2d");
 
 module.exports = function() {
   var scene = new g.Scene({game: game, assetIds: ["soccer", "pentagon"]});
-  scene.loaded.handle(function() {
+  scene.loaded.add(function() {
 
     // 物理エンジン世界の生成
     var worldOption = {
@@ -152,7 +152,7 @@ module.exports = function() {
     b2.world.SetContactListener(contactListener);
 
     soccer.touchable = true;
-    soccer.pointDown.handle(function(o) {
+    soccer.pointDown.add(function(o) {
       var pos = getEntityPosition(soccer);
       var delta = {
         x: o.point.x - soccer.width / 2,
@@ -163,7 +163,7 @@ module.exports = function() {
       soccerBody.b2body.ApplyImpulse(b2.vec2(delta.x * -5, delta.y * -5), b2.vec2(pos.x, pos.y));
     });
 
-    scene.update.handle(function(){
+    scene.update.add(function() {
       // 物理エンジンの世界をすすめる
       b2.step(1/game.fps);
     });

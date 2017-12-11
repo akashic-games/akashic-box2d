@@ -1,6 +1,6 @@
 {
   "name": "@akashic-extension/akashic-box2d",
-  "version": "0.2.1",
+  "version": "2.0.0",
   "description": "Box2D physics engine for Akashic",
   "main": "lib/index.js",
   "scripts": {
@@ -30,11 +30,11 @@
     "jasmine": "~2.5.2",
     "tslint": "~4.5.0",
     "typedoc": "0.5.5",
-    "typescript": "^2.2.0"
+    "typescript": "~2.6.2"
   },
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@akashic/akashic-engine": "~1.12.0",
+    "@akashic/akashic-engine": "~2.0.0",
     "box2dweb": "2.1.0-b"
   }
 }
