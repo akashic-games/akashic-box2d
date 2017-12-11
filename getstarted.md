@@ -207,7 +207,7 @@ var circleDef = box2d.createFixtureDef({
 ![ball](img/ball.png)
 
 ```javascript
-var ball = g.Sprite({scene: scene, src: scene.assets.ball, width: 100, height: 98});
+var ball = new g.Sprite({scene: scene, src: scene.assets.ball, width: 100, height: 98});
 scene.append(ball);
 ball.modified();
 
@@ -242,7 +242,7 @@ var polygonDef = box2d.createFixtureDef({
 ![pentagon](img/pentagon.png)
 
 ```javascript
-var pentagon = g.Sprite({scene: scene, src: scene.assets.pentagon, width: 100, height: 95});
+var pentagon = new g.Sprite({scene: scene, src: scene.assets.pentagon, width: 100, height: 95});
 scene.append(pentagon);
 pentagon.modified();
 
