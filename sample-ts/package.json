@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepublish": "npm run build",
     "build": "tsc && cd game && akashic scan asset script && akashic scan globalScripts",
     "start": "akashic-sandbox game",
     "test": "run lint"
@@ -19,6 +18,7 @@
     "tslint": "~4.5.0",
     "typescript": "~2.6.2"
   },
+  "private": true,
   "dependencies": {
     "@akashic-extension/akashic-box2d": "~2.0.0",
     "box2dweb": "~2.1.0-b"

@@ -26,11 +26,13 @@
 		"node_modules/@akashic-extension/akashic-box2d/lib/Box2D.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/Box2DOptions.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/index.js",
-		"node_modules/box2dweb/box2d.js",
-		"node_modules/@akashic-extension/akashic-box2d/package.json",
-		"node_modules/box2dweb/package.json"
+		"node_modules/box2dweb/box2d.js"
 	],
 	"environment": {
 		"sandbox-runtime": "2"
+	},
+	"moduleMainScripts": {
+		"@akashic-extension/akashic-box2d": "node_modules/@akashic-extension/akashic-box2d/lib/index.js",
+		"box2dweb": "node_modules/box2dweb/box2d.js"
 	}
 }
