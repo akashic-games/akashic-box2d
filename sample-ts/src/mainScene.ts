@@ -3,7 +3,7 @@ var game = g.game;
 
 export = () => {
 	const scene = new g.Scene({game: game, assetIds: ["soccer", "pentagon"]});
-	scene.loaded.handle(() => {
+	scene.loaded.add(() => {
 
 		// 物理エンジン世界の生成
 		const worldOption = {
@@ -150,7 +150,7 @@ export = () => {
 		b2.world.SetContactListener(contactListener);
 
 		soccer.touchable = true;
-		soccer.pointDown.handle((o: g.PointDownEvent) => {
+		soccer.pointDown.add((o: g.PointDownEvent) => {
 			const pos = getEntityPosition(soccer);
 			const delta = {
 				x: o.point.x - soccer.width / 2,
@@ -161,7 +161,7 @@ export = () => {
 			soccerBody.b2body.ApplyImpulse(b2.vec2(delta.x * -5, delta.y * -5), b2.vec2(pos.x, pos.y));
 		});
 
-		scene.update.handle(() => {
+		scene.update.add(() => {
 			// 物理エンジンの世界をすすめる
 			b2.step(1 / game.fps);
 		});

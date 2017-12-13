@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.0
+
+* akashic-engine@2.0.0 に追従
+
 ## 0.2.1
 
 * publish対象から不要なファイルを除去

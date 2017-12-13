@@ -3,7 +3,7 @@
 akashic-sandbox を用いて実行することができます。
 
 ## 実行方法
-[akashic-sandbox](https://github.com/akashic-games/akashic-sandbox) をインストールした後、
+[akashic-sandbox](https://github.com/akashic-games/akashic-sandbox) (v0.13.3以降)をインストールした後、
 以下のコマンドで `http://localhost:3000` にアクセスすることで実行できます。
 
 ```
