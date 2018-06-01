@@ -38,6 +38,8 @@ var b2 = require("@akashic-extension/akashic-box2d");
   * [JavaScript](./sample)
   * [TypeScript](./sample-ts)
 
+Akashic Engineの詳細な利用方法については、 [公式ページ](https://akashic-games.github.io/) を参照してください。
+
 ## ビルド方法
 
 **akashic-box2d** はTypeScriptで書かれたライブラリであるため、ビルドにはNode.jsが必要です。
