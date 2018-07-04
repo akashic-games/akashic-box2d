@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## UnreleasedChanges
+
+* ビルド方法の修正
+
 ## 2.0.0
 
 * akashic-engine@2.0.0 に追従

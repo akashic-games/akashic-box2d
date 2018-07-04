@@ -5,9 +5,9 @@
   "main": "lib/index.js",
   "scripts": {
     "prepublish": "npm run build && npm run doc",
-    "clean": "rm -rf lib && rm -rf doc",
+    "clean": "shx rm -rf lib && shx rm -rf doc",
     "build": "tsc",
-    "doc": "typedoc --out ./doc --mode file && cp -r ./img ./doc",
+    "doc": "typedoc --out ./doc --mode file && shx cp -r ./img ./doc",
     "lint": "tslint -c tslint.json src/**/*.ts spec/src/**/*.ts",
     "test": "npm run build && jasmine ./spec/**/*.js && npm run lint"
   },
@@ -28,6 +28,7 @@
   "devDependencies": {
     "@types/node": "~7.0.10",
     "jasmine": "~2.5.2",
+    "shx": "~0.3.1",
     "tslint": "~4.5.0",
     "typedoc": "0.5.5",
     "typescript": "~2.6.2"
