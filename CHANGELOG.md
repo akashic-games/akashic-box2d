@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## UnreleasedChanges
+## 2.1.1
 
 * ビルド方法の修正
 
