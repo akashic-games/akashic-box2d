@@ -50,18 +50,23 @@ export class Box2D implements g.Destroyable {
 		for (let i = 0; i < this.bodies.length; i++) {
 			if (this.bodies[i].entity === entity) return;
 		}
-		const b2Body = this.world.CreateBody(bodyDef);
+		let fixtureDefs: b2.Dynamics.b2FixtureDef[] = [];
 
 		if (Array.isArray(fixtureDef)) {
-			for (let i = 0; i < fixtureDef.length; i++) {
-				if (!fixtureDef[i].shape)
-					throw new Error("Missing parameter: shape");
-				b2Body.CreateFixture(fixtureDef[i]);
-			}
+			fixtureDefs = fixtureDef;
 		} else {
-			if (!fixtureDef.shape)
+			fixtureDefs.push(fixtureDef);
+		}
+
+		for (let i = 0; i < fixtureDefs.length; i++) {
+			if (!fixtureDefs[i].shape)
 				throw new Error("Missing parameter: shape");
-			b2Body.CreateFixture(fixtureDef);
+		}
+
+		const b2Body = this.world.CreateBody(bodyDef);
+
+		for (let i = 0; i < fixtureDefs.length; i++) {
+			b2Body.CreateFixture(fixtureDefs[i]);
 		}
 
 		const userData = bodyDef.userData != null ? bodyDef.userData : entity.id;
