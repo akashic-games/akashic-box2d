@@ -54,9 +54,13 @@ export class Box2D implements g.Destroyable {
 
 		if (Array.isArray(fixtureDef)) {
 			for (let i = 0; i < fixtureDef.length; i++) {
+				if (!fixtureDef[i].shape)
+					throw new Error("Missing parameter: shape");
 				b2Body.CreateFixture(fixtureDef[i]);
 			}
 		} else {
+			if (!fixtureDef.shape)
+				throw new Error("Missing parameter: shape");
 			b2Body.CreateFixture(fixtureDef);
 		}
 
