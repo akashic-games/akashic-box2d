@@ -46,15 +46,20 @@ export class Box2D implements g.Destroyable {
 	 * @param bodyDef 対象のb2BodyDef
 	 * @param fixtureDef 対象のb2FixtureDef
 	 */
-	createBody(entity: g.E, bodyDef: b2.Dynamics.b2BodyDef, fixtureDef: b2.Dynamics.b2FixtureDef): options.EBody {
-		if (!fixtureDef.shape)
-			throw new Error("Missing parameter: shape");
+	createBody(entity: g.E, bodyDef: b2.Dynamics.b2BodyDef, fixtureDef: b2.Dynamics.b2FixtureDef | b2.Dynamics.b2FixtureDef[]): options.EBody {
 		for (let i = 0; i < this.bodies.length; i++) {
 			if (this.bodies[i].entity === entity) return;
 		}
-
 		const b2Body = this.world.CreateBody(bodyDef);
-		b2Body.CreateFixture(fixtureDef);
+
+		if (Array.isArray(fixtureDef)) {
+			for (let i = 0; i < fixtureDef.length; i++) {
+				b2Body.CreateFixture(fixtureDef[i]);
+			}
+		} else {
+			b2Body.CreateFixture(fixtureDef);
+		}
+
 		const userData = bodyDef.userData != null ? bodyDef.userData : entity.id;
 		b2Body.SetUserData(userData);
 		b2Body.SetPositionAndAngle(this.vec2(entity.x + entity.width / 2, entity.y + entity.height / 2), this.radian(entity.angle));
