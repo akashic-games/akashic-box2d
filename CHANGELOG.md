@@ -1,7 +1,10 @@
 # CHANGELOG
 
-## 2.1.1
+## 2.1.2
 * Box2D#createBody() に複数の b2FixtureDef をアタッチできるように
+
+## 2.1.1
+* ビルド方法の修正
 
 ## 2.1.0
 
