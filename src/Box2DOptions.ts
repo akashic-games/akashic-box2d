@@ -109,6 +109,27 @@ export interface FixtureOption {
 	 * 未指定のまま `Box2D#createBody()` に渡すとことはできない。
 	 */
 	shape?: b2.Collision.Shapes.b2PolygonShape | b2.Collision.Shapes.b2CircleShape;
+
+	/**
+	 * フィルタリングデータ。
+	 */
+	filter?: {
+		/**
+		 * カテゴリのビット値。
+		 * 初期値は 0x1 である。
+		 */
+		categoryBits?: number;
+		/**
+		 * マスクのビット値。
+		 * 初期値は 0xFFFF である。
+		 */
+		maskBits?: number;
+		/**
+		 * グループインデックス。
+		 * 初期値は 0 である。
+		 */
+		groupIndex?: number;
+	};
 }
 
 /**

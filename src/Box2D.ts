@@ -187,6 +187,11 @@ export class Box2D implements g.Destroyable {
 		fixtureDef.friction = fixtureOption.friction != null ? fixtureOption.friction : 0.2;
 		fixtureDef.restitution = fixtureOption.restitution != null ? fixtureOption.restitution : 0;
 		fixtureDef.shape = fixtureOption.shape;
+
+		const opt = fixtureOption.filter || {};
+		fixtureDef.filter.categoryBits = opt.categoryBits != null ? opt.categoryBits : 0x1;
+		fixtureDef.filter.maskBits = opt.maskBits != null ? opt.maskBits : 0xFFFF;
+		fixtureDef.filter.groupIndex = opt.groupIndex != null ? opt.groupIndex : 0;
 		return fixtureDef;
 	}
 
