@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 2.1.3
+* Box2D#createFixtureDef() に filter を指定できるように
+
 ## 2.1.2
 * Box2D#createBody() に複数の b2FixtureDef をアタッチできるように
 
