@@ -32,11 +32,11 @@ var b2 = require("@akashic-extension/akashic-box2d");
 で利用してください。
 詳細な利用方法については、以下を参照してください。
 
-* [akashic-box2dの利用方法](./getstarted.md)
+* [akashic-box2dの利用方法](https://github.com/akashic-games/akashic-box2d/blob/master/getstarted.md)
 * [APIリファレンス](https://akashic-games.github.io/reference/akashic-box2d/index.html)
 * このリポジトリ同梱のサンプルコンテンツ
-  * [JavaScript](./sample)
-  * [TypeScript](./sample-ts)
+  * [JavaScript](https://github.com/akashic-games/akashic-box2d/blob/master/sample)
+  * [TypeScript](https://github.com/akashic-games/akashic-box2d/blob/master/sample-ts)
 
 Akashic Engineの詳細な利用方法については、 [公式ページ](https://akashic-games.github.io/) を参照してください。
 
@@ -69,7 +69,7 @@ Box2DWebでは `Math.random()` が使われている箇所があります。(該
 
 ## ライセンス
 本リポジトリは MIT License の元で公開されています。
-詳しくは [LICENSE](./LICENSE) をご覧ください。
+詳しくは [LICENSE](https://github.com/akashic-games/akashic-box2d/blob/master/LICENSE) をご覧ください。
 
 ただし、画像ファイルおよび音声ファイルは
 [CC BY 2.1 JP](https://creativecommons.org/licenses/by/2.1/jp/) の元で公開されています。
