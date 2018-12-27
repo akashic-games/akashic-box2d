@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.0
+* 物理計算が無限ループに陥る問題の修正
+* 物理計算を中断する機能の追加
+
 ## 2.1.3
 * Box2D#createFixtureDef() に filter を指定できるように
 
