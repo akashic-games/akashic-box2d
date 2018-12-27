@@ -224,15 +224,6 @@ import * as options from "./Box2DOptions";
 			this.m_contactManager.FindNewContacts();
 		}
 	};
-
-	// b2World を継承するコンストラクタ関数
-	function ctor() {
-		b2World.apply(this, arguments);
-		this.terminator = null;
-	}
-	ctor.prototype = Object.create(b2World.prototype);
-
-	box2d.Dynamics.b2World = ctor;
 })(b2);
 /* tslint:enable */
 
