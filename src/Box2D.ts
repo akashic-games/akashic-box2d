@@ -39,11 +39,17 @@ import * as options from "./Box2DOptions";
 			j; j = j.m_next) {
 			j.m_islandFlag = false;
 		}
-		terminated:
-		for (;;) {
+
+		// 物理計算を中断するためのラベル `terminated` を追加。
+		terminated: for (;;) {
+
+			// 物理計算を中断するためのif文を追加。
+			// 物理計算のためにフレームレートが低下するケースに対処できるよう、
+			// コールバック関数が真を返すとき中断する。
 			if (this.terminator && this.terminator(this)) {
 				break terminated;
 			}
+
 			var minContact = null;
 			var minTOI = 1.0;
 			for (c = this.m_contactList;
@@ -86,7 +92,14 @@ import * as options from "./Box2DOptions";
 					minTOI = toi;
 				}
 			}
-			// Number.MIN_VALUE ではなく EPSILON を用いる。
+			// 無限ループすることがある問題の修正。
+			//
+			// 修正前:
+			//   if (minContact == null || 1.0 - 100.0 * Number.MIN_VALUE < minTOI)
+			// 修正後:
+			//   if (minContact == null || 1.0 - 100.0 * EPSILON < minTOI)
+			//
+			// box2dweb の実装では情報落ちしていたため、本家 box2d の実装に揃えた。
 			if (minContact == null || 1.0 - 100.0 * EPSILON < minTOI) {
 				break;
 			}
@@ -120,9 +133,6 @@ import * as options from "./Box2DOptions";
 			queue[queueStart + queueSize++] = seed;
 			seed.m_flags |= b2Body.e_islandFlag;
 			while (queueSize > 0) {
-				if (this.terminator && this.terminator(this)) {
-					break terminated;
-				}
 				b = queue[queueStart++];
 				--queueSize;
 				island.AddBody(b);
