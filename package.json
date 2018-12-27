@@ -1,6 +1,6 @@
 {
   "name": "@akashic-extension/akashic-box2d",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "Box2D physics engine for Akashic",
   "main": "lib/index.js",
   "scripts": {
