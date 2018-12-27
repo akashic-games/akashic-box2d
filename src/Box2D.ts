@@ -13,7 +13,7 @@ import * as options from "./Box2DOptions";
 		b2World = box2d.Dynamics.b2World,
 		b2Contact = box2d.Dynamics.Contacts.b2Contact;
 
-	// https://github.com/hecht-software/box2dweb/blob/master/Box2D.js#L6282
+	// https://github.com/hecht-software/box2dweb/blob/c8aff6e9d295a9d72e1728e76b6d1d5fdcf616f5/Box2D.js#L6282
 	b2World.prototype.SolveTOI = function (step: any) {
 		var b;
 		var fA;
