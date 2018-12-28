@@ -23,6 +23,7 @@
   "files": [
     "lib",
     "typings",
+    "patch",
     "README.md"
   ],
   "devDependencies": {
