@@ -40,15 +40,6 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * 物理演算を中断させるコールバック関数を登録する。
-	 * コールバック関数が true を返すとき、物理演算を中断する。
-	 * @param callback コールバック関数。null または undefined のとき、すでに登録されたコールバック関数があればそれを削除する。
-	 */
-	setTerminator(callback: (world: b2.Dynamics.b2World) => void): void {
-		(this.world as any).terminator = callback;
-	}
-
-	/**
 	 * このクラスにボディを追加し、そのEBodyを返す。
 	 * すでに同エンティティが追加されている場合は何もしない。
 	 * @param entity 対象のエンティティ
