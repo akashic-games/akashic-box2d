@@ -2,7 +2,7 @@ var b2 = require("box2dweb");
 
 function patchBox2D(box2d, opts) {
     opts = opts || {};
-    var maxTOILoop = typeof opts.maxTOILoop === "number" ? opts.maxTOILoop : Number.MAX_SAFE_INTEGER;
+    var maxTOILoop = typeof opts.maxTOILoop === "number" ? opts.maxTOILoop : (Number.MAX_SAFE_INTEGER || 9007199254740991);
 
     // https://www.ecma-international.org/ecma-262/6.0/#sec-number.epsilon
     var EPSILON = 2.2204460492503130808472633361816e-16;
