@@ -474,6 +474,23 @@ box2d.destroy();
 `box2d.destroy()` が呼ばれると、その時点で物理エンジンの世界は破棄されます。
 `box2d` に紐づけられたボディはすべて破棄され、エンティティだけが残ります。
 
+## Box2D(Box2DWeb)へのパッチの適用
+
+Box2D(Box2DWeb) の機能を追加・変更するためのパッチが用意されています。内容は以下のとおりです。
+
+* 無限ループに陥る不具合の修正。
+* 物理計算の時間を制限するため、最小TOI算出ループの繰り返し回数の上限を設定する機能の追加。
+
+使い方は以下のようになります。
+
+```javascript
+var patch = require("@akashic-extension/akashic-box2d/patch");
+
+var box2d = new b2.Box2D( ... );
+
+patch.patchBox2D(box2d, { maxTOILoop: 10 });
+```
+
 ## 注意事項
 
 ### 単位の違い
