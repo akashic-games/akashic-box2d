@@ -1,6 +1,6 @@
 /*
  * This file is based on box2dweb (https://github.com/mikolalysenko/box2dweb)
- * which is released under the following zlib license.
+ * which is released under the following license.
  */
 
 /*
