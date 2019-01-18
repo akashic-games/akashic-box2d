@@ -1,3 +1,26 @@
+/*
+ * This file is based on box2dweb (https://github.com/mikolalysenko/box2dweb)
+ * which is released under the following zlib license.
+ */
+
+/*
+ * Copyright (c) 2006-2007 Erin Catto http://www.gphysics.com
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 1. The origin of this software must not be misrepresented; you must not
+ * claim that you wrote the original software. If you use this software
+ * in a product, an acknowledgment in the product documentation would be
+ * appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ * misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ */
+
 var b2 = require("box2dweb");
 
 function patchBox2D(box2d, opts) {
@@ -12,7 +35,7 @@ function patchBox2D(box2d, opts) {
         b2World = b2.Dynamics.b2World,
         b2Contact = b2.Dynamics.Contacts.b2Contact;
 
-    // https://github.com/hecht-software/box2dweb/blob/c8aff6e9d295a9d72e1728e76b6d1d5fdcf616f5/Box2D.js#L6282
+    // alter https://github.com/mikolalysenko/box2dweb/blob/87ba08d7fc7cdd15235cb6c8bd79f24a92874198/box2d.js#L6271
     box2d.world.SolveTOI = function (step) {
         var b;
         var fA;
