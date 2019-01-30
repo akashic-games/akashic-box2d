@@ -476,12 +476,16 @@ box2d.destroy();
 
 ## Box2D(Box2DWeb)へのパッチの適用
 
-Box2D(Box2DWeb) の機能を追加・変更するためのパッチが用意されています。内容は以下のとおりです。
+Box2D(Box2DWeb) の機能を追加・変更するためのパッチが用意されています。パッチは２つあります。
+
+### patchBox2D
+
+以下の修正が適用されます。
 
 * 無限ループに陥る不具合の修正。
 * 物理計算の時間を制限するため、最小TOI算出ループの繰り返し回数の上限を設定する機能の追加。
 
-使い方は以下のようになります。
+使い方は以下のようになります。詳しくはAPIリファレンスをご確認ください。
 
 ```javascript
 var patch = require("@akashic-extension/akashic-box2d/patch");
@@ -489,6 +493,20 @@ var patch = require("@akashic-extension/akashic-box2d/patch");
 var box2d = new b2.Box2D( ... );
 
 patch.patchBox2D(box2d, { maxTOILoop: 10 });
+```
+
+### patchBox2DMath
+
+以下の修正が適用されます。
+
+* 一部ブラウザで三角関数の計算結果が異なる問題を回避するため、関数テーブルを用いる。
+
+使い方は以下のようになります。詳しくはAPIリファレンスをご確認ください。
+
+```javascript
+var patch = require("@akashic-extension/akashic-box2d/patch");
+
+patch.patchBox2DMath(box2d, { tableSize: 8192 });
 ```
 
 ## 注意事項
