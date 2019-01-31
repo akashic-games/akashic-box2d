@@ -485,7 +485,7 @@ Box2D(Box2DWeb) の機能を追加・変更するためのパッチが用意さ�
 * 無限ループに陥る不具合の修正。
 * 物理計算の時間を制限するため、最小TOI算出ループの繰り返し回数の上限を設定する機能の追加。
 
-使い方は以下のようになります。詳しくはAPIリファレンスをご確認ください。
+使い方は以下のようになります。詳しくは [patch/index.d.ts](./patch/index.d.ts) のコメントを御覧ください。
 
 ```javascript
 var patch = require("@akashic-extension/akashic-box2d/patch");
@@ -501,7 +501,7 @@ patch.patchBox2D(box2d, { maxTOILoop: 10 });
 
 * 一部ブラウザで三角関数の計算結果が異なる問題を回避するため、関数テーブルを用いる。
 
-使い方は以下のようになります。詳しくはAPIリファレンスをご確認ください。
+使い方は以下のようになります。詳しくは [patch/index.d.ts](./patch/index.d.ts) のコメントを御覧ください。
 
 ```javascript
 var patch = require("@akashic-extension/akashic-box2d/patch");
