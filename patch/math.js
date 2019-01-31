@@ -47,7 +47,7 @@ function patchBox2DMath(opts) {
         this.sinTable = setupSinTable(new arrayType(opts.tableSize), angleRange);
     }
 
-    LutMath.prototype.sin = opts.wholePeriod ? function (th) {
+    LutMath.prototype.sin = opts.wholePeriod ? function(th) {
         th %= this.PI2;
         if (th < 0) {
             th += this.PI2;
@@ -73,7 +73,7 @@ function patchBox2DMath(opts) {
         return sign * this.sinTable[idx];
     };
 
-    LutMath.prototype.cos = function (th) {
+    LutMath.prototype.cos = function(th) {
         return this.sin(th + Math.PI / 2);
     };
 
