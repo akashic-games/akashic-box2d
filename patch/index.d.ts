@@ -22,7 +22,7 @@ export interface PatchBox2DOptions {
  * @param box2d Box2D。
  * @param opts オプション。
  */
-export function patchBox2D(box2d: Box2D.Box2D, opts?: PatchBox2DOptions);
+export function patchBox2D(box2d: Box2D.Box2D, opts?: PatchBox2DOptions): void;
 
 
 /**
@@ -45,13 +45,6 @@ export interface PatchBox2DMathOption {
      * 区間を小さくするとことで精度が向上しますが、テーブルアクセスのコストが増えます。
      */
     wholePeriod?: boolean;
-
-    /**
-     * 正弦波テーブルの型。
-     *
-     * 省略時、 Float32Array 。 Float32Array が利用できないとき、 Array 。
-     */
-    arrayType?: Float32Array | Float64Array | Array;
 }
 
 /**
@@ -63,4 +56,4 @@ export interface PatchBox2DMathOption {
  * @param box2d Box2D。
  * @param opts オプション。
  */
-export function patchBox2DMath(opts?: PatchBox2DMathOption);
+export function patchBox2DMath(opts?: PatchBox2DMathOption): void;

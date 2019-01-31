@@ -3,9 +3,9 @@ var b2 = require("box2dweb");
 function patchBox2DMath(opts) {
     opts = opts || {};
     opts.tableSize = typeof opts.tableSize === "number" ? opts.tableSize : 8192 * 4;
-    opts.wholePeriod = opts.wholePeriod == null ? true : !!opts.wholePeriod;
-    opts.arrayType = typeof opts.arrayType === "function" ?
-        opts.arrayType : (typeof Float32Array !== "undefined" ? Float32Array : Array);
+    opts.wholePeriod = opts.wholePeriod === undefined ? true : !!opts.wholePeriod;
+
+    var arrayType = typeof Float32Array !== "undefined" ? Float32Array : Array;
 
     function setupSinTable(arr, angleRange) {
         var reso = arr.length;
@@ -16,14 +16,14 @@ function patchBox2DMath(opts) {
         // * iterNum= 4: 4.374278717023117e-14
         function sin(x) {
             var iterNum = 5;
-            var mxx = -x * x;
+            var minus_x_squared = -x * x;
             var s = 1;
             var n = 0;
             var term = 1;
 
             for (var i = 1; i <= 2 * iterNum; i++) {
                 n = n + 2;
-                term = term * mxx / (n * (n + 1));
+                term = term * minus_x_squared / (n * (n + 1));
                 s = s + term;
             }
 
@@ -44,7 +44,7 @@ function patchBox2DMath(opts) {
         var angleRange = opts.wholePeriod ? Math.PI * 2 : Math.PI / 2;
         this.PI2 = Math.PI * 2;
         this.factor = (opts.tableSize - 1) / angleRange;
-        this.sinTable = setupSinTable(new opts.arrayType(opts.tableSize), angleRange);
+        this.sinTable = setupSinTable(new arrayType(opts.tableSize), angleRange);
     }
 
     LutMath.prototype.sin = opts.wholePeriod ? function (th) {
@@ -80,7 +80,7 @@ function patchBox2DMath(opts) {
     b2.Common.Math.b2Mat22.prototype.__lutmath = new LutMath();
 
     // override
-    b2.Common.Math.b2Mat22.prototype.Set = function (angle) {
+    b2.Common.Math.b2Mat22.prototype.Set = function(angle) {
         if (angle === undefined) angle = 0;
         var c = this.__lutmath.cos(angle);
         var s = this.__lutmath.sin(angle);
