@@ -2,7 +2,7 @@ import * as b2 from "box2dweb";
 import * as Box2D from "../lib";
 
 /**
- * パッチのオプショナルなパラメータ。
+ * patchBox2D() のオプショナルなパラメータ。
  */
 export interface PatchBox2DOptions {
     /**
@@ -22,4 +22,38 @@ export interface PatchBox2DOptions {
  * @param box2d Box2D。
  * @param opts オプション。
  */
-export function patchBox2D(box2d: Box2D.Box2D, opts?: PatchBox2DOptions);
+export function patchBox2D(box2d: Box2D.Box2D, opts?: PatchBox2DOptions): void;
+
+
+/**
+ * patchBox2DMath() のオプショナルなパラメータ。
+ */
+export interface PatchBox2DMathOption {
+    /**
+     * 正弦波テーブルのサイズ。
+     * 省略時、 32768。
+     */
+    tableSize?: number;
+
+    /**
+     * 正弦波テーブルに収められる正弦波の区間。
+     *
+     * 真のとき、 [0, PI * 2] 。
+     * 偽のとき、 [0, PI / 2] 。
+     * 省略時、 true 。
+     *
+     * 区間を小さくするとことで精度が向上しますが、テーブルアクセスのコストが増えます。
+     */
+    wholePeriod?: boolean;
+}
+
+/**
+ * Box2Dの利用する数学処理にパッチをあてる。
+ *
+ * 以下の修正・機能追加を行う。
+ * - 実行環境ごとの三角関数の計算結果の違いをなくするため、正弦波テーブルを用いる。
+ *
+ * @param box2d Box2D。
+ * @param opts オプション。
+ */
+export function patchBox2DMath(opts?: PatchBox2DMathOption): void;
