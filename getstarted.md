@@ -15,7 +15,7 @@ sample, sample-tsディレクトリに本モジュールを使ったサンプル
 ## 準備
 
 Akashicを使ったゲーム開発の準備が終わっていない場合は、
-[Akashicを利用したゲーム開発](https://akashic-games.github.io/tutorial/tutorial.html)を読んでゲーム開発の環境を整えて下さい。
+[Akashicを利用したゲーム開発](https://akashic-games.github.io/tutorial/v2/)を読んでゲーム開発の環境を整えて下さい。
 
 akashic-box2dはAkashicの拡張機能として提供されています。
 
