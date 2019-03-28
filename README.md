@@ -75,9 +75,3 @@ Box2DWebでは `Math.random()` が使われている箇所があります。(該
 [CC BY 2.1 JP](https://creativecommons.org/licenses/by/2.1/jp/) の元で公開されています。
 
 また、本リポジトリの [patch/index.js](https://github.com/akashic-games/akashic-box2d/blob/master/patch/index.js) のライセンスはファイル中記述されています。そちらをご覧ください。
-
-ドキュメント及びサンプルコンテンツでは、以下のサイトで公開されている素材を利用しています。
-* [ロゴ・素材 - 全然](http://www37.atpages.jp/uurevzab/logo.php)
-  * sample/image/soccer.png
-  * sample-ts/game/image/soccer.png
-  * img/ball.png

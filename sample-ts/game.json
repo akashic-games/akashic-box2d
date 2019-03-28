@@ -3,11 +3,6 @@
 	"height": 240,
 	"fps": 30,
 	"assets": {
-		"mainScene": {
-			"type": "script",
-			"path": "script/mainScene.js",
-			"global": true
-		},
 		"pentagon": {
 			"type": "image",
 			"width": 100,
@@ -17,8 +12,13 @@
 		"soccer": {
 			"type": "image",
 			"width": 100,
-			"height": 98,
+			"height": 100,
 			"path": "image/soccer.png"
+		},
+		"mainScene": {
+			"type": "script",
+			"path": "script/mainScene.js",
+			"global": true
 		}
 	},
 	"globalScripts": [
