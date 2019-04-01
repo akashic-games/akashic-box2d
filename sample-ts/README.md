@@ -39,9 +39,3 @@ npm start
 ```sh
 npm test
 ```
-
-## その他
-
-本サンプルは以下のサイトで公開されている素材を利用しています。
-* soccer.png
-  * [ロゴ・素材 - 全然](http://www37.atpages.jp/uurevzab/logo.php)
