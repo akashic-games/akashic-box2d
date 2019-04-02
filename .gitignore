@@ -1,10 +1,8 @@
-node_modules
 .DS_Store*
-npm-debug.log
+*.log
 *.iml
-coverage
-junitresults.xml
-lib
-tmp
-.idea
-doc
+
+node_modules/
+lib/
+doc/
+sample-ts/script/

@@ -4,7 +4,8 @@
     "lib": ["es5", "dom"],
     "noImplicitAny": true,
     "module": "commonjs",
-    "outDir": "./game/script"
+    "outDir": "./script",
+    "types": ["node"]
   },
   "files": [
     "node_modules/@akashic/akashic-engine/lib/main.d.ts"
