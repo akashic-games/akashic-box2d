@@ -155,22 +155,6 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * ボディ同士の接触を、Box2DWebのユーザデータを参照して検出する。
-	 * @param body1 対象のボディ
-	 * @param body2 対象のボディ
-	 * @param contact 対象のb2Contacts
-	 */
-	isContact(body1: EBody, body2: EBody, contact: box2d.b2Contact): boolean {
-		const bodyA = contact.GetFixtureA().GetBody().GetUserData();
-		const bodyB = contact.GetFixtureB().GetBody().GetUserData();
-		if ( (body1.b2Body.GetUserData() === bodyA && body2.b2Body.GetUserData() === bodyB)
-			|| (body1.b2Body.GetUserData() === bodyB && body2.b2Body.GetUserData() === bodyA) ) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * 長方形を表す `b2PolygonShape` インスタンスを生成する。
 	 * @param width 横幅 px
 	 * @param height 縦幅 px

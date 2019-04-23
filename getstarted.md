@@ -324,128 +324,49 @@ entity.pointDown.add(function(o) {
 
 ## 接触イベントの検出
 
-### 単一ボディ同士の接触イベント検出
-
 ボディ同士の接触イベントを設定してみましょう。
-
-まず、Box2Dを利用して接触イベントのリスナーを生成します。
-`b2` からBox2Dのインスタンスを直接参照できます。
-
-以下のようにBox2Dのインスタンスから `b2ContactListener` を生成します。
+akashic-box2d には衝突情報のトリガーを管理する `ContactManager` クラスがあります。
+以下のように `ContactManager` のインスタンスを生成します。
 
 ```javascript
-var contactListener = new b2.b2ContactListener();
+var contactListener = new b2.ContactManager({
+  box2d: box3d
+});
 ```
 
-`b2ContactListener` に `BeginContact` イベントを追加します。
+あるボディ同士 `body1`, `body2` の衝突時のトリガーを作成します。
 
 ```javascript
-contactListener.BeginContact = function (contact) {
-  if (box2d.isContact(body1, body2, contact)) {
-    ...
-  }
-}
+contactManager.createBeginContactTrigger(body1, body2).add(() => {
+  ...
+});
 ```
 
-`BeginContact` はいずれかのボディ同士が接触を開始した際に実行されます。
+`ContactManager#createBeginContactTrigger()` はいずれかのボディ同士が接触を開始した際に発火されるトリガーを作成します。
 
-他にも以下のイベントが定義されています。
-詳しくは[Box2DのAPI](http://www.box2dflash.org/docs/2.1a/reference/Box2D/Dynamics/b2ContactListener.html)
-を参照してください。
-
-* EndContact
-* PostSolve
-* PreSolve
-
-`box2d.isContact()` は引数に指定したボディ同士の接触判定を返します。
-
-設定したイベントリスナーを `box2d` の保持する物理エンジンの世界に設定します。
-
-`box2d` の保持する物理エンジンの世界は `box2d.world` で参照できます。
 
 ```javascript
 box2d.world.SetContactListener(contactListener);
 ```
 
-例として、body1とbody2が接触している間だけbody1の色を赤にするコードを記載します。
+例として、 `body1` と `body2` が接触している間だけ `body1` の色を赤にするコードを記載します。
 
 ```javascript
 // 接触イベントのリスナーを生成
-var contactListener = new b2.b2ContactListener();
-// 接触開始時のイベントリスナー
-contactListener.BeginContact = function (contact) {
+var contactManager = new b2.ContactManager({ box2d: box2d });
+// 接触開始時のトリガーを生成
+contactManager.createBeginContactTrigger(body1, body2).add(function() {
   // body1とbody2がぶつかったらbodyEntity1の色を赤にする
-  if (box2d.isContact(body1, body2, contact)) {
-    bodyEntity1.cssColor = "red";
-    bodyEntity1.modified();
-  }
+  bodyEntity1.cssColor = "red";
+  bodyEntity1.modified();
 }
+var _cssColor = bodyEntity1.cssColor;
 // 接触が離れた時のイベントリスナー
-contactListener.EndContact = function (contact) {
+contactManager.createEndContactTrigger(body1, body2).add(function() {
   // body1とbody2が離れたらbodyEntity1の色を戻す
-  if (box2d.isContact(body1, body2, contact)) {
-    bodyEntity1.cssColor = "...";
-    bodyEntity1.modified();
-  }
+  bodyEntity1.cssColor = _cssColor;
+  bodyEntity1.modified();
 }
-// イベントリスナーを設定
-box2d.world.SetContactListener(contactListener);
-```
-
-### 複数ボディ同士の接触イベント検出
-上述した方法では単一のボディ同士の接触しか判定できないため、接触を判定したいボディが多数存在する場合は非常に手間がかかります。
-
-`box2d.isContact()` では接触判定にBox2Dの**ユーザデータ**を使用しています。
-多数のボディに対して接触判定をさせるためには、ユーザデータを明示的に指定する必要があります。
-
-ユーザデータはボディの定義時に指定することができます。
-
-```javascript
-var bodyDef = createBodyDef({
-  userData: "hoge"
-});
-```
-
-`userData` を省略した場合、ユーザデータはエンティティのIDが利用されます。
-
-`body1`、`body2`、`body3`が`body`と接触したことを判定するコードは以下のようになります。
-
-```javascript
-body1Def = createBodyDef({
-  userData: "target"
-});
-body2Def = createBodyDef({
-  userData: "target"
-});
-body3Def = createBodyDef({
-  userData: "target"
-});
-
-...
-
-// 接触イベントのリスナーを生成
-var contactListener = new b2.b2ContactListener();
-// 接触開始時のイベントリスナー
-contactListener.BeginContact = function (contact) {
-  if (box2d.isContact(body1, body, contact)) {
-    ...
-  }
-}
-// イベントリスナーを設定
-box2d.world.SetContactListener(contactListener);
-```
-
-`box2d.isContact()`の第1引数には`body1`しか指定していませんが、`body1`のユーザデータは`body2`と`body3`と同様のため、
-`body1`〜`body3`と`body`との接触を判定できます。
-
-なお、接触したボディ`bodyA`、`bodyB`を別途に取得したい場合は以下のようにします。
-
-```javascript
-contactListener.BeginContact = function (contact) {
-  var bodyA = contact.GetFixtureA().GetBody();
-  var bodyB = contact.GetFixtureB().GetBody();
-}
-
 ```
 
 ## 物理エンジンの操作
