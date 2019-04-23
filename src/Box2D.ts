@@ -147,9 +147,7 @@ export class Box2D implements g.Destroyable {
 	 * @param velocityIteration 速度演算のイテレーション回数 省略時は10
 	 * @param positionIteration 位置演算のイテレーション回数 省略時は10
 	 */
-	step(dt: number, velocityIteration?: number, positionIteration?: number): void {
-		velocityIteration = velocityIteration || 10;
-		positionIteration = positionIteration || 10;
+	step(dt: number, velocityIteration: number = 10, positionIteration: number = 10): void {
 		this.world.Step(dt, velocityIteration, positionIteration);
 		this.stepBody();
 	}
