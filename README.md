@@ -33,7 +33,7 @@ var b2 = require("@akashic-extension/akashic-box2d");
 詳細な利用方法については、以下を参照してください。
 
 * [akashic-box2dの利用方法](https://github.com/akashic-games/akashic-box2d/blob/master/getstarted.md)
-* [akashic-box2dの利用方法 (v2以前)](https://github.com/akashic-games/akashic-box2d/blob/master/getstarted_v2.md)
+* [akashic-box2dの利用方法 (v2以前)](https://github.com/akashic-games/akashic-box2d/blob/master/getstarted_outdated.md)
 * [APIリファレンス](https://akashic-games.github.io/reference/akashic-box2d/index.html)
 * このリポジトリ同梱のサンプルコンテンツ
   * [JavaScript](https://github.com/akashic-games/akashic-box2d/blob/master/sample)
