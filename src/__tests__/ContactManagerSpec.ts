@@ -56,7 +56,8 @@ describe("ContactManager specs", () => {
 		const contactManager = new ContactManager({ box2d: b2 });
 
 		const entity1 = {
-			destroyed: () => true
+			destroyed: () => false,
+			modified: () => void(0) // do nothing
 		} as any;
 		const bodyDef1 = b2.createBodyDef({
 			type: box2d.b2BodyType.b2_dynamicBody
@@ -69,7 +70,8 @@ describe("ContactManager specs", () => {
 		const entity2 = {
 			x: 0,
 			y: 200,
-			destroyed: () => true
+			destroyed: () => false,
+			modified: () => void(0) // do nothing
 		} as any;
 		const bodyDef2 = b2.createBodyDef({
 			type: box2d.b2BodyType.b2_staticBody
