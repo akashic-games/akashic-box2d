@@ -181,11 +181,11 @@ export class Box2D implements g.Destroyable {
 
 	/**
 	 * 円を表す `b2CircleShape` インスタンスを生成する。
-	 * @param radius 半径 px
+	 * @param diameter 直径 px
 	 */
-	createCircleShape(radius: number): box2d.b2CircleShape {
+	createCircleShape(diameter: number): box2d.b2CircleShape {
 		const shape = new box2d.b2CircleShape();
-		shape.Set(this.vec2(0, 0), (radius / 2) / this.scale);
+		shape.Set(this.vec2(0, 0), (diameter / 2) / this.scale);
 		return shape;
 	}
 
