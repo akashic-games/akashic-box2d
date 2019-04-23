@@ -137,7 +137,7 @@ export interface EBody {
 	entity: g.E;
 
 	/**
-	 * Box2DWebのボディ。
+	 * Box2Dのボディ。
 	 */
-	b2body: b2Body;
+	b2Body: b2Body;
 }

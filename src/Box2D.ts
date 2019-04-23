@@ -69,18 +69,18 @@ export class Box2D implements g.Destroyable {
 		}
 
 		const fixtureDefs = Array.isArray(fixtureDef) ? fixtureDef : [fixtureDef];
-		const b2body = this.world.CreateBody(bodyDef);
+		const b2Body = this.world.CreateBody(bodyDef);
 
 		for (let i = 0; i < fixtureDefs.length; i++) {
-			b2body.CreateFixture(fixtureDefs[i]);
+			b2Body.CreateFixture(fixtureDefs[i]);
 		}
-		b2body.SetPosition(this.vec2(entity.x + entity.width / 2, entity.y + entity.height / 2));
-		b2body.SetAngle(this.radian(entity.angle));
+		b2Body.SetPosition(this.vec2(entity.x + entity.width / 2, entity.y + entity.height / 2));
+		b2Body.SetAngle(this.radian(entity.angle));
 
 		const body: EBody = {
 			id: `${this._createBodyCount++}`,
 			entity,
-			b2body
+			b2Body
 		};
 		this.bodies.push(body);
 		return body;
@@ -95,7 +95,7 @@ export class Box2D implements g.Destroyable {
 		if (index === -1) {
 			return;
 		}
-		this.world.DestroyBody(ebody.b2body);
+		this.world.DestroyBody(ebody.b2Body);
 		this.bodies.splice(index, 1);
 	}
 
@@ -118,7 +118,7 @@ export class Box2D implements g.Destroyable {
 	 */
 	getEBodyFromb2Body(b2Body: box2d.b2Body): EBody | null {
 		for (let i = 0; i < this.bodies.length; i++) {
-			if (this.bodies[i].b2body === b2Body) {
+			if (this.bodies[i].b2Body === b2Body) {
 				return this.bodies[i];
 			}
 		}
@@ -163,8 +163,8 @@ export class Box2D implements g.Destroyable {
 	isContact(body1: EBody, body2: EBody, contact: box2d.b2Contact): boolean {
 		const bodyA = contact.GetFixtureA().GetBody().GetUserData();
 		const bodyB = contact.GetFixtureB().GetBody().GetUserData();
-		if ( (body1.b2body.GetUserData() === bodyA && body2.b2body.GetUserData() === bodyB)
-			|| (body1.b2body.GetUserData() === bodyB && body2.b2body.GetUserData() === bodyA) ) {
+		if ( (body1.b2Body.GetUserData() === bodyA && body2.b2Body.GetUserData() === bodyB)
+			|| (body1.b2Body.GetUserData() === bodyB && body2.b2Body.GetUserData() === bodyA) ) {
 			return true;
 		}
 		return false;
@@ -303,15 +303,15 @@ export class Box2D implements g.Destroyable {
 
 	private stepBody(): void {
 		for (let i = 0; i < this.bodies.length; i++) {
-			const b2body = this.bodies[i].b2body;
+			const b2Body = this.bodies[i].b2Body;
 			const entity = this.bodies[i].entity;
 			if (entity.destroyed()) {
 				continue;
 			}
-			const pos = b2body.GetPosition();
+			const pos = b2Body.GetPosition();
 			entity.x = pos.x * this.scale - entity.width / 2;
 			entity.y = pos.y * this.scale - entity.height / 2;
-			entity.angle = this.degree(b2body.GetAngle());
+			entity.angle = this.degree(b2Body.GetAngle());
 			entity.modified();
 		}
 	}

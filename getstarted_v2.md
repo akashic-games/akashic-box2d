@@ -126,7 +126,7 @@ var entityDef = box2d.createBodyDef({
 次に、 `box2d.createBody()` を利用してエンティティに紐づいたボディを作成し、そのボディを物理エンジンの世界へ追加します。
 
 `box2d.createBody()` の戻り値は、ボディを示す `b2.EBody` のインスタンスです。
-`b2.EBody` はエンティティ `entity` とb2Body `b2body` のインスタンスをメンバとして所持しています。
+`b2.EBody` はエンティティ `entity` とb2Body `b2Body` のインスタンスをメンバとして所持しています。
 
 ```javascript
 var body = box2d.createBody(entity, entityDef, entityFixDef);
@@ -272,11 +272,11 @@ pentagonDef = box2d.createFixtureDef({
 ボディの操作には[Box2DのAPI](http://box2d.org/documentation.html)を直接利用します。
 
 そのためには `b2Body` インスタンスが必要になります。
-b2Bodyインスタンスは `body.b2body` により取得できます。
+b2Bodyインスタンスは `body.b2Body` により取得できます。
 
 ```javascript
 body = box2d.createBody( ... );
-var b2body = body.b2body;
+var b2Body = body.b2Body;
 ```
 
 Box2DWebでは、例えばボディに対して瞬間的な力を加える `ApplyLinearImpulse()` があります。
@@ -285,7 +285,7 @@ Box2DWebでは、例えばボディに対して瞬間的な力を加える `Appl
 ```javascript
 entity.touchable = true;
 entity.pointDown.add(function(o) {
-  b2body.ApplyLinearImpulse(box2d.vec2(50, -50), body.GetPosition());
+  b2Body.ApplyLinearImpulse(box2d.vec2(50, -50), body.GetPosition());
 });
 ```
 
@@ -298,7 +298,7 @@ entity.pointDown.add(function(o) {
 ```javascript
 entity.touchable = true;
 entity.pointDown.add(function(o) {
-  b2body.ApplyLinearImpulse(box2d.vec2(50, -50), box2d.vec2(body.x, body.y));
+  b2Body.ApplyLinearImpulse(box2d.vec2(50, -50), box2d.vec2(body.x, body.y));
 });
 ```
 
@@ -311,7 +311,7 @@ Akashicの座標基準で指定するには、 `ApplyLinearImpulse()` の第2引
 ```javascript
 entity.touchable = true;
 entity.pointDown.add(function(o) {
-  b2body.ApplyLinearImpulse(box2d.vec2(50, -50), box2d.vec2(body.x + body.width / 2, body.y + body.height / 2));
+  b2Body.ApplyLinearImpulse(box2d.vec2(50, -50), box2d.vec2(body.x + body.width / 2, body.y + body.height / 2));
 });
 ```
 
@@ -320,7 +320,7 @@ entity.pointDown.add(function(o) {
 ```javascript
 entity.touchable = true;
 entity.pointDown.add(function(o) {
-  b2body.SetLinearVelocity(box2d.vec2(50, -50));
+  b2Body.SetLinearVelocity(box2d.vec2(50, -50));
 });
 ```
 
@@ -520,8 +520,8 @@ patch.patchBox2DMath(box2d, { tableSize: 8192 });
 したがって、以下のコードは意図しない結果となります。
 
 ```javascript
-entity.angle = b2body.GetAngle(); // GetAngle()はBox2DWebでのボディの角度をラジアンで取得する関数
-b2body.SetAngle(entity.angle); // SetAngle()はBox2DWebでのボディの角度をラジアンで設定する関数
+entity.angle = b2Body.GetAngle(); // GetAngle()はBox2DWebでのボディの角度をラジアンで取得する関数
+b2Body.SetAngle(entity.angle); // SetAngle()はBox2DWebでのボディの角度をラジアンで設定する関数
 ```
 
 `box2d` はこれら単位の違いを変換するための関数を用意しています。
@@ -542,8 +542,8 @@ entity.y = 100;
 entity.angle = 180;
 
 // OK
-b2body.SetPosition(box2d.vec2(100 + entity.width / 2, 100 + entity.height / 2));
-b2body.SetAngle(box2d.radian(180));
+b2Body.SetPosition(box2d.vec2(100 + entity.width / 2, 100 + entity.height / 2));
+b2Body.SetAngle(box2d.radian(180));
 ```
 
 Box2Dのボディの座標基準は中心にあるため、エンティティの `width` と `height` から座標を補正する必要があります。

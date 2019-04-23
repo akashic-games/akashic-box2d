@@ -87,8 +87,8 @@ describe("Box2D specs", () => {
 		const body1 = b2.createBody(entity1, bodyDef, fixDef);
 		const body2 = b2.createBody(entity2, bodyDef, fixDef);
 
-		expect(b2.bodies[0].b2body).toEqual(body1!.b2body);
-		expect(b2.bodies[1].b2body).toEqual(body2!.b2body);
+		expect(b2.bodies[0].b2Body).toEqual(body1!.b2Body);
+		expect(b2.bodies[1].b2Body).toEqual(body2!.b2Body);
 		expect(b2.bodies[0].entity).toEqual(entity1);
 		expect(b2.bodies[1].entity).toEqual(entity2);
 	});
