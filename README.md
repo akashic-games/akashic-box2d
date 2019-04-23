@@ -64,10 +64,6 @@ Box2D.ts では `Math.random()` が使われている箇所があります。
 
 * `b2Random()`
 * `b2RandomRange()`
-* `b2ParticleSystem#SortProxies()`
-* `b2ParticleSystem#SolveLifetimes()`
-* `b2ParticleSystem#RemoveSpuriousBodyContacts()`
-* `b2ParticleSystem#UpdatePairsAndTriads()`
 
 該当メソッドは利用せず、かわりに `g.game.random` を利用してください。
 
