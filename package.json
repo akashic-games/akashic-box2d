@@ -9,7 +9,7 @@
     "build": "npm run clean && tsc -p tsconfig.json",
     "doc": "typedoc --out ./doc --mode file && shx cp -r ./img ./doc",
     "jest": "jest",
-    "lint": "tslint -c tslint.json src/**/*.ts spec/src/**/*.ts",
+    "lint": "tslint -c tslint.json src/**/*.ts",
     "test": "npm run jest && npm run lint"
   },
   "author": "DWANGO Co., Ltd.",
