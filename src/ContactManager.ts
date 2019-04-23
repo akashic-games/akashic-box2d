@@ -24,8 +24,8 @@ export class ContactManager implements g.Destroyable {
 	private _endContactTriggerMap: { [id: string]: g.Trigger<void>; } = {};
 
 	/**
-	 * `Box2D` のインスタンスを生成する。
-	 * @param param `b2World` の生成オプション
+	 * `ContactManager` のインスタンスを生成する。
+	 * @param param `ContactManager` の生成オプション
 	 */
 	constructor(param: ContactManagerParameter) {
 		this.box2d = param.box2d;
