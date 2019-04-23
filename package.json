@@ -6,10 +6,11 @@
   "scripts": {
     "prepublish": "npm run build && npm run doc",
     "clean": "shx rm -rf lib && shx rm -rf doc",
-    "build": "tsc",
+    "build": "npm run clean && tsc -p tsconfig.json",
     "doc": "typedoc --out ./doc --mode file && shx cp -r ./img ./doc",
+    "jest": "jest",
     "lint": "tslint -c tslint.json src/**/*.ts spec/src/**/*.ts",
-    "test": "npm run build && jasmine ./spec/**/*.js && npm run lint"
+    "test": "npm run jest && npm run lint"
   },
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
@@ -22,21 +23,36 @@
   },
   "files": [
     "lib",
-    "typings",
-    "patch",
     "README.md"
   ],
-  "devDependencies": {
-    "@types/node": "~7.0.10",
-    "jasmine": "~2.5.2",
-    "shx": "~0.3.1",
-    "tslint": "~4.5.0",
-    "typedoc": "~0.14.2",
-    "typescript": "~2.6.2"
-  },
-  "typings": "lib/index.d.ts",
   "dependencies": {
-    "@akashic/akashic-engine": "~2.3.1",
-    "box2dweb": "2.1.0-b"
+    "@akashic/akashic-engine": "~2.4.14",
+    "@flyover/box2d": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.11",
+    "jest": "^24.7.1",
+    "shx": "^0.3.2",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.16.0",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.4.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/__tests__/*.+(ts|js)"
+    ]
   }
 }

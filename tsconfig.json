@@ -1,18 +1,24 @@
 {
   "compilerOptions": {
     "target": "ES5",
-    "lib": ["es5", "dom"],
-    "types": [],
-    "declaration": true,
-    "noImplicitAny": true,
+    "lib": ["es5"],
     "module": "commonjs",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "inlineSourceMap": true,
+    "declaration": true,
+    "strict": true,
     "outDir": "lib"
   },
   "files": [
-    "typings/box2dweb.d.ts",
     "node_modules/@akashic/akashic-engine/lib/main.d.ts"
   ],
   "include": [
     "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/__tests__/**/*.ts"
   ]
 }
