@@ -62,7 +62,7 @@ npm test
 
 Box2D.ts では `Math.random()` が使われている箇所があります。
 
-* `RandomRange()`
+* `b2Random()`
 * `b2RandomRange()`
 * `b2ParticleSystem#SortProxies()`
 * `b2ParticleSystem#SolveLifetimes()`
