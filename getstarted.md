@@ -201,7 +201,7 @@ var circleDef = box2d.createFixtureDef({
 以下のサッカーボールを物理エンジンの世界に追加するには、次のようにボディを定義します。
 
 ![ball](img/ball.png)
- 
+
 ```javascript
 var ball = new g.Sprite({scene: scene, src: scene.assets.ball, width: 100, height: 100});
 scene.append(ball);
