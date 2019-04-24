@@ -15,6 +15,10 @@
 本モジュールは **AkashicとBox2Dとの紐づけ** と **一部の便利機能** のみを提供しています。
 そのため、その他多くの機能はBox2を直接利用することになります。
 
+ただし、以下の機能は現バージョンではサポートしていません。
+
+* Particle機能
+
 ## 利用方法
 
 [akashic-cli](https://github.com/akashic-games/akashic-cli)をインストールした後、
