@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Unreleased Change
+* Box2Dのライブラリを box2dweb から box2d.ts に変更
+* いくつかのクラス名を変更
+    * `Box2DOption` -> `Box2DParameter`
+    * `BodyOption` -> `Box2DBodyDef`
+    * `FixtureOption` -> `Box2DFixtureDef`
+* `Box2D#getEBodyFromEntity()`, `Box2D#getEBodyFromb2Body()` 追加
+
 ## 2.3.0
 * box2dwebに以下の変更を行うパッチの追加
     * 実行環境によって三角関数の返す値が異なることにより、物理計算の結果も異なるものになる問題の修正
