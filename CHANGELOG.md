@@ -7,6 +7,8 @@
     * `BodyOption` -> `Box2DBodyDef`
     * `FixtureOption` -> `Box2DFixtureDef`
 * `Box2D#getEBodyFromEntity()`, `Box2D#getEBodyFromb2Body()` 追加
+* `Box2D#isContact()` を削除
+* `ContactManager` クラスを追加
 
 ## 2.3.0
 * box2dwebに以下の変更を行うパッチの追加
