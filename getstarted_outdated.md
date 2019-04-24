@@ -1,13 +1,15 @@
 # akashic-box2dモジュールの利用
 
+この文書は akashic-box2d@2.3.0 以前のものです。
+
 ## これは
 
-Akashic上で2D物理エンジンを実行するための akashic-box2d@3.0.0 とその利用方法を記述したドキュメントです。
+Akashic上で2D物理エンジンを実行するための akashic-box2d@2.3.0 とその利用方法を記述したドキュメントです。
 
-akashic-box2dは、2D物理演算ライブラリである[box2d.ts](https://github.com/flyover/box2d.ts)をAkashicで利用するためのモジュールです。
+akashic-box2dは、2D物理演算ライブラリである[Box2DWeb](https://github.com/hecht-software/box2dweb)をAkashicで利用するためのモジュールです。
 
-本モジュールは**AkashicとBox2D.tsとの紐づけ**と**一部の便利機能**のみを提供しています。
-そのため、その他多くの機能はBox2D.tsを直接利用することになります。
+本モジュールは**AkashicとBox2DWebとの紐づけ**と**一部の便利機能**のみを提供しています。
+そのため、その他多くの機能はBox2DWebを直接利用することになります。
 
 sample, sample-tsディレクトリに本モジュールを使ったサンプルコンテンツが用意してあります。
 実装例についてはそちらを参照してください。
@@ -41,7 +43,7 @@ var b2 = require("@akashic-extension/akashic-box2d");
 
 まず、`scene.loaded` 時に `Box2D` クラスのインスタンスである `box2d` を生成します。
 
-`Box2D` は、Box2Dの機能をAkashic上で管理するためのクラスです。
+`Box2D` は、Box2DWebの機能をAkashic上で管理するためのクラスです。
 
 ```javascript
 scene.loaded.add(function() {
@@ -65,7 +67,7 @@ scene.loaded.add(function() {
 
 ### 自然落下するボディの生成
 
-akashic-box2dでは、物理演算対象のエンティティを管理するオブジェクトを **ボディ** と呼び、このボディを用いて各種操作を行います。
+akashic-box2dでは、物理演算対象のエンティティを管理するオブジェクトを *ボディ* と呼び、このボディを用いて各種操作を行います。
 
 ボディを作成するには、まずボディの元になるエンティティを作成します。
 
@@ -168,7 +170,7 @@ var floorFixDef = box2d.createFixtureDef({
 });
 ```
 
-`floorEntity` を地面とするため、ボディタイプを `b2_staticBody` に設定しましょう。
+`floorEntity` を地面とするため、ボディタイプをStaticに設定しましょう。
 
 ```javascript
 var floorDef = box2d.createBodyDef({
@@ -201,7 +203,7 @@ var circleDef = box2d.createFixtureDef({
 以下のサッカーボールを物理エンジンの世界に追加するには、次のようにボディを定義します。
 
 ![ball](img/ball.png)
-
+ 
 ```javascript
 var ball = new g.Sprite({scene: scene, src: scene.assets.ball, width: 100, height: 100});
 scene.append(ball);
@@ -231,7 +233,7 @@ var polygonDef = box2d.createFixtureDef({
 });
 ```
 
-`box2d.vec()` はBox2Dの `b2Vec2` クラスのインスタンスを生成する関数で、第1引数にはx方向のピクセル数、第2引数にy方向のピクセル数を指定します。
+`box2d.vec()` はBox2DWebの `b2Vec2` クラスのインスタンスを生成する関数で、第1引数にはx方向のピクセル数、第2引数にy方向のピクセル数を指定します。
 
 以下の正五角形を物理エンジンの世界に追加するには、次のようにボディを定義します。
 
@@ -257,7 +259,7 @@ pentagonDef = box2d.createFixtureDef({
 
 頂点の座標は**必ず時計回り**に指定する必要があります。
 また、いずれかの頂点の角度が180度を超えてしまう(凹形の)多角形は定義できません。
-この制約はBox2Dの仕様によるものです。
+この制約はakashic-box2dが利用しているBox2Dの仕様によるものです。
 
 もう一つの注意点として、多角形の各頂点は**必ずエンティティの中心からの相対座標**で指定する必要があります。
 エンティティの中心とは `(entity.width / 2, entity.height / 2)` であり、重心ではないことに留意してください。
@@ -277,7 +279,7 @@ body = box2d.createBody( ... );
 var b2Body = body.b2Body;
 ```
 
-Box2Dでは、例えばボディに対して瞬間的な力を加える `ApplyLinearImpulse()` があります。
+Box2DWebでは、例えばボディに対して瞬間的な力を加える `ApplyLinearImpulse()` があります。
 先ほどの `body` をクリックすると、右上方向の力を加えるように修正してみましょう。
 
 ```javascript
@@ -324,49 +326,128 @@ entity.pointDown.add(function(o) {
 
 ## 接触イベントの検出
 
+### 単一ボディ同士の接触イベント検出
+
 ボディ同士の接触イベントを設定してみましょう。
-akashic-box2d には衝突情報のトリガーを管理する `ContactManager` クラスがあります。
-以下のように `ContactManager` のインスタンスを生成します。
+
+まず、Box2Dを利用して接触イベントのリスナーを生成します。
+`b2.Box2DWeb` からBox2DWebのインスタンスを直接参照できます。
+
+以下のようにBox2DWebのインスタンスから `b2ContactListener` を生成します。
 
 ```javascript
-var contactListener = new b2.ContactManager({
-  box2d: box3d
-});
+var contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
 ```
 
-あるボディ同士 `body1`, `body2` の衝突時のトリガーを作成します。
+`b2ContactListener`に`BeginContact`イベントを追加します。
 
 ```javascript
-contactManager.createBeginContactTrigger(body1, body2).add(() => {
-  ...
-});
+contactListener.BeginContact = function (contact) {
+  if (box2d.isContact(body1, body2, contact)) {
+    ...
+  }
+}
 ```
 
-`ContactManager#createBeginContactTrigger()` はいずれかのボディ同士が接触を開始した際に発火されるトリガーを作成します。
+`BeginContact` はいずれかのボディ同士が接触を開始した際に実行されます。
 
+他にも以下のイベントが定義されています。
+詳しくは[Box2DのAPI](http://www.box2dflash.org/docs/2.1a/reference/Box2D/Dynamics/b2ContactListener.html)
+を参照してください。
+
+* EndContact
+* PostSolve
+* PreSolve
+
+`box2d.isContact()` は引数に指定したボディ同士の接触判定を返します。
+
+設定したイベントリスナーを `box2d` の保持する物理エンジンの世界に設定します。
+
+`box2d` の保持する物理エンジンの世界は `box2d.world` で参照できます。
 
 ```javascript
 box2d.world.SetContactListener(contactListener);
 ```
 
-例として、 `body1` と `body2` が接触している間だけ `body1` の色を赤にするコードを記載します。
+例として、body1とbody2が接触している間だけbody1の色を赤にするコードを記載します。
 
 ```javascript
 // 接触イベントのリスナーを生成
-var contactManager = new b2.ContactManager({ box2d: box2d });
-// 接触開始時のトリガーを生成
-contactManager.createBeginContactTrigger(body1, body2).add(function() {
+var contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
+// 接触開始時のイベントリスナー
+contactListener.BeginContact = function (contact) {
   // body1とbody2がぶつかったらbodyEntity1の色を赤にする
-  bodyEntity1.cssColor = "red";
-  bodyEntity1.modified();
+  if (box2d.isContact(body1, body2, contact)) {
+    bodyEntity1.cssColor = "red";
+    bodyEntity1.modified();
+  }
 }
-var _cssColor = bodyEntity1.cssColor;
 // 接触が離れた時のイベントリスナー
-contactManager.createEndContactTrigger(body1, body2).add(function() {
+contactListener.EndContact = function (contact) {
   // body1とbody2が離れたらbodyEntity1の色を戻す
-  bodyEntity1.cssColor = _cssColor;
-  bodyEntity1.modified();
+  if (box2d.isContact(body1, body2, contact)) {
+    bodyEntity1.cssColor = "...";
+    bodyEntity1.modified();
+  }
 }
+// イベントリスナーを設定
+box2d.world.SetContactListener(contactListener);
+```
+
+### 複数ボディ同士の接触イベント検出
+上述した方法では単一のボディ同士の接触しか判定できないため、接触を判定したいボディが多数存在する場合は非常に手間がかかります。
+
+`box2d.isContact()` では接触判定にBox2DWebの**ユーザデータ**を使用しています。
+多数のボディに対して接触判定をさせるためには、ユーザデータを明示的に指定する必要があります。
+
+ユーザデータはボディの定義時に指定することができます。
+
+```javascript
+var bodyDef = createBodyDef({
+  userData: "hoge"
+});
+```
+
+`userData` を省略した場合、ユーザデータはエンティティのIDが利用されます。
+
+`body1`、`body2`、`body3`が`body`と接触したことを判定するコードは以下のようになります。
+
+```javascript
+body1Def = createBodyDef({
+  userData: "target"
+});
+body2Def = createBodyDef({
+  userData: "target"
+});
+body3Def = createBodyDef({
+  userData: "target"
+});
+
+...
+
+// 接触イベントのリスナーを生成
+var contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
+// 接触開始時のイベントリスナー
+contactListener.BeginContact = function (contact) {
+  if (box2d.isContact(body1, body, contact)) {
+    ...
+  }
+}
+// イベントリスナーを設定
+box2d.world.SetContactListener(contactListener);
+```
+
+`box2d.isContact()`の第1引数には`body1`しか指定していませんが、`body1`のユーザデータは`body2`と`body3`と同様のため、
+`body1`〜`body3`と`body`との接触を判定できます。
+
+なお、接触したボディ`bodyA`、`bodyB`を別途に取得したい場合は以下のようにします。
+
+```javascript
+contactListener.BeginContact = function (contact) {
+  var bodyA = contact.GetFixtureA().GetBody();
+  var bodyB = contact.GetFixtureB().GetBody();
+}
+
 ```
 
 ## 物理エンジンの操作
@@ -391,11 +472,46 @@ box2d.destroy();
 `box2d.destroy()` が呼ばれると、その時点で物理エンジンの世界は破棄されます。
 `box2d` に紐づけられたボディはすべて破棄され、エンティティだけが残ります。
 
+## Box2D(Box2DWeb)へのパッチの適用
+
+Box2D(Box2DWeb) の機能を追加・変更するためのパッチが用意されています。パッチは２つあります。
+
+### patchBox2D
+
+以下の修正が適用されます。
+
+* 無限ループに陥る不具合の修正。
+* 物理計算の時間を制限するため、最小TOI算出ループの繰り返し回数の上限を設定する機能の追加。
+
+使い方は以下のようになります。詳しくは [patch/index.d.ts](./patch/index.d.ts) のコメントを御覧ください。
+
+```javascript
+var patch = require("@akashic-extension/akashic-box2d/patch");
+
+var box2d = new b2.Box2D( ... );
+
+patch.patchBox2D(box2d, { maxTOILoop: 10 });
+```
+
+### patchBox2DMath
+
+以下の修正が適用されます。
+
+* 一部環境で三角関数の計算結果が異なる問題を回避するため、関数テーブルを用いる。
+
+使い方は以下のようになります。詳しくは [patch/index.d.ts](./patch/index.d.ts) のコメントを御覧ください。
+
+```javascript
+var patch = require("@akashic-extension/akashic-box2d/patch");
+
+patch.patchBox2DMath(box2d, { tableSize: 8192 });
+```
+
 ## 注意事項
 
 ### 単位の違い
 
-前述しましたが、Box2Dは以下の点でAkashicと差異があります。
+前述しましたが、Box2D(Box2DWeb)は以下の点でAkashicと差異があります。
 
 * ボディの座標基準がボディの中央
 * 長さの単位がメートル
@@ -404,20 +520,20 @@ box2d.destroy();
 したがって、以下のコードは意図しない結果となります。
 
 ```javascript
-entity.angle = b2Body.GetAngle(); // GetAngle()はBox2Dでのボディの角度をラジアンで取得する関数
-b2Body.SetAngle(entity.angle); // SetAngle()はBox2Dでのボディの角度をラジアンで設定する関数
+entity.angle = b2Body.GetAngle(); // GetAngle()はBox2DWebでのボディの角度をラジアンで取得する関数
+b2Body.SetAngle(entity.angle); // SetAngle()はBox2DWebでのボディの角度をラジアンで設定する関数
 ```
 
 `box2d` はこれら単位の違いを変換するための関数を用意しています。
 
 `box2d.degree(radian)` はラジアンを度に、 `box2d.radian(degree)` は度をラジアンに変換します。
-先ほど例として出した `box2d.vec(x, y)` も、ピクセル単位をメートル単位に変換したBox2Dの `b2Vec` インスタンスを返します。
+先ほど例として出した `box2d.vec(x, y)` も、ピクセル単位をメートル単位に変換したBox2DWebの `b2Vec` インスタンスを返します。
 
 ### エンティティからボディへの操作
 
-akashic-box2d@3.0.0 では、ゲーム開発者側から物理エンジンの世界に追加されたエンティティの座標と角度を操作することができません。
+akashic-box2d 0.1.0では、ゲーム開発者側から物理エンジンの世界に追加されたエンティティの座標と角度を操作することができません。
 
-ボディの座標を(100, 100)に指定したい場合、Box2Dの `SetPosition()` により指定します。
+ボディの座標を(100, 100)に指定したい場合、Box2DWebの `SetPosition()` により指定します。
 
 ```javascript
 // NG: 物理演算結果の座標が上書きされます。
