@@ -16,12 +16,12 @@
     "@akashic/akashic-engine": "~2.4.13",
     "@akashic/akashic-sandbox": "~0.13.57",
     "@types/node": "7.0.11",
-    "tslint": "~5.14.0",
-    "typescript": "~2.6.2"
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.3"
   },
   "private": true,
   "dependencies": {
-    "@akashic-extension/akashic-box2d": "~2.0.0",
+    "@akashic-extension/akashic-box2d": "file:../akashic-extension-akashic-box2d-2.3.0.tgz",
     "box2dweb": "~2.1.0-b"
   }
 }

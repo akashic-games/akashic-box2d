@@ -1,6 +1,6 @@
 {
-	"width": 320,
-	"height": 240,
+	"width": 640,
+	"height": 360,
 	"fps": 30,
 	"assets": {
 		"pentagon": {
@@ -22,10 +22,10 @@
 		}
 	},
 	"globalScripts": [
-		"node_modules/@akashic-extension/akashic-box2d/lib/BodyType.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/Box2D.js",
-		"node_modules/@akashic-extension/akashic-box2d/lib/Box2DOptions.js",
+		"node_modules/@akashic-extension/akashic-box2d/lib/ContactManager.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/index.js",
+		"node_modules/@flyover/box2d/dist/box2d.umd.js",
 		"node_modules/box2dweb/box2d.js"
 	],
 	"environment": {
@@ -33,6 +33,7 @@
 	},
 	"moduleMainScripts": {
 		"@akashic-extension/akashic-box2d": "node_modules/@akashic-extension/akashic-box2d/lib/index.js",
-		"box2dweb": "node_modules/box2dweb/box2d.js"
+		"box2dweb": "node_modules/box2dweb/box2d.js",
+		"@flyover/box2d": "node_modules/@flyover/box2d/dist/box2d.umd.js"
 	}
 }
