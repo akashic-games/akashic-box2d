@@ -1,12 +1,13 @@
 {
 	"width": 640,
-	"height": 480,
+	"height": 360,
 	"fps": 30,
 	"assets": {
-		"mainScene": {
-			"type": "script",
-			"path": "script/mainScene.js",
-			"global": true
+		"pentagon": {
+			"type": "image",
+			"width": 100,
+			"height": 95,
+			"path": "image/pentagon.png"
 		},
 		"soccer": {
 			"type": "image",
@@ -14,23 +15,25 @@
 			"height": 100,
 			"path": "image/soccer.png"
 		},
-		"pentagon": {
-			"type": "image",
-			"width": 100,
-			"height": 95,
-			"path": "image/pentagon.png"
+		"mainScene": {
+			"type": "script",
+			"path": "script/mainScene.js",
+			"global": true
 		}
 	},
 	"globalScripts": [
 		"node_modules/@akashic-extension/akashic-box2d/lib/Box2D.js",
+		"node_modules/@akashic-extension/akashic-box2d/lib/ContactManager.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/index.js",
-		"node_modules/@flyover/box2d/dist/box2d.umd.js"
+		"node_modules/@flyover/box2d/dist/box2d.umd.js",
+		"node_modules/box2dweb/box2d.js"
 	],
 	"environment": {
 		"sandbox-runtime": "2"
 	},
 	"moduleMainScripts": {
 		"@akashic-extension/akashic-box2d": "node_modules/@akashic-extension/akashic-box2d/lib/index.js",
+		"box2dweb": "node_modules/box2dweb/box2d.js",
 		"@flyover/box2d": "node_modules/@flyover/box2d/dist/box2d.umd.js"
 	}
 }
