@@ -369,6 +369,85 @@ contactManager.createEndContactTrigger(body1, body2).add(function() {
 }
 ```
 
+## 流体粒子 (パーティクル) の追加
+
+akashic-box2d@3.0.0 以降ではボディの他にも [LiquidFun](http://google.github.io/liquidfun/) の機能である流体粒子を扱うことができます。
+LiquidFun では個々の粒子を **パーティクル** と呼び、その集合体によって流体を表現しています。
+
+それでは早速パーティクルを追加してみましょう。
+
+まずはパーティクルにおける物理演算の世界である `ParticleSystem` を作成します。
+
+```javascript
+// ParticleSystem の定義
+var particleSystemDef = box2d.createParticleSystemDef({
+  radius: b2.meter(4), // 粒子の半径 (px -> meter)
+  dampingStrength: 1.0 // 減衰力
+});
+
+var particleSystem = box2d.createParticleSystem(
+  particleSystemDef
+);
+```
+
+最初にボディと同様に `ParticleSystem` の性質である `ParticleSystemDef` を定義します。
+`ParticleSystemDef` では粒子の大きさや液体の性質 (さらさら・ネバネバ) などパーティクル全体に関わるものを定義できます。
+
+`box2d.createParticleSystem()` で `ParticleSystem` のインスタンスを生成できます。
+
+次に `ParticleSystem` と紐づくエンティティ `ParicleE` を作成します。
+
+```javascript
+var particleE = box2d.createParticleE(
+  scene: scene,
+  particleSystem: particleSystem,
+  cssColor: "#00aaff"
+);
+```
+
+`ParticleE` は `g.E` の派生クラスで、自身に追加されたパーティクルの管理やそれらを描画する役割を持ちます。
+( `ParticleE` は他の `g.E` と違い子エンティティを追加することはできないことに注意してください。)
+
+また `ParticleE` の生成時に `cssColor` または `surface` を指定することで各パーティクルの描画方式を決定できます。
+
+* `cssColor: string`
+  * 各パーティクルを指定の色 (CSS Color) で描画します。
+* `surface: g.Surface`
+  * 各パーティクルを指定の `g.Surface` で描画します。
+
+### Particle の追加
+
+パーティクルの種類には `Particle` (単体の粒子) とそれをグループ化した `ParticleGroup` があります。
+
+`Particle` は以下のように生成することができます。
+
+```javascript
+// Particle の定義
+var particleDef = box2d.createParticleDef(
+  position: box2d.vec2(100, 100)
+);
+
+var particle = box2d.createParticle(particleDef);
+```
+
+### ParticleGroup の追加
+
+複数のパーティクルをまとめて定義したい場合は `ParticleGroup` を利用します。
+
+```javascript
+var particleGroupDef = b2.createParticleGroupDef({
+  position: b2.vec2(100, 100),
+  shape: b2.createCircleShape(50)
+});
+
+var particleGroup = box2d.createParticleGroup(particleGroupDef);
+```
+
+`ParticleGroup` は `shape` の形状を満たすようにパーティクルの集合が生成されます。
+(上記の場合 `(100, 100)` に直径 50px の円形状で生成されます。)
+
+このとき、パーティクル数は `ParticleSystemDef` で定義した粒子の大きさによって自動的に決定されます。
+
 ## 物理エンジンの操作
 
 ### 物理エンジンからボディの破棄

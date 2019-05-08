@@ -1,9 +1,11 @@
 {
   "name": "akashic-box2d-sample",
+  "private": true,
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prepare": "npm run build",
     "build": "tsc && akashic scan asset script && akashic scan globalScripts",
     "start": "akashic-sandbox .",
     "test": "npm run lint",
@@ -19,9 +21,7 @@
     "tslint": "^5.18.0",
     "typescript": "^3.5.2"
   },
-  "private": true,
   "dependencies": {
-    "@akashic-extension/akashic-box2d": "file:../akashic-extension-akashic-box2d-2.3.0.tgz",
-    "box2dweb": "~2.1.0-b"
+    "@akashic-extension/akashic-box2d": "file:../akashic-extension-akashic-box2d-2.3.0.tgz"
   }
 }
