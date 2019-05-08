@@ -1,5 +1,5 @@
 import {
-	b2IFixtureDef, b2IBodyDef, b2Body, b2CircleShape, b2PolygonShape, b2Vec2
+	b2IFixtureDef, b2IBodyDef, b2Body, b2CircleShape, b2PolygonShape, b2Vec2, b2IParticleGroupDef
 } from "@flyover/box2d";
 
 /**
@@ -120,6 +120,43 @@ export interface Box2DFixtureDef extends b2IFixtureDef {
 		 */
 		groupIndex?: number;
 	};
+}
+
+/**
+ * ParticleSystem の定義を指定するオプション。
+ * 未指定の場合は box2d.ts 側の初期値に従う。
+ */
+export interface Box2dParticleSystemDef {
+	radius: number;
+	strictContactCheck?: boolean;
+	density?: number;
+	gravityScale?: number;
+	maxCount?: number;
+	pressureStrength?: number;
+	dampingStrength?: number;
+	elasticStrength?: number;
+	springStrength?: number;
+	viscousStrength?: number;
+	surfaceTensionPressureStrength?: number;
+	surfaceTensionNormalStrength?: number;
+	repulsiveStrength?: number;
+	powderStrength?: number;
+	ejectionStrength?: number;
+	staticPressureStrength?: number;
+	staticPressureRelaxation?: number;
+	staticPressureIterations?: number;
+	destroyByAge?: boolean;
+	lifetimeGranularity?: number;
+
+	colorMixingStrength?: undefined; // do not support
+}
+
+/**
+ * ParticleGroup の定義を指定するオプション。
+ * 未指定の場合は box2d.ts 側の初期値に従う。
+ */
+export interface Box2dParticleGroupDef extends b2IParticleGroupDef {
+	color?: undefined; // do not support
 }
 
 /**

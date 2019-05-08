@@ -1,5 +1,6 @@
 import * as box2d from "@flyover/box2d";
-import { EBody, Box2DFixtureDef, Box2DBodyDef } from "./parateters";
+import { EBody, Box2DFixtureDef, Box2DBodyDef, Box2dParticleSystemDef, Box2dParticleGroupDef } from "./parateters";
+import { ParticleE, ParticleEParameter } from "./ParticleE";
 
 /**
  * `Box2D` のインスタンス生成時に指定するパラメータ。
@@ -27,7 +28,12 @@ export class Box2D implements g.Destroyable {
 	/**
 	 * このクラスが保持する `EBody` のリスト。
 	 */
-	bodies: EBody[];
+	bodies: EBody[] = [];
+
+	/**
+	 * このクラスが保持する `ParticleE` のリスト。
+	 */
+	particles: ParticleE[] = [];
 
 	/**
 	 * 物理世界のピクセルサイズとAkashicのピクセルサイズのスケール比。
@@ -50,7 +56,6 @@ export class Box2D implements g.Destroyable {
 
 		const b2world = new box2d.b2World(new box2d.b2Vec2(param.gravity[0], param.gravity[1]));
 		this.world = b2world;
-		this.bodies = [];
 		this.scale = param.scale;
 	}
 
@@ -87,6 +92,166 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
+	 * `b2ParticleGroup` インスタンスを生成する。
+	 * @param particleSystem b2ParticleSystem
+	 * @param particleGroupDef b2ParticleGroup
+	 */
+	createParticleGroup(particleSystem: box2d.b2ParticleSystem, particleGroupDef: box2d.b2ParticleGroupDef): box2d.b2ParticleGroup {
+		const particleGroup = particleSystem.CreateParticleGroup(particleGroupDef);
+		return particleGroup;
+	}
+
+	/**
+	 * `b2ParticleGroupDef` インスタンスを生成する。
+	 * @param particleGroupDef Box2dParticleGroupDef
+	 */
+	createParticleGroupDef(particleGroupDef?: Box2dParticleGroupDef): box2d.b2ParticleGroupDef {
+		const def = new box2d.b2ParticleGroupDef();
+		if (particleGroupDef == null) {
+			return def;
+		}
+		if (particleGroupDef.angularVelocity != null) {
+			def.angularVelocity = particleGroupDef.angularVelocity;
+		}
+		if (particleGroupDef.flags != null) {
+			def.flags = particleGroupDef.flags;
+		}
+		if (particleGroupDef.group != null) {
+			def.group = particleGroupDef.group;
+		}
+		if (particleGroupDef.groupFlags != null) {
+			def.groupFlags = particleGroupDef.groupFlags;
+		}
+		if (particleGroupDef.lifetime != null) {
+			def.lifetime = particleGroupDef.lifetime;
+		}
+		if (particleGroupDef.particleCount != null) {
+			def.particleCount = particleGroupDef.particleCount;
+		}
+		if (particleGroupDef.shape != null) {
+			def.shape = particleGroupDef.shape;
+		}
+		if (particleGroupDef.shapeCount != null) {
+			def.shapeCount = particleGroupDef.shapeCount;
+		}
+		if (particleGroupDef.shapes != null) {
+			def.shapes = particleGroupDef.shapes;
+		}
+		if (particleGroupDef.strength != null) {
+			def.strength = particleGroupDef.strength;
+		}
+		if (particleGroupDef.stride != null) {
+			def.stride = particleGroupDef.stride;
+		}
+		if (particleGroupDef.userData != null) {
+			def.userData = particleGroupDef.userData;
+		}
+		if (particleGroupDef.angle != null) {
+			def.angle = particleGroupDef.angle;
+		}
+		if (particleGroupDef.positionData != null) {
+			const pd = particleGroupDef.positionData;
+			def.positionData = [];
+			for (let i = 0; i < pd.length; i++) {
+				def.positionData[i].Set(pd[i].x / this.scale, pd[i].y / this.scale);
+			}
+		}
+		if (particleGroupDef.linearVelocity != null) {
+			def.linearVelocity.Set(particleGroupDef.linearVelocity.x / this.scale, particleGroupDef.linearVelocity.y / this.scale);
+		}
+		if (particleGroupDef.position != null) {
+			def.position.Set(particleGroupDef.position.x / this.scale, particleGroupDef.position.y / this.scale);
+		}
+		return def;
+	}
+
+	/**
+	 * `b2ParticleSystem` インスタンスを生成する。
+	 * @param particleDef b2ParticleSystemDef
+	 */
+	createParticleSystem(particleDef: box2d.b2ParticleSystemDef): box2d.b2ParticleSystem {
+		const particleSystem = this.world.CreateParticleSystem(particleDef);
+		return particleSystem;
+	}
+
+	/**
+	 * `b2ParticleSystemDef` インスタンスを生成する。
+	 * @param particleSystemDef Box2dParticleSystemDef
+	 */
+	createParticleSystemDef(particleSystemDef: Box2dParticleSystemDef): box2d.b2ParticleSystemDef {
+		const def = new box2d.b2ParticleSystemDef();
+		def.radius = particleSystemDef.radius / this.scale;
+		if (particleSystemDef.dampingStrength != null) {
+			def.dampingStrength = particleSystemDef.dampingStrength;
+		}
+		if (particleSystemDef.density != null) {
+			def.density = particleSystemDef.density;
+		}
+		if (particleSystemDef.destroyByAge != null) {
+			def.destroyByAge = particleSystemDef.destroyByAge;
+		}
+		if (particleSystemDef.ejectionStrength != null) {
+			def.ejectionStrength = particleSystemDef.ejectionStrength;
+		}
+		if (particleSystemDef.elasticStrength != null) {
+			def.elasticStrength = particleSystemDef.elasticStrength;
+		}
+		if (particleSystemDef.gravityScale != null) {
+			def.gravityScale = particleSystemDef.gravityScale;
+		}
+		if (particleSystemDef.lifetimeGranularity != null) {
+			def.lifetimeGranularity = particleSystemDef.lifetimeGranularity;
+		}
+		if (particleSystemDef.maxCount != null) {
+			def.maxCount = particleSystemDef.maxCount;
+		}
+		if (particleSystemDef.powderStrength != null) {
+			def.powderStrength = particleSystemDef.powderStrength;
+		}
+		if (particleSystemDef.pressureStrength != null) {
+			def.pressureStrength = particleSystemDef.pressureStrength;
+		}
+		if (particleSystemDef.repulsiveStrength != null) {
+			def.repulsiveStrength = particleSystemDef.repulsiveStrength;
+		}
+		if (particleSystemDef.springStrength != null) {
+			def.springStrength = particleSystemDef.springStrength;
+		}
+		if (particleSystemDef.staticPressureIterations != null) {
+			def.staticPressureIterations = particleSystemDef.staticPressureIterations;
+		}
+		if (particleSystemDef.staticPressureRelaxation != null) {
+			def.staticPressureRelaxation = particleSystemDef.staticPressureRelaxation;
+		}
+		if (particleSystemDef.staticPressureStrength != null) {
+			def.staticPressureStrength = particleSystemDef.staticPressureStrength;
+		}
+		if (particleSystemDef.strictContactCheck != null) {
+			def.strictContactCheck = particleSystemDef.strictContactCheck;
+		}
+		if (particleSystemDef.surfaceTensionNormalStrength != null) {
+			def.surfaceTensionNormalStrength = particleSystemDef.surfaceTensionNormalStrength;
+		}
+		if (particleSystemDef.surfaceTensionPressureStrength != null) {
+			def.surfaceTensionPressureStrength = particleSystemDef.surfaceTensionPressureStrength;
+		}
+		if (particleSystemDef.viscousStrength != null) {
+			def.viscousStrength = particleSystemDef.viscousStrength;
+		}
+		return def;
+	}
+
+	/**
+	 * このクラスにボディを追加し、その `ParticleE` を返す。
+	 * @param param `particleE` の生成パラメータ
+	 */
+	createParticleE(param: ParticleEParameter): ParticleE {
+		const particleE = new ParticleE(param, this.scale);
+		this.particles.push(particleE);
+		return particleE;
+	}
+
+	/**
 	 * このクラスに追加された `EBody` を削除する。
 	 * @param ebody 削除する `EBody`
 	 */
@@ -97,6 +262,42 @@ export class Box2D implements g.Destroyable {
 		}
 		this.world.DestroyBody(ebody.b2Body);
 		this.bodies.splice(index, 1);
+	}
+
+	/**
+	 * このクラスに追加された `ParticleE` を削除する。
+	 * @param particleE 削除する `particleE`
+	 * @param removeParticleSystem 対象の `particleE` が所属する `b2ParticleSystem` を破棄するかどうか
+	 */
+	removeParticleE(particleE: ParticleE, removeParticleSystem: boolean = false): void {
+		const index = this.particles.indexOf(particleE);
+		if (index === -1) {
+			return;
+		}
+		const system = particleE.particleSystem;
+		particleE.destroy();
+		if (removeParticleSystem) {
+			this.world.DestroyParticleSystem(system);
+		}
+		this.particles.splice(index, 1);
+	}
+
+	/**
+	 * このクラスに追加されたすべての `ParticleE` を削除する。
+	 * @param removeParticleSystem 対象の `particleE` が所属する `b2ParticleSystem` を破棄するかどうか
+	 */
+	removeAllParticleE(removeParticleSystem: boolean = false): void {
+		for (let i = 0; i < this.particles.length; i++) {
+			const particle = this.particles[i];
+			if (removeParticleSystem) {
+				const system = particle.particleSystem;
+				particle.destroy();
+				this.world.DestroyParticleSystem(system);
+			} else {
+				particle.destroy();
+			}
+		}
+		this.particles = [];
 	}
 
 	/**
@@ -131,6 +332,7 @@ export class Box2D implements g.Destroyable {
 	destroy(): void {
 		this.world = undefined!;
 		this.bodies = undefined!;
+		this.particles = undefined!;
 	}
 
 	/**
@@ -168,8 +370,7 @@ export class Box2D implements g.Destroyable {
 	 * @param diameter 直径 px
 	 */
 	createCircleShape(diameter: number): box2d.b2CircleShape {
-		const shape = new box2d.b2CircleShape();
-		shape.Set(this.vec2(0, 0), (diameter / 2) / this.scale);
+		const shape = new box2d.b2CircleShape((diameter / 2) / this.scale);
 		return shape;
 	}
 
@@ -285,16 +486,18 @@ export class Box2D implements g.Destroyable {
 
 	private stepBody(): void {
 		for (let i = 0; i < this.bodies.length; i++) {
-			const b2Body = this.bodies[i].b2Body;
-			const entity = this.bodies[i].entity;
-			if (entity.destroyed()) {
+			const {b2Body, entity} = this.bodies[i];
+			if (!b2Body.IsAwake()) {
 				continue;
 			}
-			const pos = b2Body.GetPosition();
-			entity.x = pos.x * this.scale - entity.width / 2;
-			entity.y = pos.y * this.scale - entity.height / 2;
+			const {x, y} = b2Body.GetPosition();
+			entity.x = x * this.scale - entity.width / 2;
+			entity.y = y * this.scale - entity.height / 2;
 			entity.angle = this.degree(b2Body.GetAngle());
 			entity.modified();
+		}
+		for (let i = 0; i < this.particles.length; i++) {
+			this.particles[i].modified();
 		}
 	}
 }
