@@ -52,7 +52,9 @@
       }
     },
     "testMatch": [
-      "**/__tests__/*.+(ts|js)"
-    ]
+      "**/__tests__/*.+(ts|js)",
+      "!**/__tests__/setup.ts"
+    ],
+    "setupFiles": ["<rootDir>/src/__tests__/setup.ts"]
   }
 }
