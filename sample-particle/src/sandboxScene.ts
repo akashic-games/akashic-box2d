@@ -231,7 +231,7 @@ export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime
 		});
 
 		const particleSystemDef = b2.createParticleSystemDef({
-			radius: 4, // 粒子の半径
+			radius: b2.meter(4), // 粒子の半径 (px -> meter)
 			dampingStrength
 		});
 		const particleSystem = b2.createParticleSystem(particleSystemDef);
@@ -241,7 +241,7 @@ export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime
 				return;
 			}
 			const particleGroupDef = b2.createParticleGroupDef({
-				position: ev.point,
+				position: b2.vec2(ev.point.x, ev.point.y),
 				shape: b2.createCircleShape(50),
 				lifetime,
 				flags

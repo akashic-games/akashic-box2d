@@ -150,17 +150,13 @@ export class Box2D implements g.Destroyable {
 			def.angle = particleGroupDef.angle;
 		}
 		if (particleGroupDef.positionData != null) {
-			const pd = particleGroupDef.positionData;
-			def.positionData = [];
-			for (let i = 0; i < pd.length; i++) {
-				def.positionData[i].Set(pd[i].x / this.scale, pd[i].y / this.scale);
-			}
+			def.positionData = particleGroupDef.positionData;
 		}
 		if (particleGroupDef.linearVelocity != null) {
-			def.linearVelocity.Set(particleGroupDef.linearVelocity.x / this.scale, particleGroupDef.linearVelocity.y / this.scale);
+			def.linearVelocity.Copy(particleGroupDef.linearVelocity);
 		}
 		if (particleGroupDef.position != null) {
-			def.position.Set(particleGroupDef.position.x / this.scale, particleGroupDef.position.y / this.scale);
+			def.position.Copy(particleGroupDef.position);
 		}
 		return def;
 	}
@@ -180,7 +176,7 @@ export class Box2D implements g.Destroyable {
 	 */
 	createParticleSystemDef(particleSystemDef: Box2dParticleSystemDef): box2d.b2ParticleSystemDef {
 		const def = new box2d.b2ParticleSystemDef();
-		def.radius = particleSystemDef.radius / this.scale;
+		def.radius = particleSystemDef.radius;
 		if (particleSystemDef.dampingStrength != null) {
 			def.dampingStrength = particleSystemDef.dampingStrength;
 		}
@@ -482,6 +478,22 @@ export class Box2D implements g.Destroyable {
 	 */
 	vec2(x: number, y: number): box2d.b2Vec2 {
 		return new box2d.b2Vec2(x / this.scale, y / this.scale);
+	}
+
+	/**
+	 * メートルをピクセルに変換する。
+	 * @param meter メートル
+	 */
+	pixel(meter: number): number {
+		return meter * this.scale;
+	}
+
+	/**
+	 * ピクセルをメートルに変換する。
+	 * @param meter メートル
+	 */
+	meter(pixel: number): number {
+		return pixel / this.scale;
 	}
 
 	private stepBody(): void {

@@ -11,11 +11,11 @@ describe("Particle specs", () => {
 		const b2 = new Box2D(worldOption);
 		const particleSystemDef = b2.createParticleSystemDef({
 			springStrength: 10,
-			radius: 10 // check scale
+			radius: 10
 		});
 		expect(particleSystemDef instanceof box2d.b2ParticleSystemDef).toBe(true);
 		expect(particleSystemDef.springStrength).toBe(10);
-		expect(particleSystemDef.radius).toBe(10 / worldOption.scale);
+		expect(particleSystemDef.radius).toBe(10);
 
 		const particleSystem = b2.createParticleSystem(particleSystemDef);
 		expect(particleSystem instanceof box2d.b2ParticleSystem).toBe(true);

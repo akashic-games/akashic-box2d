@@ -157,6 +157,7 @@ export interface Box2dParticleSystemDef {
  */
 export interface Box2dParticleGroupDef extends b2IParticleGroupDef {
 	color?: undefined; // do not support
+	positionData?: b2Vec2[]; // override
 }
 
 /**
