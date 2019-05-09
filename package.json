@@ -52,8 +52,7 @@
       }
     },
     "testMatch": [
-      "**/__tests__/*.+(ts|js)",
-      "!**/__tests__/setup.ts"
+      "**/__tests__/*Spec.(ts|js)"
     ],
     "setupFiles": ["<rootDir>/src/__tests__/setup.ts"]
   }
