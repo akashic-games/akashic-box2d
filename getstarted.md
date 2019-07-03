@@ -408,6 +408,13 @@ var particleE = box2d.createParticleE(
 `ParticleE` は `g.E` の派生クラスで、自身に追加されたパーティクルの管理やそれらを描画する役割を持ちます。
 ( `ParticleE` は他の `g.E` と違い子エンティティを追加することはできないことに注意してください。)
 
+また `ParticleE` の生成時に `cssColor` または `surface` を指定することで各パーティクルの描画方式を決定できます。
+
+* `cssColor: string`
+  * 各パーティクルを指定の色 (CSS Color) で描画します。
+* `surface: g.Surface`
+  * 各パーティクルを指定の `g.Surface` で描画します。
+
 ### Particle の追加
 
 パーティクルの種類には `Particle` (単体の粒子) とそれをグループ化した `ParticleGroup` があります。
