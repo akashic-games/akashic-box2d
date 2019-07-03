@@ -163,18 +163,8 @@ export class ParticleE extends g.E {
 		const system = this.particleSystem;
 		const positions = system.GetPositionBuffer();
 		const radius = system.GetRadius();
-		const indexes: number[] = [];
-		for (let i = 0; i < this.particleGroups.length; i++) {
-			const group = this.particleGroups[i];
-			const index = group.GetBufferIndex();
-			const length = group.GetParticleCount();
-			for (let j = index; j < index + length; j++) {
-				indexes.push(j);
-			}
-		}
-		for (let i = 0; i < this.particles.length; i++) {
-			indexes.push(this.particles[i]);
-		}
+		const particles = this.particles;
+		const particleGroups = this.particleGroups;
 
 		renderer.save();
 		if (this.surface) {
@@ -182,17 +172,43 @@ export class ParticleE extends g.E {
 			const {width, height} = surface;
 			const offsetX = width / 2;
 			const offsetY = height / 2;
-			for (let i = 0; i < indexes.length; i++) {
-				const {x, y} = positions[indexes[i]];
-				renderer.drawImage(surface, 0, 0, width, height, x * scale - offsetX, y * scale - offsetY);
+
+			// draw particle group
+			for (let i = 0; i < particleGroups.length; i++) {
+				const group = particleGroups[i];
+				const index = group.GetBufferIndex();
+				const length = group.GetParticleCount();
+				const to = index + length;
+				for (let j = index; j < to; j++) {
+					const p = positions[j];
+					renderer.drawImage(surface, 0, 0, width, height, p.x * scale - offsetX, p.y * scale - offsetY);
+				}
+			}
+			// draw particles
+			for (let i = 0; i < this.particles.length; i++) {
+				const p = positions[particles[i]];
+				renderer.drawImage(surface, 0, 0, width, height, p.x * scale - offsetX, p.y * scale - offsetY);
 			}
 		} else if (this.cssColor) {
 			const cssColor = this.cssColor;
 			renderer.transform([scale, 0, 0, scale, 0, 0]);
 			const offset = radius / 2;
-			for (let i = 0; i < indexes.length; i++) {
-				const {x, y} = positions[indexes[i]];
-				renderer.fillRect(x - offset, y - offset, radius, radius, cssColor);
+
+			// draw particle group
+			for (let i = 0; i < this.particleGroups.length; i++) {
+				const group = this.particleGroups[i];
+				const index = group.GetBufferIndex();
+				const length = group.GetParticleCount();
+				const to = index + length;
+				for (let j = index; j < to; j++) {
+					const p = positions[j];
+					renderer.fillRect(p.x - offset, p.y - offset, radius, radius, cssColor);
+				}
+			}
+			// draw particles
+			for (let i = 0; i < this.particles.length; i++) {
+				const p = positions[particles[i]];
+				renderer.fillRect(p.x - offset, p.y - offset, radius, radius, cssColor);
 			}
 		}
 		renderer.restore();
