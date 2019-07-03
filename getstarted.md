@@ -443,8 +443,8 @@ var particleGroupDef = b2.createParticleGroupDef({
 var particleGroup = box2d.createParticleGroup(particleGroupDef);
 ```
 
-`ParticleGroup` は `shape` の形状を満たすようにパーティクルが生成されます。
-(上記の場合 `(100, 100)` に直径 50px の円形状でパーティクルが生成されます。)
+`ParticleGroup` は `shape` の形状を満たすようにパーティクルの集合が生成されます。
+(上記の場合 `(100, 100)` に直径 50px の円形状で生成されます。)
 
 このとき、パーティクル数は `ParticleSystemDef` で定義した粒子の大きさによって自動的に決定されます。
 
