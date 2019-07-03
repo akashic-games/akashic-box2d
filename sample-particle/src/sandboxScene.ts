@@ -1,6 +1,5 @@
 // game.json の globalScripts フィールドにファイル名を列挙しておく必要がある点に注意。
 import * as box2d from "@akashic-extension/akashic-box2d";
-import { b2BlockAllocator, b2ContactSolver } from "@akashic-extension/akashic-box2d";
 
 export interface SandboxSceneParameter {
 	flags?: box2d.b2ParticleFlag;
