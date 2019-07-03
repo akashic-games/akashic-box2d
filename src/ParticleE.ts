@@ -137,7 +137,7 @@ export class ParticleE extends g.E {
 
 	// override
 	destroy(): void {
-		if (this.particleSystem == null) {
+		if (this.destroyed()) {
 			return;
 		}
 		this.onDestroyed.fire();
