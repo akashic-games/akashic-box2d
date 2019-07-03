@@ -1,5 +1,7 @@
 import * as box2d from "@flyover/box2d";
-import { EBody, Box2DFixtureDef, Box2DBodyDef, Box2dParticleSystemDef, Box2dParticleGroupDef } from "./parateters";
+import {
+	EBody, Box2DFixtureDef, Box2DBodyDef, Box2dParticleSystemDef, Box2dParticleGroupDef, Box2dParticleDef
+} from "./parateters";
 import { ParticleE, ParticleEParameter } from "./ParticleE";
 
 /**
@@ -48,10 +50,10 @@ export class Box2D implements g.Destroyable {
 	 */
 	constructor(param: Box2DParameter) {
 		if (param.gravity == null) {
-			throw g.ExceptionFactory.createAssertionError("Missing parameter: gravity");
+			throw g.ExceptionFactory.createAssertionError("Box2D#constructor: Missing parameter: gravity");
 		}
 		if (param.scale == null) {
-			throw g.ExceptionFactory.createAssertionError("Missing parameter: scale");
+			throw g.ExceptionFactory.createAssertionError("Box2D#constructor: Missing parameter: scale");
 		}
 
 		const b2world = new box2d.b2World(new box2d.b2Vec2(param.gravity[0], param.gravity[1]));
@@ -92,9 +94,49 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
+	 * `b2Particles` インスタンスを生成する。
+	 * @param particleSystem b2ParticleSystem
+	 * @param partcleDef b2PartcleDef
+	 */
+	createParticle(particleSystem: box2d.b2ParticleSystem, particleDef: box2d.b2ParticleDef): number {
+		const index = particleSystem.CreateParticle(particleDef);
+		return index;
+	}
+
+	/**
+	 * `b2ParticleDef` インスタンスを生成する。
+	 * @param particleDef Box2dParticleDef
+	 */
+	createParticleDef(particleDef?: Box2dParticleDef): box2d.b2ParticleDef {
+		const def = new box2d.b2ParticleDef();
+		if (particleDef == null) {
+			return def;
+		}
+		if (particleDef.position != null) {
+			def.position.Copy(particleDef.position);
+		}
+		if (particleDef.flags != null) {
+			def.flags = particleDef.flags;
+		}
+		if (particleDef.group != null) {
+			def.group = particleDef.group;
+		}
+		if (particleDef.lifetime != null) {
+			def.lifetime = particleDef.lifetime;
+		}
+		if (particleDef.userData != null) {
+			def.userData = particleDef.userData;
+		}
+		if (particleDef.velocity != null) {
+			def.velocity.Copy(particleDef.velocity);
+		}
+		return def;
+	}
+
+	/**
 	 * `b2ParticleGroup` インスタンスを生成する。
 	 * @param particleSystem b2ParticleSystem
-	 * @param particleGroupDef b2ParticleGroup
+	 * @param particleGroupDef b2ParticleGroupDef
 	 */
 	createParticleGroup(particleSystem: box2d.b2ParticleSystem, particleGroupDef: box2d.b2ParticleGroupDef): box2d.b2ParticleGroup {
 		const particleGroup = particleSystem.CreateParticleGroup(particleGroupDef);
@@ -240,9 +282,13 @@ export class Box2D implements g.Destroyable {
 	/**
 	 * このクラスにボディを追加し、その `ParticleE` を返す。
 	 * @param param `particleE` の生成パラメータ
+	 * @param destroyParticle `ParticleE#destroy()` が呼ばれた際に `b2ParticleSystem` を削除するかどうか 省略時は false
 	 */
-	createParticleE(param: ParticleEParameter): ParticleE {
+	createParticleE(param: ParticleEParameter, destroyParticle: boolean = true): ParticleE {
 		const particleE = new ParticleE(param, this.scale);
+		if (destroyParticle) {
+			particleE.onDestroyed.addOnce(() => this.world.DestroyParticleSystem(param.particleSystem));
+		}
 		this.particles.push(particleE);
 		return particleE;
 	}
@@ -261,18 +307,27 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
+	 * このクラスに追加されたすべての `EBody` を削除する。
+	 */
+	removeAllBodies(): void {
+		for (let i = 0; i < this.bodies.length; i++) {
+			this.world.DestroyBody(this.bodies[i].b2Body);
+		}
+		this.bodies = [];
+	}
+
+	/**
 	 * このクラスに追加された `ParticleE` を削除する。
 	 * @param particleE 削除する `particleE`
-	 * @param removeParticleSystem 対象の `particleE` が所属する `b2ParticleSystem` を破棄するかどうか
+	 * @param destroyParticleSystem 対象の `particleE` が所属する `b2ParticleSystem` を破棄するかどうか 省略時は false
 	 */
-	removeParticleE(particleE: ParticleE, removeParticleSystem: boolean = false): void {
+	removeParticleE(particleE: ParticleE, destroyParticleSystem: boolean = false): void {
 		const index = this.particles.indexOf(particleE);
 		if (index === -1) {
 			return;
 		}
-		const system = particleE.particleSystem;
-		particleE.destroy();
-		if (removeParticleSystem) {
+		if (destroyParticleSystem) {
+			const system = particleE.particleSystem;
 			this.world.DestroyParticleSystem(system);
 		}
 		this.particles.splice(index, 1);
@@ -280,17 +335,14 @@ export class Box2D implements g.Destroyable {
 
 	/**
 	 * このクラスに追加されたすべての `ParticleE` を削除する。
-	 * @param removeParticleSystem 対象の `particleE` が所属する `b2ParticleSystem` を破棄するかどうか
+	 * @param destroyParticleSystem 対象の `particleE` が所属する `b2ParticleSystem` を破棄するかどうか 省略時は false
 	 */
-	removeAllParticleE(removeParticleSystem: boolean = false): void {
+	removeAllParticleE(destroyParticleSystem: boolean = false): void {
 		for (let i = 0; i < this.particles.length; i++) {
 			const particle = this.particles[i];
-			if (removeParticleSystem) {
+			if (destroyParticleSystem) {
 				const system = particle.particleSystem;
-				particle.destroy();
 				this.world.DestroyParticleSystem(system);
-			} else {
-				particle.destroy();
 			}
 		}
 		this.particles = [];
@@ -323,16 +375,22 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * このクラスのインスタンスを破棄する。
+	 * インスタンスを破棄する。
+	 * 本インスタンスを経由せず直接 `b2World#CreateBody()` 等を利用した場合、それらは破棄されないことに注意。
 	 */
 	destroy(): void {
+		if (this.destroyed()) {
+			return;
+		}
+		this.removeAllBodies();
+		this.removeAllParticleE(true);
 		this.world = undefined!;
 		this.bodies = undefined!;
 		this.particles = undefined!;
 	}
 
 	/**
-	 * このクラスのインスタンスが破棄済みであるかを返す。
+	 * インスタンスが破棄済みであるかを返す。
 	 */
 	destroyed(): boolean {
 		return this.world === undefined;

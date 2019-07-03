@@ -48,6 +48,12 @@ export = () => {
 				useSurface: true
 			},
 			{
+				text: "液体（ドラッグ）",
+				flags: b2ParticleFlag.b2_waterParticle,
+				dampingStrength: 1.0,
+				useParticles: true
+			},
+			{
 				text: "ゴム状",
 				flags: b2ParticleFlag.b2_elasticParticle
 			},

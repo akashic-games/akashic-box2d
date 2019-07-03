@@ -1,5 +1,5 @@
 import {
-	b2IFixtureDef, b2IBodyDef, b2Body, b2CircleShape, b2PolygonShape, b2Vec2, b2IParticleGroupDef
+	b2IFixtureDef, b2IBodyDef, b2Body, b2CircleShape, b2PolygonShape, b2Vec2, b2IParticleGroupDef, b2IParticleDef
 } from "@flyover/box2d";
 
 /**
@@ -158,6 +158,14 @@ export interface Box2dParticleSystemDef {
 export interface Box2dParticleGroupDef extends b2IParticleGroupDef {
 	color?: undefined; // do not support
 	positionData?: b2Vec2[]; // override
+}
+
+/**
+ * Particle の定義を指定するオプション。
+ * 未指定の場合は box2d.ts 側の初期値に従う。
+ */
+export interface Box2dParticleDef extends b2IParticleDef {
+	color?: undefined; // do not support
 }
 
 /**

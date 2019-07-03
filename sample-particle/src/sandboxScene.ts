@@ -1,16 +1,18 @@
 // game.json の globalScripts フィールドにファイル名を列挙しておく必要がある点に注意。
 import * as box2d from "@akashic-extension/akashic-box2d";
+import { b2BlockAllocator, b2ContactSolver } from "@akashic-extension/akashic-box2d";
 
 export interface SandboxSceneParameter {
 	flags?: box2d.b2ParticleFlag;
 	useSurface?: boolean;
 	dampingStrength?: number; // 減衰強度
 	lifetime?: number; // ライフ
+	useParticles?: boolean;
 }
 
 const game = g.game;
 
-export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime}: SandboxSceneParameter) => {
+export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime, useParticles}: SandboxSceneParameter) => {
 	const scene = new g.Scene({
 		game,
 		assetIds: ["soccer", "pentagon", "water"]
@@ -236,35 +238,56 @@ export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime
 		});
 		const particleSystem = b2.createParticleSystem(particleSystemDef);
 
-		scene.pointDownCapture.add(ev => {
-			if (ev.target != null) {
-				return;
-			}
-			const particleGroupDef = b2.createParticleGroupDef({
-				position: b2.vec2(ev.point.x, ev.point.y),
-				shape: b2.createCircleShape(50),
-				lifetime,
-				flags
+		let particleE: box2d.ParticleE;
+		if (useSurface) {
+			particleE = b2.createParticleE({
+				scene,
+				surface: scene.assets["water"] as g.ImageAsset,
+				particleSystem
 			});
-			const particleGroup = b2.createParticleGroup(particleSystem, particleGroupDef);
-			let particleE: box2d.ParticleE;
-			if (useSurface) {
-				particleE = b2.createParticleE({
-					scene,
-					surface: scene.assets["water"] as g.ImageAsset,
-					particleSystem,
-					particleGroup
+		} else {
+			const rg = game.random.get(50, 150);
+			const b = game.random.get(200, 255);
+			const cssColor = `rgb(${rg}, ${rg}, ${b})`;
+			particleE = b2.createParticleE({
+				cssColor, scene, particleSystem
+			});
+		}
+
+		if (useParticles) {
+			scene.pointMoveCapture.add(ev => {
+				if (ev.target != null) {
+					return;
+				}
+
+				const particleDef = b2.createParticleDef({
+					position: b2.vec2(ev.point.x + ev.startDelta.x, ev.point.y + ev.startDelta.y),
+					lifetime,
+					flags
 				});
-			} else {
-				const rg = game.random.get(50, 150);
-				const b = game.random.get(200, 255);
-				const cssColor = `rgb(${rg}, ${rg}, ${b})`;
-				particleE = b2.createParticleE({
-					cssColor, scene, particleSystem, particleGroup
+				const index = b2.createParticle(particleSystem, particleDef);
+				particleE.addParticle(index);
+
+				scene.append(particleE);
+			});
+		} else {
+			scene.pointDownCapture.add(ev => {
+				if (ev.target != null) {
+					return;
+				}
+
+				const particleGroupDef = b2.createParticleGroupDef({
+					position: b2.vec2(ev.point.x, ev.point.y),
+					shape: b2.createCircleShape(50),
+					lifetime,
+					flags
 				});
-			}
-			scene.append(particleE);
-		});
+				const particleGroup = b2.createParticleGroup(particleSystem, particleGroupDef);
+				particleE.addParticleGroup(particleGroup);
+
+				scene.append(particleE);
+			});
+		}
 
 		const font = new g.DynamicFont({
 			game,
@@ -284,7 +307,7 @@ export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime
 			touchable: true
 		});
 		clear.pointDown.add(() => {
-			b2.removeAllParticleE();
+			particleE.removeAllParticles(true);
 		});
 		scene.append(clear);
 

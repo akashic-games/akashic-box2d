@@ -21,6 +21,23 @@ describe("Particle specs", () => {
 		expect(particleSystem instanceof box2d.b2ParticleSystem).toBe(true);
 	});
 
+	it("createParticle", () => {
+		const b2 = new Box2D(worldOption);
+		const particleDef = b2.createParticleDef({
+			userData: "hoge",
+			lifetime: 100
+		});
+		expect(particleDef instanceof box2d.b2ParticleDef).toBe(true);
+		expect(particleDef.userData).toBe("hoge");
+		expect(particleDef.lifetime).toBe(100);
+
+		const particleSystemDef = b2.createParticleSystemDef({radius: 10});
+		const particleSystem = b2.createParticleSystem(particleSystemDef);
+
+		const particle = b2.createParticle(particleSystem, particleDef);
+		expect(typeof particle).toBe("number");
+	});
+
 	it("createParticleGroup", () => {
 		const b2 = new Box2D(worldOption);
 		const particleGroupDef = b2.createParticleGroupDef({
@@ -38,11 +55,60 @@ describe("Particle specs", () => {
 		expect(particleGroup instanceof box2d.b2ParticleGroup).toBe(true);
 	});
 
-	xit("createParticleE", () => {
-		// TODO
-	});
+	it("can create and remove ParticleE", () => {
+		const b2 = new Box2D(worldOption);
+		const particleSystemDef = b2.createParticleSystemDef({radius: 10});
+		const particleSystem = b2.createParticleSystem(particleSystemDef);
+		const particleE = b2.createParticleE({
+			scene: {
+				register: () => {
+					//
+				}
+			} as any,
+			cssColor: "black",
+			particleSystem
+		});
 
-	xit("can create and remove ParticleE", () => {
-		// TODO
+		const particleDef = b2.createParticleDef({
+			userData: "hoge",
+			lifetime: 100
+		});
+		const particle1 = b2.createParticle(particleSystem, particleDef);
+		const particle2 = b2.createParticle(particleSystem, particleDef);
+
+		particleE.addParticle(particle1);
+		particleE.addParticle(particle2);
+		expect(particleE.particles.length).toBe(2);
+		expect(particleE.particles[0]).toBe(particle1);
+		expect(particleE.particles[1]).toBe(particle2);
+
+		const particleGroupDef = b2.createParticleGroupDef({
+			userData: "hoge",
+			angle: 0.1
+		});
+		const particleGroup1 = b2.createParticleGroup(particleSystem, particleGroupDef);
+		const particleGroup2 = b2.createParticleGroup(particleSystem, particleGroupDef);
+		const particleGroup3 = b2.createParticleGroup(particleSystem, particleGroupDef);
+
+		particleE.addParticleGroup(particleGroup1);
+		particleE.addParticleGroup(particleGroup2);
+		particleE.addParticleGroup(particleGroup3);
+		expect(particleE.particleGroups.length).toBe(3);
+		expect(particleE.particleGroups[0]).toBe(particleGroup1);
+		expect(particleE.particleGroups[1]).toBe(particleGroup2);
+		expect(particleE.particleGroups[2]).toBe(particleGroup3);
+
+		particleE.removeParticle(particle2);
+		expect(particleE.particles.length).toBe(1);
+		expect(particleE.particles[0]).toBe(particle1);
+
+		particleE.removeParticleGroup(particleGroup2);
+		expect(particleE.particleGroups.length).toBe(2);
+		expect(particleE.particleGroups[0]).toBe(particleGroup1);
+		expect(particleE.particleGroups[1]).toBe(particleGroup3);
+
+		particleE.removeAllParticles();
+		expect(particleE.particles.length).toBe(0);
+		expect(particleE.particleGroups.length).toBe(0);
 	});
 });
