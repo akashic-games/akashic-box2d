@@ -1,17 +1,41 @@
 # これは
-@akashic-extension/akashic-box2d のサンプルコンテンツです。
-akashic-sandbox を用いて実行することができます。
+
+`@akashic-extension/akashic-box2d` の [サンプルコンテンツ](../sample) をTypeScriptで作成したものです。
+
+## ビルド方法
+
+ビルドにはNode.jsが必要です。
+
+`npm run build` によりgulpを使ってビルドできます。
+
+`src` ディレクトリ以下のTypeScriptファイルがコンパイルされ、`game/script` ディレクトリ以下にJavaScriptファイルが生成されます。
+
+```sh
+npm install
+npm run build
+```
+
+`game` ディレクトリに移動して依存モジュールをインストールします。
+
+```sh
+cd game
+npm install
+```
 
 ## 実行方法
-[akashic-sandbox](https://github.com/akashic-games/akashic-sandbox) (v0.13.3以降)をインストールした後、
-以下のコマンドで `http://localhost:3000` にアクセスすることで実行できます。
+ビルド後に `sample` ディレクトリ内で以下のコマンドを実行し、 `http://localhost:3000` にアクセスすることで実行できます。
 
 ```
-npm install
-akashic-sandbox .
+npm start
 ```
 
-## 操作
-サッカーボールをクリックするとボールがぴょんぴょんします。
+## テスト方法
 
-また、サッカーボールが地面に接している時のみ地面の色が青くなります。
+1. [TSLint](https://github.com/palantir/tslint "TSLint") を使ったLint
+2. [Jasmine](http://jasmine.github.io "Jasmine") を使ったテスト
+
+がそれぞれ実行されます。
+
+```sh
+npm test
+```
