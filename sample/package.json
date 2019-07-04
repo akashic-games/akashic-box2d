@@ -12,12 +12,12 @@
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
   "devDependencies": {
-    "@akashic/akashic-cli": "~1.5.16",
-    "@akashic/akashic-engine": "~2.4.13",
-    "@akashic/akashic-sandbox": "~0.13.57",
-    "@types/node": "7.0.11",
-    "tslint": "^5.16.0",
-    "typescript": "^3.4.3"
+    "@akashic/akashic-cli": "~1.7.2",
+    "@akashic/akashic-engine": "~2.4.14",
+    "@akashic/akashic-sandbox": "~0.14.0",
+    "@types/node": "12.0.12",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.2"
   },
   "private": true,
   "dependencies": {
