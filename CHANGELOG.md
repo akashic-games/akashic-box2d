@@ -2,6 +2,7 @@
 
 ## Unreleased Change
 * Box2Dのライブラリを box2dweb から box2d.ts に変更
+* パーティクルの機能をサポート
 * いくつかのクラス名を変更
     * `Box2DOption` -> `Box2DParameter`
     * `BodyOption` -> `Box2DBodyDef`
