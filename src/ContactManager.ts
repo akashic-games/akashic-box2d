@@ -33,16 +33,12 @@ export interface ContactManagerParameter {
  * 衝突判定を管理するクラス。
  */
 export class ContactManager implements g.Destroyable {
-	/**
-	 * Box2D のインスタンス。
-	 */
-	box2d: Box2D;
-
 	beginContact: g.Trigger<BeginContactParameter> = new g.Trigger();
 	endContact: g.Trigger<EndContactParameter> = new g.Trigger();
 	preSolve: g.Trigger<PreSolveParameter> = new g.Trigger();
 	postSolve: g.Trigger<PostSolveParameter> = new g.Trigger();
 
+	private box2d: Box2D;
 	private _beginContactTriggerMap: { [id: string]: g.Trigger<BeginContactParameter>; } = {};
 	private _endContactTriggerMap: { [id: string]: g.Trigger<EndContactParameter>; } = {};
 	private _preSolveTriggerMap: { [id: string]: g.Trigger<PreSolveParameter>; } = {};
