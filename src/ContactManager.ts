@@ -53,6 +53,9 @@ export class ContactManager implements g.Destroyable {
 
 		const contactListener = new box2d.b2ContactListener();
 		contactListener.BeginContact = contact => {
+			if (this.beginContact && !this.beginContact.destroyed()) {
+				this.beginContact.fire({contact});
+			}
 			const bodyA = this.box2d.getBodyFromb2Body(contact.GetFixtureA().GetBody());
 			if (bodyA == null) {
 				return;
@@ -70,11 +73,11 @@ export class ContactManager implements g.Destroyable {
 			} else if (trigger2 && !trigger2.destroyed()) {
 				trigger2.fire();
 			}
-			if (this.beginContact && !this.beginContact.destroyed()) {
-				this.beginContact.fire({contact});
-			}
 		};
 		contactListener.EndContact = contact => {
+			if (this.endContact && !this.endContact.destroyed()) {
+				this.endContact.fire({contact});
+			}
 			const bodyA = this.box2d.getBodyFromb2Body(contact.GetFixtureA().GetBody());
 			if (bodyA == null) {
 				return;
@@ -92,11 +95,11 @@ export class ContactManager implements g.Destroyable {
 			} else if (trigger2 && !trigger2.destroyed()) {
 				trigger2.fire();
 			}
-			if (this.endContact && !this.endContact.destroyed()) {
-				this.endContact.fire({contact});
-			}
 		};
 		contactListener.PreSolve = (contact, oldManifold) => {
+			if (this.preSolve && !this.preSolve.destroyed()) {
+				this.preSolve.fire({contact, oldManifold});
+			}
 			const bodyA = this.box2d.getBodyFromb2Body(contact.GetFixtureA().GetBody());
 			if (bodyA == null) {
 				return;
@@ -114,11 +117,11 @@ export class ContactManager implements g.Destroyable {
 			} else if (trigger2 && !trigger2.destroyed()) {
 				trigger2.fire({contact, oldManifold});
 			}
-			if (this.preSolve && !this.preSolve.destroyed()) {
-				this.preSolve.fire({contact, oldManifold});
-			}
 		};
 		contactListener.PostSolve = (contact, impulse) => {
+			if (this.postSolve && !this.postSolve.destroyed()) {
+				this.postSolve.fire({contact, impulse});
+			}
 			const bodyA = this.box2d.getBodyFromb2Body(contact.GetFixtureA().GetBody());
 			if (bodyA == null) {
 				return;
@@ -135,9 +138,6 @@ export class ContactManager implements g.Destroyable {
 				trigger1.fire({contact, impulse});
 			} else if (trigger2 && !trigger2.destroyed()) {
 				trigger2.fire({contact, impulse});
-			}
-			if (this.postSolve && !this.postSolve.destroyed()) {
-				this.postSolve.fire({contact, impulse});
 			}
 		};
 
