@@ -324,6 +324,8 @@ entity.pointDown.add(function(o) {
 
 ## 接触イベントの検出
 
+### 単一ボディ同士の接触イベントの検出
+
 ボディ同士の接触イベントを設定してみましょう。
 akashic-box2d には衝突情報のトリガーを管理する `ContactManager` クラスがあります。
 以下のように `ContactManager` のインスタンスを生成します。
@@ -367,6 +369,31 @@ contactManager.createEndContactTrigger(body1, body2).add(function() {
   bodyEntity1.cssColor = _cssColor;
   bodyEntity1.modified();
 }
+```
+
+### 複数ボディ同士の接触イベントの検出
+
+akashic-box2d@3.0.0 では複数ボディ同士の接触イベントを設定する方法は存在しません。
+単一ボディ同士の接触トリガーをボディ数だけ生成する必要があります。
+
+以下は `body` に対して `body1`, `body2`, `body3`, `body4` が接触した際の処理を追加するサンプルコードになります。
+
+```javascript
+
+var contactManager = new b2.ContactManager({ box2d: box2d });
+
+var triggers = [];
+triggers.push(contactManager.createBeginContactTrigger(body, body1));
+triggers.push(contactManager.createBeginContactTrigger(body, body2));
+triggers.push(contactManager.createBeginContactTrigger(body, body3));
+triggers.push(contactManager.createBeginContactTrigger(body, body4));
+
+for (var i = 0; i < triggers.length; i++) {
+  triggers[i].add(function() {
+    // 接触時の処理
+  });
+}
+
 ```
 
 ## 流体粒子 (パーティクル) の追加
