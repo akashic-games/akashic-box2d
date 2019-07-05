@@ -1,8 +1,10 @@
 import * as box2d from "@flyover/box2d";
 import {
-	EBody, Box2DFixtureDef, Box2DBodyDef, Box2dParticleSystemDef, Box2dParticleGroupDef, Box2dParticleDef
+	Box2DFixtureDef, Box2DBodyDef, Box2dParticleSystemDef, Box2dParticleGroupDef, Box2dParticleDef
 } from "./parateters";
+import { toRadian } from "./utils";
 import { ParticleE, ParticleEParameter } from "./ParticleE";
+import { Body } from "./Body";
 
 /**
  * `Box2D` のインスタンス生成時に指定するパラメータ。
@@ -28,9 +30,9 @@ export class Box2D implements g.Destroyable {
 	world: box2d.b2World;
 
 	/**
-	 * このクラスが保持する `EBody` のリスト。
+	 * このクラスが保持する `Body` のリスト。
 	 */
-	bodies: EBody[] = [];
+	bodies: Body[] = [];
 
 	/**
 	 * このクラスが保持する `ParticleE` のリスト。
@@ -62,13 +64,13 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * このクラスにボディを追加し、その `EBody` を返す。
+	 * このクラスにボディを追加し、その `Body` を返す。
 	 * すでに同エンティティが追加されている場合は何もせず `null` を返す。
 	 * @param entity 対象のエンティティ
 	 * @param bodyDef 対象のb2BodyDef
 	 * @param fixtureDef 対象のb2FixtureDefまたは対象のb2FixtureDefの配列
 	 */
-	createBody(entity: g.E, bodyDef: box2d.b2BodyDef, fixtureDef: box2d.b2FixtureDef | box2d.b2FixtureDef[]): EBody | null {
+	createBody(entity: g.E, bodyDef: box2d.b2BodyDef, fixtureDef: box2d.b2FixtureDef | box2d.b2FixtureDef[]): Body | null {
 		for (let i = 0; i < this.bodies.length; i++) {
 			if (this.bodies[i].entity === entity) {
 				return null;
@@ -82,13 +84,18 @@ export class Box2D implements g.Destroyable {
 			b2Body.CreateFixture(fixtureDefs[i]);
 		}
 		b2Body.SetPosition(this.vec2(entity.x + entity.width / 2, entity.y + entity.height / 2));
-		b2Body.SetAngle(this.radian(entity.angle));
+		b2Body.SetAngle(toRadian(entity.angle));
 
-		const body: EBody = {
+		const body = new Body({
 			id: `${this._createBodyCount++}`,
 			entity,
-			b2Body
-		};
+			b2Body,
+			worldScale: this.scale
+		});
+		body.onDestroyed.addOnce(() => {
+			this.world.DestroyBody(body.b2Body);
+		});
+
 		this.bodies.push(body);
 		return body;
 	}
@@ -294,24 +301,24 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * このクラスに追加された `EBody` を削除する。
-	 * @param ebody 削除する `EBody`
+	 * このクラスに追加された `Body` を削除する。
+	 * @param body 削除する `Body`
 	 */
-	removeBody(ebody: EBody): void {
-		const index = this.bodies.indexOf(ebody);
+	destroyBody(body: Body): void {
+		const index = this.bodies.indexOf(body);
 		if (index === -1) {
 			return;
 		}
-		this.world.DestroyBody(ebody.b2Body);
+		body.destroy();
 		this.bodies.splice(index, 1);
 	}
 
 	/**
-	 * このクラスに追加されたすべての `EBody` を削除する。
+	 * このクラスに追加されたすべての `Body` を削除する。
 	 */
-	removeAllBodies(): void {
+	destroyAllBodies(): void {
 		for (let i = 0; i < this.bodies.length; i++) {
-			this.world.DestroyBody(this.bodies[i].b2Body);
+			this.bodies[i].destroy();
 		}
 		this.bodies = [];
 	}
@@ -321,7 +328,7 @@ export class Box2D implements g.Destroyable {
 	 * @param particleE 削除する `particleE`
 	 * @param destroyParticleSystem 対象の `particleE` が所属する `b2ParticleSystem` を破棄するかどうか 省略時は false
 	 */
-	removeParticleE(particleE: ParticleE, destroyParticleSystem: boolean = false): void {
+	destroyParticleE(particleE: ParticleE, destroyParticleSystem: boolean = false): void {
 		const index = this.particles.indexOf(particleE);
 		if (index === -1) {
 			return;
@@ -337,7 +344,7 @@ export class Box2D implements g.Destroyable {
 	 * このクラスに追加されたすべての `ParticleE` を削除する。
 	 * @param destroyParticleSystem 対象の `particleE` が所属する `b2ParticleSystem` を破棄するかどうか 省略時は false
 	 */
-	removeAllParticleE(destroyParticleSystem: boolean = false): void {
+	destroyAllParticleE(destroyParticleSystem: boolean = false): void {
 		for (let i = 0; i < this.particles.length; i++) {
 			const particle = this.particles[i];
 			if (destroyParticleSystem) {
@@ -349,10 +356,10 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * エンティティからこのクラスに追加されている `EBody` を返す。
+	 * エンティティからこのクラスに追加されている `Body` を返す。
 	 * @param entity エンティティ
 	 */
-	getEBodyFromEntity(entity: g.E): EBody | null {
+	getBodyFromEntity(entity: g.E): Body | null {
 		for (let i = 0; i < this.bodies.length; i++) {
 			if (this.bodies[i].entity === entity) {
 				return this.bodies[i];
@@ -362,10 +369,10 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * `b2Body` からこのクラスに追加されている `EBody` を返す。
+	 * `b2Body` からこのクラスに追加されている `Body` を返す。
 	 * @param b2Body b2Body
 	 */
-	getEBodyFromb2Body(b2Body: box2d.b2Body): EBody | null {
+	getBodyFromb2Body(b2Body: box2d.b2Body): Body | null {
 		for (let i = 0; i < this.bodies.length; i++) {
 			if (this.bodies[i].b2Body === b2Body) {
 				return this.bodies[i];
@@ -382,8 +389,8 @@ export class Box2D implements g.Destroyable {
 		if (this.destroyed()) {
 			return;
 		}
-		this.removeAllBodies();
-		this.removeAllParticleE(true);
+		this.destroyAllBodies();
+		this.destroyAllParticleE(true);
 		this.world = undefined!;
 		this.bodies = undefined!;
 		this.particles = undefined!;
@@ -514,22 +521,6 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * ラジアンを度に変換する。
-	 * @param radian 対象のラジアン
-	 */
-	degree(radian: number): number {
-		return radian * 180 / Math.PI;
-	}
-
-	/**
-	 * 度をラジアンに変換する。
-	 * @param degree 対象の度
-	 */
-	radian(degree: number): number {
-		return degree * Math.PI / 180;
-	}
-
-	/**
 	 * この物理エンジン世界のビクセルスケールに変換した `b2Vec2` インスタンスを生成する。
 	 * @param x x方向のピクセル値
 	 * @param y y方向のピクセル値
@@ -556,15 +547,7 @@ export class Box2D implements g.Destroyable {
 
 	private stepBody(): void {
 		for (let i = 0; i < this.bodies.length; i++) {
-			const {b2Body, entity} = this.bodies[i];
-			if (!b2Body.IsAwake()) {
-				continue;
-			}
-			const {x, y} = b2Body.GetPosition();
-			entity.x = x * this.scale - entity.width / 2;
-			entity.y = y * this.scale - entity.height / 2;
-			entity.angle = this.degree(b2Body.GetAngle());
-			entity.modified();
+			this.bodies[i].modified();
 		}
 		for (let i = 0; i < this.particles.length; i++) {
 			this.particles[i].modified();

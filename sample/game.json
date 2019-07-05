@@ -33,10 +33,12 @@
 		}
 	},
 	"globalScripts": [
+		"node_modules/@akashic-extension/akashic-box2d/lib/Body.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/Box2D.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/ContactManager.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/ParticleE.js",
 		"node_modules/@akashic-extension/akashic-box2d/lib/index.js",
+		"node_modules/@akashic-extension/akashic-box2d/lib/utils.js",
 		"node_modules/@flyover/box2d/dist/box2d.umd.js"
 	],
 	"environment": {

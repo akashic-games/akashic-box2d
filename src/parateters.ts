@@ -1,5 +1,5 @@
 import {
-	b2IFixtureDef, b2IBodyDef, b2Body, b2CircleShape, b2PolygonShape, b2Vec2, b2IParticleGroupDef, b2IParticleDef
+	b2IFixtureDef, b2IBodyDef, b2CircleShape, b2PolygonShape, b2Vec2, b2IParticleGroupDef, b2IParticleDef
 } from "@flyover/box2d";
 
 /**
@@ -166,24 +166,4 @@ export interface Box2dParticleGroupDef extends b2IParticleGroupDef {
  */
 export interface Box2dParticleDef extends b2IParticleDef {
 	color?: undefined; // do not support
-}
-
-/**
- * ボディとエンティティを紐づけるインタフェース。
- */
-export interface EBody {
-	/**
-	 * ID。
-	 */
-	id: string;
-
-	/**
-	 * Akashicのエンティティ。
-	 */
-	entity: g.E;
-
-	/**
-	 * Box2Dのボディ。
-	 */
-	b2Body: b2Body;
 }

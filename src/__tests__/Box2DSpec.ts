@@ -115,31 +115,31 @@ describe("Box2D specs", () => {
 		expect(b2.bodies[1]).toBeUndefined();
 	});
 
-	it("removeBody", () => {
+	it("destroyBody", () => {
 		const fixDef = createFixtureDef();
 		const bodyDef = createBodyDef();
 		const b2 = new Box2D(worldOption);
 		const body1 = b2.createBody(entity1, bodyDef, fixDef);
 		const body2 = b2.createBody(entity2, bodyDef, fixDef);
 
-		b2.removeBody(body1!);
+		b2.destroyBody(body1!);
 		expect(b2.bodies[0]).toEqual(body2);
 		expect(b2.bodies[1]).toBeUndefined();
 
-		b2.removeBody(body2!);
+		b2.destroyBody(body2!);
 		expect(b2.bodies[0]).toBeUndefined();
 
-		b2.removeBody(body2!);
+		b2.destroyBody(body2!);
 		expect(b2.bodies[0]).toBeUndefined();
 	});
 
-	it("removeBody and createBody", () => {
+	it("destroyBody and createBody", () => {
 		const fixDef = createFixtureDef();
 		const bodyDef = createBodyDef();
 		const b2 = new Box2D(worldOption);
 		let body = b2.createBody(entity1, bodyDef, fixDef);
 
-		b2.removeBody(body!);
+		b2.destroyBody(body!);
 		expect(b2.bodies[0]).toBeUndefined();
 
 		body = b2.createBody(entity1, bodyDef, fixDef);
@@ -216,16 +216,6 @@ describe("Box2D specs", () => {
 		const b2 = new Box2D(worldOption);
 		const bodyDef = b2.createBodyDef({});
 		expect(bodyDef.type).toBe(box2d.b2BodyType.b2_staticBody);
-	});
-
-	it("degree", () => {
-		const b2 = new Box2D(worldOption);
-		expect(b2.degree(Math.PI)).toBe(180);
-	});
-
-	it("radian", () => {
-		const b2 = new Box2D(worldOption);
-		expect(b2.radian(180)).toBe(Math.PI);
 	});
 
 	it("vec2", () => {
