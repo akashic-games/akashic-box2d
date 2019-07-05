@@ -5,7 +5,6 @@ describe("ContactManager specs", () => {
 	it("constructor", () => {
 		const b2 = new Box2D({ gravity: [0, 1], scale: 1 });
 		const contactManager = new ContactManager({ box2d: b2 });
-		expect(contactManager.box2d).toBe(b2);
 		expect(contactManager.destroyed()).toBe(false);
 
 		contactManager.destroy();
