@@ -1,5 +1,6 @@
 // game.json の globalScripts フィールドにファイル名を列挙しておく必要がある点に注意。
 import * as box2d from "@akashic-extension/akashic-box2d";
+import { ContactManager, b2ContactSolver } from "@akashic-extension/akashic-box2d";
 
 export interface SandboxSceneParameter {
 	flags?: box2d.b2ParticleFlag;
@@ -126,7 +127,7 @@ export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime
 			scene: scene,
 			width: 60,
 			height: 20,
-			cssColor: "red",
+			cssColor: "pink",
 			x: 240,
 			y: 160
 		});
@@ -171,7 +172,7 @@ export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime
 		});
 
 		// rect1エンティティをbox2dに追加
-		b2.createBody(
+		const rect1Body = b2.createBody(
 			rect1,
 			dynamicDef,
 			b2.createFixtureDef({
@@ -181,7 +182,7 @@ export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime
 		);
 
 		// rect2エンティティをbox2dに追加
-		b2.createBody(
+		const rect2Body = b2.createBody(
 			rect2,
 			dynamicDef,
 			b2.createFixtureDef({
@@ -229,6 +230,36 @@ export const createSandboxScene = ({flags, useSurface, dampingStrength, lifetime
 		scene.update.add(() => {
 			// 物理エンジンの世界をすすめる
 			b2.step(1 / game.fps);
+		});
+
+		// 衝突を管理する ContactManager のインスタンスを生成
+		const contactManager = new ContactManager({
+			box2d: b2
+		});
+
+		let _rect1BodyCSSColor: string = rect1.cssColor;
+		let _rect2BodyCSSColor: string = rect2.cssColor;
+
+		// soccerBody と rect1Body の接触が開始された際のトリガーを生成
+		contactManager.createBeginContactTrigger(soccerBody, rect1Body).add(() => {
+			rect1.cssColor = "red";
+			rect1.modified();
+		});
+		// soccerBody と rect2Body の接触が開始された際のトリガーを生成
+		contactManager.createBeginContactTrigger(soccerBody, rect2Body).add(() => {
+			rect2.cssColor = "red";
+			rect2.modified();
+		});
+
+		// soccerBody と rect1Body の接触が終了した際のトリガーを生成
+		contactManager.createEndContactTrigger(soccerBody, rect1Body).add(() => {
+			rect1.cssColor = _rect1BodyCSSColor;
+			rect1.modified();
+		});
+		// soccerBody と rect1Body の接触が終了した際のトリガーを生成
+		contactManager.createEndContactTrigger(soccerBody, rect2Body).add(() => {
+			rect2.cssColor = _rect2BodyCSSColor;
+			rect2.modified();
 		});
 
 		const particleSystemDef = b2.createParticleSystemDef({
