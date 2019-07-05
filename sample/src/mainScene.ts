@@ -15,7 +15,7 @@ export = () => {
 
 		scene.append(new g.Label({
 			scene: scene,
-			text: "サンプル",
+			text: "Akashic Box2Dサンプル",
 			font,
 			fontSize: 30,
 			x: 0,
