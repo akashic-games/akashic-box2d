@@ -127,12 +127,12 @@ export class ParticleE extends g.E {
 
 	// override
 	append(): never {
-		throw g.ExceptionFactory.createAssertionError("ParticleE#append(): Can not append g.E to ParticleE");
+		throw g.ExceptionFactory.createAssertionError("ParticleE#append(): Cannot append g.E to ParticleE");
 	}
 
 	// override
 	insertBefore(): never {
-		throw g.ExceptionFactory.createAssertionError("ParticleE#insertBefore():Can not insert g.E to ParticleE");
+		throw g.ExceptionFactory.createAssertionError("ParticleE#insertBefore(): Cannot insert g.E to ParticleE");
 	}
 
 	// override
