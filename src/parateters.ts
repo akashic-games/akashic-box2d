@@ -148,7 +148,7 @@ export interface Box2dParticleSystemDef {
 	destroyByAge?: boolean;
 	lifetimeGranularity?: number;
 
-	colorMixingStrength?: undefined; // do not support
+	colorMixingStrength?: undefined; // not supported
 }
 
 /**
@@ -156,7 +156,7 @@ export interface Box2dParticleSystemDef {
  * 未指定の場合は box2d.ts 側の初期値に従う。
  */
 export interface Box2dParticleGroupDef extends b2IParticleGroupDef {
-	color?: undefined; // do not support
+	color?: undefined; // not supported
 	positionData?: b2Vec2[]; // override
 }
 
@@ -165,7 +165,7 @@ export interface Box2dParticleGroupDef extends b2IParticleGroupDef {
  * 未指定の場合は box2d.ts 側の初期値に従う。
  */
 export interface Box2dParticleDef extends b2IParticleDef {
-	color?: undefined; // do not support
+	color?: undefined; // not supported
 }
 
 /**
