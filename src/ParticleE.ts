@@ -141,13 +141,7 @@ export class ParticleE extends g.E {
 			return;
 		}
 		this.onDestroyed.fire();
-		for (let i = 0; i < this.particleGroups.length; i++) {
-			this.particleGroups[i].DestroyParticles(false);
-			this.particleSystem.DestroyParticleGroup(this.particleGroups[i]);
-		}
-		for (let i = 0; i < this.particles.length; i++) {
-			this.particleSystem.DestroyParticle(this.particles[i]);
-		}
+		this.removeAllParticles(false);
 		this.particleSystem = undefined!;
 		this.particleGroups = undefined!;
 		this.particles = undefined!;
