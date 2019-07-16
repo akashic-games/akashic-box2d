@@ -94,7 +94,7 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * `b2Particles` インスタンスを生成する。
+	 * `b2Particle` を生成する。
 	 * @param particleSystem b2ParticleSystem
 	 * @param partcleDef b2PartcleDef
 	 */
