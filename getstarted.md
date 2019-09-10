@@ -96,7 +96,7 @@ var entityFixDef = box2d.createFixtureDef({
   density: 1.0, // 密度
   friction: 0.5, // 摩擦係数
   restitution: 0.3, // 反発係数
-  shape: box2d.createRectShape(floorEntity.width, floorEntity.height) // 形状
+  shape: box2d.createRectShape(entity.width, entity.height) // 形状
 });
 ```
 
@@ -182,7 +182,7 @@ var floorDef = box2d.createBodyDef({
 物理エンジンの世界に `floor` を追加します。
 
 ```javascript
-var floorBody = box2d.createBody(floor, floorDef, floorFixDef);
+var floorBody = box2d.createBody(floorEntity, floorDef, floorFixDef);
 ```
 
 これで地面が生成できました。
