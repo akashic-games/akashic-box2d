@@ -37,6 +37,31 @@ var b2 = require("@akashic-extension/akashic-box2d");
 
 本ドキュメントのサンプルコードでは、akashic-box2dの機能は `b2` 変数を経由して呼び出すことになります。
 
+### TypeScript の場合
+
+TypeScript で開発している場合、tsconfig.json の `"lib"` の項目に `"dom"` が含まれるようにしてください。
+
+```json
+{
+  "compilerOptions": {
+    "lib": ["es5", "dom"],
+    "その他の記述": "..."
+  }
+}
+```
+
+これは Box2DWeb の一部機能が DOM の型定義に依存する形で定義されているためです。
+
+(注: Akashic Engine のコンテンツは、必ずしもブラウザ環境で実行されるとは限らないため、DOM 依存の機能は利用できません。
+ここでは Box2DWeb の型エラーを回避するために `"dom"` を加えていますが、
+引き続き DOM 依存の機能 (`document` など) は利用できない (コンパイルを通しても実行時エラーになりうる) ことに注意してください。)
+
+またコード上では `require()` ではなく、`import` 文を使うことになります。
+
+```typescript
+import * as b2 from "@akashic-extension/akashic-box2d";
+```
+
 ## 初期化
 
 まず、`scene.loaded` 時に `Box2D` クラスのインスタンスである `box2d` を生成します。
@@ -45,12 +70,12 @@ var b2 = require("@akashic-extension/akashic-box2d");
 
 ```javascript
 scene.loaded.add(function() {
-    var box2d = new b2.Box2D({
-      gravity: [0, 9.8],
-      scale: 50,
-      sleep: true
-    });
-    ...
+  var box2d = new b2.Box2D({
+    gravity: [0, 9.8],
+    scale: 50,
+    sleep: true
+  });
+  ...
 }
 ```
 
