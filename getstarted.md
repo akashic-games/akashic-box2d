@@ -45,7 +45,7 @@ TypeScript で開発している場合、tsconfig.json の `"lib"` の項目に 
 {
   "compilerOptions": {
     "lib": ["es5", "dom"],
-    (...その他の記述)
+    "その他の記述": "..."
   }
 }
 ```
