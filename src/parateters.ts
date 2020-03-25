@@ -74,7 +74,7 @@ export interface Box2DFixtureDef {
 	/**
 	 * ボディの形状。
 	 */
-	shape: box2dweb.Collision.Shapes.b2PolygonShape | box2dweb.Collision.Shapes.b2CircleShape;
+	shape?: box2dweb.Collision.Shapes.b2PolygonShape | box2dweb.Collision.Shapes.b2CircleShape;
 
 	/**
 	 * 密度 (kg/m^2)。

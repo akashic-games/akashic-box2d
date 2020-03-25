@@ -23,7 +23,7 @@ export interface Box2DParameter {
 /**
  * AkashicのエンティティをBox2DWebのb2Worldに追加し、演算結果をエンティティに反映するクラス。
  */
-export class Box2D implements g.Destroyable {
+export class Box2D {
 	/**
 	 * `b2World` のインスタンス。
 	 */
@@ -40,6 +40,7 @@ export class Box2D implements g.Destroyable {
 	scale: number;
 
 	private _createBodyCount: number = 0;
+	private _matrix: g.PlainMatrix = new g.PlainMatrix();
 
 	/**
 	 * `Box2D` のインスタンスを生成する。
@@ -61,6 +62,7 @@ export class Box2D implements g.Destroyable {
 	/**
 	 * このクラスにボディを追加し、その `EBody` を返す。
 	 * すでに同エンティティが追加されている場合は何もせず `null` を返す。
+	 * エンティティのアンカーポイントが (0.5, 0.5) に指定される点に注意。
 	 * @param entity 対象のエンティティ
 	 * @param bodyDef 対象のb2BodyDef
 	 * @param fixtureDef 対象のb2FixtureDefまたは対象のb2FixtureDefの配列
@@ -73,15 +75,34 @@ export class Box2D implements g.Destroyable {
 		}
 
 		const fixtureDefs = Array.isArray(fixtureDef) ? fixtureDef : [fixtureDef];
+
+		for (let i = 0; i < fixtureDefs.length; i++) {
+			if (!fixtureDefs[i].shape)
+				throw new Error("Missing parameter: shape");
+		}
+
 		const b2Body = this.world.CreateBody(bodyDef);
 
 		for (let i = 0; i < fixtureDefs.length; i++) {
 			b2Body.CreateFixture(fixtureDefs[i]);
 		}
 
-		const userData = bodyDef.userData != null ? bodyDef.userData : entity.id;
-		b2Body.SetUserData(userData);
-		b2Body.SetPositionAndAngle(this.vec2(entity.x + entity.width / 2, entity.y + entity.height / 2), this.radian(entity.angle));
+		if (entity.anchorX !== .5 || entity.anchorY !== .5) {
+			const m = this._matrix;
+			const e = entity;
+			m.update(e.width, e.height, e.scaleX, e.scaleY, e.angle, e.x, e.y, e.anchorX, e.anchorY);
+			const {x, y} = m.multiplyPoint({x: e.width / 2, y: e.height / 2});
+			e.x = x;
+			e.y = y;
+			e.anchorX = .5;
+			e.anchorY = .5;
+		}
+
+		b2Body.SetPositionAndAngle(
+			this.vec2(entity.x, entity.y),
+			this.radian(entity.angle)
+		);
+		b2Body.SetUserData(bodyDef.userData != null ? bodyDef.userData : entity.id);
 
 		const body: EBody = {
 			id: `${this._createBodyCount++}`,
@@ -155,7 +176,7 @@ export class Box2D implements g.Destroyable {
 	 */
 	step(dt: number, velocityIteration: number = 10, positionIteration: number = 10): void {
 		this.world.Step(dt, velocityIteration, positionIteration);
-		this.stepBody();
+		this.stepBodies();
 	}
 
 	/**
@@ -209,7 +230,9 @@ export class Box2D implements g.Destroyable {
 	 */
 	createFixtureDef(fixtureDef: Box2DFixtureDef): box2dweb.Dynamics.b2FixtureDef {
 		const def = new box2dweb.Dynamics.b2FixtureDef();
-		def.shape = fixtureDef.shape;
+		if (fixtureDef.shape != null) {
+			def.shape = fixtureDef.shape;
+		}
 		if (fixtureDef.density != null) {
 			def.density = fixtureDef.density;
 		}
@@ -303,7 +326,7 @@ export class Box2D implements g.Destroyable {
 		return new box2dweb.Common.Math.b2Vec2(x / this.scale, y / this.scale);
 	}
 
-	private stepBody(): void {
+	private stepBodies(): void {
 		for (let i = 0; i < this.bodies.length; i++) {
 			const b2Body = this.bodies[i].b2Body;
 			const entity = this.bodies[i].entity;
@@ -311,8 +334,10 @@ export class Box2D implements g.Destroyable {
 				continue;
 			}
 			const pos = b2Body.GetPosition();
-			entity.x = pos.x * this.scale - entity.width / 2;
-			entity.y = pos.y * this.scale - entity.height / 2;
+			entity.anchorX = .5;
+			entity.anchorY = .5;
+			entity.x = pos.x * this.scale;
+			entity.y = pos.y * this.scale;
 			entity.angle = this.degree(b2Body.GetAngle());
 			entity.modified();
 		}

@@ -14,7 +14,7 @@ export interface ContactManagerParameter {
 /**
  * 衝突判定を管理するクラス。
  */
-export class ContactManager implements g.Destroyable {
+export class ContactManager {
 	/**
 	 * Box2D のインスタンス。
 	 */

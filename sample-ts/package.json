@@ -1,6 +1,7 @@
 {
   "name": "akashic-box2d-sample",
   "version": "0.0.0",
+  "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,16 +13,15 @@
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
   "devDependencies": {
-    "@akashic/akashic-cli": "~1.5.16",
-    "@akashic/akashic-engine": "~2.4.13",
-    "@akashic/akashic-sandbox": "~0.13.57",
-    "@types/node": "7.0.11",
-    "tslint": "~5.14.0",
-    "typescript": "~2.6.2"
+    "@akashic/akashic-cli": "~1.12.2",
+    "@akashic/akashic-engine": "~3.0.0-beta.15",
+    "@akashic/akashic-sandbox": "~0.16.3",
+    "@types/node": "13.9.3",
+    "tslint": "~6.1.0",
+    "typescript": "~3.8.3"
   },
-  "private": true,
   "dependencies": {
-    "@akashic-extension/akashic-box2d": "~2.0.0",
+    "@akashic-extension/akashic-box2d": "file:../akashic-extension-akashic-box2d-2.3.0.tgz",
     "box2dweb": "~2.1.0-b"
   }
 }
