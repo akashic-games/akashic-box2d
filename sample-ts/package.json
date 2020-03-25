@@ -21,7 +21,6 @@
     "typescript": "~3.8.3"
   },
   "dependencies": {
-    "@akashic-extension/akashic-box2d": "file:../akashic-extension-akashic-box2d-2.3.0.tgz",
-    "box2dweb": "~2.1.0-b"
+    "@akashic-extension/akashic-box2d": "file:../akashic-extension-akashic-box2d-2.3.0.tgz"
   }
 }
