@@ -53,11 +53,6 @@ npm run build
 
 ## テスト方法
 
-1. [TSLint](https://github.com/palantir/tslint "TSLint") を使ったLint
-2. [Jasmine](http://jasmine.github.io "Jasmine") を使ったテスト
-
-がそれぞれ実行されます。
-
 ```sh
 npm test
 ```
