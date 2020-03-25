@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## unreleased changes
+* `Box2DOption` を `Box2DParameter` に変更
+* `BodyOption` を `Box2DBodyDef` に変更
+* `FixtureOption` を `Box2DFixtureDef` に変更
+* 衝突判定をラップするクラス `ContactManager` を追加
+* `EBody#id` を追加
+* テスト環境を jest に変更
+* 依存モジュールの更新
+
 ## 2.3.0
 * box2dwebに以下の変更を行うパッチの追加
     * 実行環境によって三角関数の返す値が異なることにより、物理計算の結果も異なるものになる問題の修正

@@ -1,62 +1,79 @@
-import * as b2 from "box2dweb";
-import {BodyType} from "./BodyType";
-import * as options from "./Box2DOptions";
+import * as box2dweb from "box2dweb";
+import { EBody, Box2DFixtureDef, Box2DBodyDef } from "./parateters";
+
+/**
+ * `Box2D` のインスタンス生成時に指定するパラメータ。
+ */
+export interface Box2DParameter {
+	/**
+	 * 重力の方向 (m/s^2)。
+	 */
+	gravity: number[];
+	/**
+	 * スケール (pixel/m)。
+	 */
+	scale: number;
+	/**
+	 * 停止した物体を物理演算対象とするかどうか。
+	 * 省略時はtrue。
+	 */
+	sleep?: boolean;
+}
 
 /**
  * AkashicのエンティティをBox2DWebのb2Worldに追加し、演算結果をエンティティに反映するクラス。
  */
 export class Box2D implements g.Destroyable {
-
 	/**
-	 * b2Worldのインスタンス。
+	 * `b2World` のインスタンス。
 	 */
-	world: b2.Dynamics.b2World;
+	world: box2dweb.Dynamics.b2World;
 
 	/**
-	 * b2Worldのスケール。
+	 * このクラスが保持する `EBody` のリスト。
+	 */
+	bodies: EBody[] = [];
+
+	/**
+	 * 物理世界のピクセルサイズとAkashicのピクセルサイズのスケール比。
 	 */
 	scale: number;
 
-	/**
-	 * このクラスが保持するEBodyのリスト。
-	 */
-	bodies: options.EBody[];
+	private _createBodyCount: number = 0;
 
 	/**
-	 * AkashicのエンティティをBox2DWebのb2Worldに追加し、演算結果をエンティティに反映するクラスを生成する。
-	 * @param param Worldの生成オプション
+	 * `Box2D` のインスタンスを生成する。
+	 * @param param `b2World` の生成オプション
 	 */
-	constructor(param: options.Box2DOption) {
-		if (!param.gravity)
-			throw new Error("Missing parameter: gravity");
-		if (!param.scale)
-			throw new Error("Missing parameter: scale");
+	constructor(param: Box2DParameter) {
+		if (param.gravity == null) {
+			throw g.ExceptionFactory.createAssertionError("Missing parameter: gravity");
+		}
+		if (param.scale == null) {
+			throw g.ExceptionFactory.createAssertionError("Missing parameter: scale");
+		}
+		const sleep = param.sleep != null ? !!param.sleep : true;
 
-		var sleep = param.sleep != null ? param.sleep : true;
-
-		this.world = new b2.Dynamics.b2World(new b2.Common.Math.b2Vec2(param.gravity[0], param.gravity[1]), sleep);
-		this.bodies = [];
 		this.scale = param.scale;
+		const b2world = new box2dweb.Dynamics.b2World(this.vec2(param.gravity[0], param.gravity[1]), sleep);
+		this.world = b2world;
 	}
 
 	/**
-	 * このクラスにボディを追加し、そのEBodyを返す。
-	 * すでに同エンティティが追加されている場合は何もしない。
+	 * このクラスにボディを追加し、その `EBody` を返す。
+	 * すでに同エンティティが追加されている場合は何もせず `null` を返す。
 	 * @param entity 対象のエンティティ
 	 * @param bodyDef 対象のb2BodyDef
 	 * @param fixtureDef 対象のb2FixtureDefまたは対象のb2FixtureDefの配列
 	 */
-	createBody(entity: g.E, bodyDef: b2.Dynamics.b2BodyDef, fixtureDef: b2.Dynamics.b2FixtureDef | b2.Dynamics.b2FixtureDef[]): options.EBody {
+	createBody(entity: g.E, bodyDef: box2dweb.Dynamics.b2BodyDef, fixtureDef: box2dweb.Dynamics.b2FixtureDef | box2dweb.Dynamics.b2FixtureDef[]): EBody | null {
 		for (let i = 0; i < this.bodies.length; i++) {
-			if (this.bodies[i].entity === entity) return;
+			if (this.bodies[i].entity === entity) {
+				return null;
+			}
 		}
+
 		const fixtureDefs = Array.isArray(fixtureDef) ? fixtureDef : [fixtureDef];
-
-		for (let i = 0; i < fixtureDefs.length; i++) {
-			if (!fixtureDefs[i].shape)
-				throw new Error("Missing parameter: shape");
-		}
-
 		const b2Body = this.world.CreateBody(bodyDef);
 
 		for (let i = 0; i < fixtureDefs.length; i++) {
@@ -67,34 +84,60 @@ export class Box2D implements g.Destroyable {
 		b2Body.SetUserData(userData);
 		b2Body.SetPositionAndAngle(this.vec2(entity.x + entity.width / 2, entity.y + entity.height / 2), this.radian(entity.angle));
 
-		const body = {
-			entity: entity,
-			b2body: b2Body
+		const body: EBody = {
+			id: `${this._createBodyCount++}`,
+			entity,
+			b2Body
 		};
 		this.bodies.push(body);
 		return body;
 	}
 
 	/**
-	 * このクラスに追加されたボディを削除する。
-	 * @param body 削除するボディ
+	 * このクラスに追加された `EBody` を削除する。
+	 * @param ebody 削除する `EBody`
 	 */
-	removeBody(body: options.EBody): void {
-		this.world.DestroyBody(body.b2body);
-		var index = this.bodies.indexOf(body);
-		if (index === -1)
+	removeBody(ebody: EBody): void {
+		const index = this.bodies.indexOf(ebody);
+		if (index === -1) {
 			return;
-
+		}
+		this.world.DestroyBody(ebody.b2Body);
 		this.bodies.splice(index, 1);
+	}
+
+	/**
+	 * エンティティからこのクラスに追加されている `EBody` を返す。
+	 * @param entity エンティティ
+	 */
+	getEBodyFromEntity(entity: g.E): EBody | null {
+		for (let i = 0; i < this.bodies.length; i++) {
+			if (this.bodies[i].entity === entity) {
+				return this.bodies[i];
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * `b2Body` からこのクラスに追加されている `EBody` を返す。
+	 * @param b2Body b2Body
+	 */
+	getEBodyFromb2Body(b2Body: box2dweb.Dynamics.b2Body): EBody | null {
+		for (let i = 0; i < this.bodies.length; i++) {
+			if (this.bodies[i].b2Body === b2Body) {
+				return this.bodies[i];
+			}
+		}
+		return null;
 	}
 
 	/**
 	 * このクラスのインスタンスを破棄する。
 	 */
 	destroy(): void {
-		this.world = undefined;
-		this.bodies = undefined;
-		this.scale = undefined;
+		this.world = undefined!;
+		this.bodies = undefined!;
 	}
 
 	/**
@@ -105,29 +148,15 @@ export class Box2D implements g.Destroyable {
 	}
 
 	/**
-	 * Worldの時間を経過させ、このクラスに追加されたエンティティの座標と角度を変更する。
+	 * 時間を経過させ、このクラスに追加されたエンティティの座標と角度を変更する。
 	 * このメソッドは暗黙的に `E#modified()` を呼び出している。
 	 * @param dt 経過させる時間単位
 	 * @param velocityIteration 速度演算のイテレーション回数 省略時は10
 	 * @param positionIteration 位置演算のイテレーション回数 省略時は10
 	 */
-	step(dt: number, velocityIteration?: number, positionIteration?: number): void {
-		velocityIteration = velocityIteration != null ? velocityIteration : 10;
-		positionIteration = positionIteration != null ? positionIteration : 10;
+	step(dt: number, velocityIteration: number = 10, positionIteration: number = 10): void {
 		this.world.Step(dt, velocityIteration, positionIteration);
-
-		for (let i = 0; i < this.bodies.length; ++i) {
-			const body = this.bodies[i].b2body;
-			const entity = this.bodies[i].entity;
-			if (entity.destroyed()) continue;
-			if (body.IsAwake()) {
-				const pos = body.GetPosition();
-				entity.x = pos.x * this.scale - entity.width / 2;
-				entity.y = pos.y * this.scale - entity.height / 2;
-				entity.angle = this.degree(body.GetAngle());
-				entity.modified();
-			}
-		}
+		this.stepBody();
 	}
 
 	/**
@@ -136,43 +165,41 @@ export class Box2D implements g.Destroyable {
 	 * @param body2 対象のボディ
 	 * @param contact 対象のb2Contacts
 	 */
-	isContact(body1: options.EBody, body2: options.EBody, contact: b2.Dynamics.Contacts.b2Contact): boolean {
+	isContact(body1: EBody, body2: EBody, contact: box2dweb.Dynamics.Contacts.b2Contact): boolean {
 		const bodyA = contact.GetFixtureA().GetBody().GetUserData();
 		const bodyB = contact.GetFixtureB().GetBody().GetUserData();
-		if ( (body1.b2body.GetUserData() === bodyA && body2.b2body.GetUserData() === bodyB)
-			|| (body1.b2body.GetUserData() === bodyB && body2.b2body.GetUserData() === bodyA) ) {
+		if ( (body1.b2Body.GetUserData() === bodyA && body2.b2Body.GetUserData() === bodyB)
+			|| (body1.b2Body.GetUserData() === bodyB && body2.b2Body.GetUserData() === bodyA) ) {
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * 長方形を表すb2PolygonShapeインスタンスを生成する。
-	 * Box2DWebのSetAsBoxを利用している。
+	 * 長方形を表す `b2PolygonShape` インスタンスを生成する。
 	 * @param width 横幅 px
 	 * @param height 縦幅 px
 	 */
-	createRectShape(width: number, height: number): b2.Collision.Shapes.b2PolygonShape {
-		const shape = new b2.Collision.Shapes.b2PolygonShape;
+	createRectShape(width: number, height: number): box2dweb.Collision.Shapes.b2PolygonShape {
+		const shape = new box2dweb.Collision.Shapes.b2PolygonShape();
 		shape.SetAsBox(width / (this.scale * 2), height / (this.scale * 2));
 		return shape;
 	}
 
 	/**
-	 * 円を表すb2CircleShapeインスタンスを生成する。
+	 * 円を表す `b2CircleShape` インスタンスを生成する。
 	 * @param diameter 直径 px
 	 */
-	createCircleShape(diameter: number): b2.Collision.Shapes.b2CircleShape {
-		return new b2.Collision.Shapes.b2CircleShape((diameter / 2) / this.scale);
+	createCircleShape(diameter: number): box2dweb.Collision.Shapes.b2CircleShape {
+		return new box2dweb.Collision.Shapes.b2CircleShape((diameter / 2) / this.scale);
 	}
 
 	/**
-	 * 任意の多角形を表すb2PolygonShapeインスタンスを生成する。
-	 * Box2DWebのSetAsArrayを利用している。
-	 * @param vertices[] 頂点のb2Vec2配列
+	 * 任意の多角形を表す `b2PolygonShape` インスタンスを生成する。
+	 * @param vertices[] 各頂点の `b2Vec2` 配列
 	 */
-	createPolygonShape(vertices: b2.Common.Math.b2Vec2[]): b2.Collision.Shapes.b2PolygonShape {
-		const shape = new b2.Collision.Shapes.b2PolygonShape;
+	createPolygonShape(vertices: box2dweb.Common.Math.b2Vec2[]): box2dweb.Collision.Shapes.b2PolygonShape {
+		const shape = new box2dweb.Collision.Shapes.b2PolygonShape();
 		shape.SetAsArray(vertices, vertices.length);
 		return shape;
 	}
@@ -181,44 +208,80 @@ export class Box2D implements g.Destroyable {
 	 * b2FixtureDefインスタンスを生成する。
 	 * @param fixtureOption FixtureOption
 	 */
-	createFixtureDef(fixtureOption: options.FixtureOption) {
-		const fixtureDef = new b2.Dynamics.b2FixtureDef;
-		fixtureDef.density = fixtureOption.density != null ? fixtureOption.density : 0;
-		fixtureDef.friction = fixtureOption.friction != null ? fixtureOption.friction : 0.2;
-		fixtureDef.restitution = fixtureOption.restitution != null ? fixtureOption.restitution : 0;
-		fixtureDef.shape = fixtureOption.shape;
-
-		const opt = fixtureOption.filter || {};
-		fixtureDef.filter.categoryBits = opt.categoryBits != null ? opt.categoryBits : 0x1;
-		fixtureDef.filter.maskBits = opt.maskBits != null ? opt.maskBits : 0xFFFF;
-		fixtureDef.filter.groupIndex = opt.groupIndex != null ? opt.groupIndex : 0;
-		return fixtureDef;
+	createFixtureDef(fixtureDef: Box2DFixtureDef): box2dweb.Dynamics.b2FixtureDef {
+		const def = new box2dweb.Dynamics.b2FixtureDef();
+		def.shape = fixtureDef.shape;
+		if (fixtureDef.density != null) {
+			def.density = fixtureDef.density;
+		}
+		if (fixtureDef.friction != null) {
+			def.friction = fixtureDef.friction;
+		}
+		if (fixtureDef.restitution != null) {
+			def.restitution = fixtureDef.restitution;
+		}
+		if (fixtureDef.isSensor != null) {
+			def.isSensor = fixtureDef.isSensor;
+		}
+		if (fixtureDef.userData != null) {
+			def.userData = fixtureDef.userData;
+		}
+		const opt = fixtureDef.filter;
+		if (opt) {
+			def.filter.categoryBits = opt.categoryBits;
+			def.filter.maskBits = opt.maskBits;
+			if (opt.groupIndex != null) {
+				def.filter.groupIndex = opt.groupIndex;
+			}
+		}
+		return def;
 	}
 
 	/**
-	 * b2BodyDefインスタンスを生成する。
-	 * @param bodyOption BodyOption
+	 * `b2BodyDef` インスタンスを生成する。
+	 * @param bodyDef Box2DBodyDef
 	 */
-	createBodyDef(bodyOption: options.BodyOption) {
-		const bodyDef = new b2.Dynamics.b2BodyDef;
-		bodyDef.type = bodyOption.type != null ? bodyOption.type : BodyType.Static;
-		bodyDef.userData = bodyOption.userData;
-		bodyDef.angularDamping = bodyOption.angularDamping != null ? bodyOption.angularDamping : 0;
-		bodyDef.angularVelocity = bodyOption.angularVelocity != null ? bodyOption.angularVelocity : 0;
-		bodyDef.linearDamping = bodyOption.linearDamping != null ? bodyOption.linearDamping : 0;
-		bodyDef.linearVelocity = bodyOption.linearVelocity != null ? bodyOption.linearVelocity : this.vec2(0, 0);
-		bodyDef.inertiaScale = bodyOption.inertiaScale != null ? bodyOption.inertiaScale : 1;
-		bodyDef.active = bodyOption.active != null ? bodyOption.active : true;
-		bodyDef.allowSleep = bodyOption.allowSleep != null ? bodyOption.allowSleep : true;
-		bodyDef.awake = bodyOption.awake != null ? bodyOption.awake : true;
-		bodyDef.bullet = bodyOption.bullet != null ? bodyOption.bullet : true;
-		bodyDef.fixedRotation = bodyOption.fixedRotation != null ? bodyOption.fixedRotation : false;
-		return bodyDef;
+	createBodyDef(bodyDef: Box2DBodyDef): box2dweb.Dynamics.b2BodyDef {
+		const def = new box2dweb.Dynamics.b2BodyDef();
+		if (bodyDef.type != null) {
+			def.type = bodyDef.type;
+		}
+		if (bodyDef.angularDamping != null) {
+			def.angularDamping = bodyDef.angularDamping;
+		}
+		if (bodyDef.angularVelocity != null) {
+			def.angularVelocity = bodyDef.angularVelocity;
+		}
+		if (bodyDef.linearDamping != null) {
+			def.linearDamping = bodyDef.linearDamping;
+		}
+		if (bodyDef.linearDamping != null) {
+			def.linearDamping = bodyDef.linearDamping;
+		}
+		if (bodyDef.active != null) {
+			def.active = bodyDef.active;
+		}
+		if (bodyDef.allowSleep != null) {
+			def.allowSleep = bodyDef.allowSleep;
+		}
+		if (bodyDef.awake != null) {
+			def.awake = bodyDef.awake;
+		}
+		if (bodyDef.bullet != null) {
+			def.bullet = bodyDef.bullet;
+		}
+		if (bodyDef.fixedRotation != null) {
+			def.fixedRotation = bodyDef.fixedRotation;
+		}
+		if (bodyDef.userData != null) {
+			def.userData = bodyDef.userData;
+		}
+		return def;
 	}
 
 	/**
 	 * ラジアンを度に変換する。
-	 * @param 対象のラジアン
+	 * @param radian 対象のラジアン
 	 */
 	degree(radian: number): number {
 		return radian * 180 / Math.PI;
@@ -226,18 +289,33 @@ export class Box2D implements g.Destroyable {
 
 	/**
 	 * 度をラジアンに変換する。
-	 * @param 対象の度
+	 * @param degree 対象の度
 	 */
 	radian(degree: number): number {
 		return degree * Math.PI / 180;
 	}
 
 	/**
-	 * ビクセルスケールに変換したb2Vec2インスタンスを生成する。
+	 * この物理エンジン世界のビクセルスケールに変換した `b2Vec2` インスタンスを生成する。
 	 * @param x x方向のピクセル値
 	 * @param y y方向のピクセル値
 	 */
-	vec2(x: number, y: number): b2.Common.Math.b2Vec2 {
-		return new b2.Common.Math.b2Vec2(x / this.scale, y / this.scale);
+	vec2(x: number, y: number): box2dweb.Common.Math.b2Vec2 {
+		return new box2dweb.Common.Math.b2Vec2(x / this.scale, y / this.scale);
+	}
+
+	private stepBody(): void {
+		for (let i = 0; i < this.bodies.length; i++) {
+			const b2Body = this.bodies[i].b2Body;
+			const entity = this.bodies[i].entity;
+			if (entity.destroyed()) {
+				continue;
+			}
+			const pos = b2Body.GetPosition();
+			entity.x = pos.x * this.scale - entity.width / 2;
+			entity.y = pos.y * this.scale - entity.height / 2;
+			entity.angle = this.degree(b2Body.GetAngle());
+			entity.modified();
+		}
 	}
 }
