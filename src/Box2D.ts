@@ -53,9 +53,8 @@ export class Box2D implements g.Destroyable {
 			throw g.ExceptionFactory.createAssertionError("Missing parameter: scale");
 		}
 		const sleep = param.sleep != null ? !!param.sleep : true;
-
+		const b2world = new box2dweb.Dynamics.b2World(new box2dweb.Common.Math.b2Vec2(param.gravity[0], param.gravity[1]), sleep);
 		this.scale = param.scale;
-		const b2world = new box2dweb.Dynamics.b2World(this.vec2(param.gravity[0], param.gravity[1]), sleep);
 		this.world = b2world;
 	}
 
