@@ -40,6 +40,7 @@ export class Box2D {
 	scale: number;
 
 	private _createBodyCount: number = 0;
+	// オブジェクト生成を減らすためのキャッシュ
 	private _matrix: g.PlainMatrix = new g.PlainMatrix();
 
 	/**
