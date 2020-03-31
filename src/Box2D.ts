@@ -87,15 +87,15 @@ export class Box2D {
 			b2Body.CreateFixture(fixtureDefs[i]);
 		}
 
-		if (entity.anchorX !== .5 || entity.anchorY !== .5) {
+		if (entity.anchorX !== 0.5 || entity.anchorY !== 0.5) {
 			const m = this._matrix;
 			const e = entity;
 			m.update(e.width, e.height, e.scaleX, e.scaleY, e.angle, e.x, e.y, e.anchorX, e.anchorY);
 			const {x, y} = m.multiplyPoint({x: e.width / 2, y: e.height / 2});
 			e.x = x;
 			e.y = y;
-			e.anchorX = .5;
-			e.anchorY = .5;
+			e.anchorX = 0.5;
+			e.anchorY = 0.5;
 		}
 
 		b2Body.SetPositionAndAngle(
@@ -334,8 +334,8 @@ export class Box2D {
 				continue;
 			}
 			const pos = b2Body.GetPosition();
-			entity.anchorX = .5;
-			entity.anchorY = .5;
+			entity.anchorX = 0.5;
+			entity.anchorY = 0.5;
 			entity.x = pos.x * this.scale;
 			entity.y = pos.y * this.scale;
 			entity.angle = this.degree(b2Body.GetAngle());
