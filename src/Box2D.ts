@@ -76,12 +76,6 @@ export class Box2D {
 		}
 
 		const fixtureDefs = Array.isArray(fixtureDef) ? fixtureDef : [fixtureDef];
-
-		for (let i = 0; i < fixtureDefs.length; i++) {
-			if (!fixtureDefs[i].shape)
-				throw new Error("Missing parameter: shape");
-		}
-
 		const b2Body = this.world.CreateBody(bodyDef);
 
 		for (let i = 0; i < fixtureDefs.length; i++) {
