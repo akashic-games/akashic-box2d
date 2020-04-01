@@ -9,6 +9,6 @@
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
   "dependencies": {
-    "@akashic-extension/akashic-box2d": "file:../akashic-extension-akashic-box2d-3.0.0-beta.0.tgz"
+    "@akashic-extension/akashic-box2d": "~3.0.0-beta.0"
   }
 }
