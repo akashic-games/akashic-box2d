@@ -4,7 +4,7 @@ import { Box2D, BodyType, ContactManager } from "../";
 declare global {
 	namespace NodeJS {
 		interface Global {
-			g: any;
+			g: typeof g;
 		}
 	}
 }

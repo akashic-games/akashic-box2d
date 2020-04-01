@@ -1,6 +1,6 @@
 {
   "name": "@akashic-extension/akashic-box2d",
-  "version": "2.3.0",
+  "version": "3.0.0-beta.0",
   "description": "Box2D physics engine for Akashic",
   "main": "lib/index.js",
   "scripts": {
@@ -19,7 +19,8 @@
     "url": "https://github.com/akashic-games/akashic-box2d.git"
   },
   "publishConfig": {
-    "@akashic-extension:registry": "https://registry.npmjs.org/"
+    "@akashic-extension:registry": "https://registry.npmjs.org/",
+    "tag": "next"
   },
   "files": [
     "lib",
@@ -28,16 +29,17 @@
     "README.md"
   ],
   "dependencies": {
-    "@akashic/akashic-engine": "~2.6.1",
+    "@akashic/akashic-engine": "~3.0.0-beta.15",
     "box2dweb": "~2.1.0-b"
   },
   "devDependencies": {
     "@types/jest": "25.1.4",
+    "@types/node": "12.12.31",
     "jest": "^25.1.0",
     "shx": "^0.3.2",
     "ts-jest": "^25.2.1",
     "tslint": "^6.1.0",
-    "typedoc": "^0.14.2",
+    "typedoc": "^0.17.3",
     "typescript": "^3.8.3"
   },
   "typings": "lib/index.d.ts",

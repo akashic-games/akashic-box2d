@@ -1,6 +1,7 @@
 {
   "name": "akashic-box2d-example",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -8,7 +9,6 @@
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
   "dependencies": {
-    "@akashic-extension/akashic-box2d": "~2.0.0",
-    "box2dweb": "~2.1.0-b"
+    "@akashic-extension/akashic-box2d": "file:../akashic-extension-akashic-box2d-3.0.0-beta.0.tgz"
   }
 }

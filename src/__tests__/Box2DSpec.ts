@@ -1,5 +1,15 @@
+import * as g from "@akashic/akashic-engine";
 import * as box2dweb from "box2dweb";
 import { Box2D, BodyType, Box2DParameter } from "../";
+
+declare global {
+	namespace NodeJS {
+		interface Global {
+			g: typeof g;
+		}
+	}
+}
+global.g = g;
 
 describe("Box2D specs", () => {
 	let entity1: any;
@@ -16,6 +26,10 @@ describe("Box2D specs", () => {
 			y: 0,
 			width: 10,
 			height: 10,
+			anchorX: 0,
+			anchorY: 0,
+			scaleX: 1,
+			scaleY: 1,
 			angle: 0,
 			id: 1,
 			mcount: 0,
@@ -32,6 +46,10 @@ describe("Box2D specs", () => {
 			width: 10,
 			height: 10,
 			angle: 0,
+			anchorX: 0,
+			anchorY: 0,
+			scaleX: 1,
+			scaleY: 1,
 			id: 2,
 			mcount: 0,
 			modified: () => {
@@ -90,7 +108,15 @@ describe("Box2D specs", () => {
 		expect(b2.bodies[0].b2Body).toEqual(body1!.b2Body);
 		expect(b2.bodies[1].b2Body).toEqual(body2!.b2Body);
 		expect(b2.bodies[0].entity).toEqual(entity1);
+		expect(b2.bodies[0].entity.x).toBe(5);
+		expect(b2.bodies[0].entity.y).toBe(5);
+		expect(b2.bodies[0].entity.anchorX).toBe(.5);
+		expect(b2.bodies[0].entity.anchorY).toBe(.5);
 		expect(b2.bodies[1].entity).toEqual(entity2);
+		expect(b2.bodies[1].entity.x).toBe(5);
+		expect(b2.bodies[1].entity.y).toBe(105);
+		expect(b2.bodies[1].entity.anchorX).toBe(.5);
+		expect(b2.bodies[1].entity.anchorY).toBe(.5);
 	});
 
 	it("createBody - missing shape", () => {
@@ -209,7 +235,7 @@ describe("Box2D specs", () => {
 		expect(fixDef.density).toBe(0);
 		expect(fixDef.friction).toBe(0.2);
 		expect(fixDef.restitution).toBe(0);
-		expect(fixDef.shape).toBeUndefined();
+		expect(fixDef.shape).toBeNull();
 	});
 
 	it("createBodyDef - missing BodyType", () => {
