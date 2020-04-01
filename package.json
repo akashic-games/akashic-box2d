@@ -19,7 +19,8 @@
     "url": "https://github.com/akashic-games/akashic-box2d.git"
   },
   "publishConfig": {
-    "@akashic-extension:registry": "https://registry.npmjs.org/"
+    "@akashic-extension:registry": "https://registry.npmjs.org/",
+    "tag": "next"
   },
   "files": [
     "lib",
