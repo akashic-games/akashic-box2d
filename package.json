@@ -29,7 +29,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@akashic/akashic-engine": "~3.0.0-beta.15",
+    "@akashic/akashic-engine": "~3.0.0-beta.27",
     "box2dweb": "~2.1.0-b"
   },
   "devDependencies": {
