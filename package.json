@@ -1,6 +1,6 @@
 {
   "name": "@akashic-extension/akashic-box2d",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Box2D physics engine for Akashic",
   "main": "lib/index.js",
   "scripts": {
@@ -19,7 +19,8 @@
     "url": "https://github.com/akashic-games/akashic-box2d.git"
   },
   "publishConfig": {
-    "@akashic-extension:registry": "https://registry.npmjs.org/"
+    "@akashic-extension:registry": "https://registry.npmjs.org/",
+    "tag": "for_ae2x"
   },
   "files": [
     "lib",
