@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## unreleased changes
+## 3.0.0
+* akashic-engine@3.0.0 に追従
 * `Box2DOption` を `Box2DParameter` に変更
 * `BodyOption` を `Box2DBodyDef` に変更
 * `FixtureOption` を `Box2DFixtureDef` に変更

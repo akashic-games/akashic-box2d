@@ -2,7 +2,7 @@
 
 ## これは
 
-Akashic上で2D物理エンジンを実行するためのakashic-box2d 0.1.3とその利用方法を記述したドキュメントです。
+Akashic上で2D物理エンジンを実行するための akashic-box2d とその利用方法を記述したドキュメントです。
 
 akashic-box2dは、2D物理演算ライブラリである[Box2DWeb](https://github.com/hecht-software/box2dweb)をAkashicで利用するためのモジュールです。
 
