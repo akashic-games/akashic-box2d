@@ -5,7 +5,7 @@ import { Box2D, BodyType, Box2DParameter } from "../";
 declare global {
 	namespace NodeJS {
 		interface Global {
-			g: typeof g;
+			g: any;
 		}
 	}
 }
