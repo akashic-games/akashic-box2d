@@ -1,17 +1,20 @@
-import * as Box2D from "@akashic-extension/akashic-box2d";
-var game = g.game;
+// game.json の globalScripts フィールドにファイル名を列挙しておく必要がある点に注意
+import * as b2 from "@akashic-extension/akashic-box2d";
+const game = g.game;
 
 export = () => {
-	const scene = new g.Scene({game: game, assetIds: ["soccer", "pentagon"]});
-	scene.loaded.add(() => {
+	const scene = new g.Scene({
+		game: game,
+		assetIds: ["soccer", "pentagon"]
+	});
 
+	scene.loaded.add(() => {
 		// 物理エンジン世界の生成
-		const worldOption = {
+		const box2d = new b2.Box2D({
 			gravity: [0, 9.8],
 			scale: 50,
 			sleep: true
-		};
-		const b2 = new Box2D.Box2D(worldOption);
+		});
 
 		// 地面エンティティの生成
 		const floor = new g.FilledRect({
@@ -25,20 +28,20 @@ export = () => {
 		scene.append(floor);
 
 		// 地面エンティティの性質を定義
-		const floorDef = b2.createFixtureDef({
+		const floorDef = box2d.createFixtureDef({
 			density: 1.0, // 密度
 			friction: 0.5, // 摩擦係数
 			restitution: 0.3, // 反発係数
-			shape: b2.createRectShape(floor.width, floor.height) // 地面エンティティを四角に設定
+			shape: box2d.createRectShape(floor.width, floor.height) // 地面エンティティを四角に設定
 		});
 
 		// 地面エンティティを静的物体化
-		const staticDef = b2.createBodyDef({
-			type: Box2D.BodyType.Static
+		const staticDef = box2d.createBodyDef({
+			type: b2.BodyType.Static
 		});
 
 		// Box2Dに地面エンティティを追加
-		const floorBody = b2.createBody(floor, staticDef, floorDef);
+		const floorBody = box2d.createBody(floor, staticDef, floorDef);
 
 		// rect1エンティティの生成
 		const rect1 = new g.FilledRect({
@@ -65,20 +68,21 @@ export = () => {
 		// サッカーボールエンティティの作成
 		const soccer = new g.Sprite({
 			scene: scene,
-			src: scene.assets["soccer"],
+			src: scene.asset.getImageById("soccer"),
 			x: 105,
 			y: 30,
 			width: 40,
 			height: 40,
 			srcWidth: 100,
-			srcHeight: 98
+			srcHeight: 98,
+			touchable: true
 		});
 		scene.append(soccer);
 
 		// 五角形エンティティの作成
 		const pentagon = new g.Sprite({
 			scene: scene,
-			src: scene.assets["pentagon"],
+			src: scene.asset.getImageById("pentagon"),
 			x: 150,
 			y: 0,
 			width: 40,
@@ -89,81 +93,82 @@ export = () => {
 		scene.append(pentagon);
 
 		// エンティティの性質を定義
-		const entityDef = b2.createFixtureDef({
+		const entityDef = box2d.createFixtureDef({
 			density: 1.0, // 密度
 			friction: 0.5, // 摩擦係数
 			restitution: 0.3 // 反発係数
 		});
 
 		// 動的物体化
-		const dynamicDef = b2.createBodyDef({
-			type: Box2D.BodyType.Dynamic
+		const dynamicDef = box2d.createBodyDef({
+			type: b2.BodyType.Dynamic
 		});
 
 		// rect1エンティティを四角に設定
-		entityDef.shape = b2.createRectShape(rect1.width, rect1.height);
+		entityDef.shape = box2d.createRectShape(rect1.width, rect1.height);
+
 		// rect1エンティティをBox2Dに追加
-		b2.createBody(rect1, dynamicDef, entityDef);
+		box2d.createBody(rect1, dynamicDef, entityDef);
 
 		// rect2エンティティを四角に設定
-		entityDef.shape = b2.createRectShape(rect2.width, rect2.height);
+		entityDef.shape = box2d.createRectShape(rect2.width, rect2.height);
+
 		// rect2エンティティをBox2Dに追加
-		b2.createBody(rect2, dynamicDef, entityDef);
+		box2d.createBody(rect2, dynamicDef, entityDef);
 
 		// サッカーボールエンティティを円に設定
-		entityDef.shape = b2.createCircleShape(soccer.width);
+		entityDef.shape = box2d.createCircleShape(soccer.width);
 		// サッカーボールエンティティをBox2Dに追加
-		const soccerBody = b2.createBody(soccer, dynamicDef, entityDef);
+		const soccerBody = box2d.createBody(soccer, dynamicDef, entityDef);
 
 		// 五角形エンティティを設定
 		const vertices = [
-			b2.vec2(20 - pentagon.width / 2, 0 - pentagon.height / 2),
-			b2.vec2(pentagon.width - pentagon.width / 2, 14 - pentagon.height / 2),
-			b2.vec2(32 - pentagon.width / 2, pentagon.height - pentagon.height / 2),
-			b2.vec2(8 - pentagon.width / 2, pentagon.height - pentagon.height / 2),
-			b2.vec2(0 - pentagon.width / 2, 14 - pentagon.height / 2)
+			box2d.vec2(20 - pentagon.width / 2, 0 - pentagon.height / 2),
+			box2d.vec2(pentagon.width - pentagon.width / 2, 14 - pentagon.height / 2),
+			box2d.vec2(32 - pentagon.width / 2, pentagon.height - pentagon.height / 2),
+			box2d.vec2(8 - pentagon.width / 2, pentagon.height - pentagon.height / 2),
+			box2d.vec2(0 - pentagon.width / 2, 14 - pentagon.height / 2)
 		];
-		entityDef.shape = b2.createPolygonShape(vertices);
+		entityDef.shape = box2d.createPolygonShape(vertices);
 
 		// 五角形エンティティをBox2Dに追加
-		b2.createBody(pentagon, dynamicDef, entityDef);
+		box2d.createBody(pentagon, dynamicDef, entityDef);
 
 		// 接触イベントのリスナーを生成
-		const contactListener = new Box2D.Box2DWeb.Dynamics.b2ContactListener;
+		const contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener();
 		// 接触開始時のイベントリスナー
-		contactListener.BeginContact = (contact: Box2D.Box2DWeb.Dynamics.Contacts.b2Contact) => {
+		contactListener.BeginContact = contact => {
 			// サッカーボールと地面がぶつかったら地面の色を青にする
-			if (b2.isContact(floorBody, soccerBody, contact)) {
+			if (box2d.isContact(floorBody, soccerBody, contact)) {
 				floor.cssColor = "blue";
 				floor.modified();
 			}
 		};
 		// 接触が離れた時のイベントリスナー
-		contactListener.EndContact = (contact: Box2D.Box2DWeb.Dynamics.Contacts.b2Contact) => {
+		contactListener.EndContact = contact => {
 			// サッカーボールと地面が離れたら地面の色を黒にする
-			if (b2.isContact(floorBody, soccerBody, contact)) {
+			if (box2d.isContact(floorBody, soccerBody, contact)) {
 				floor.cssColor = "black";
 				floor.modified();
 			}
 		};
 		// イベントリスナーを設定
-		b2.world.SetContactListener(contactListener);
+		box2d.world.SetContactListener(contactListener);
 
-		soccer.touchable = true;
-		soccer.pointDown.add((o: g.PointDownEvent) => {
+		soccer.pointDown.add(e => {
 			const pos = getEntityPosition(soccer);
 			const delta = {
-				x: o.point.x - soccer.width / 2,
-				y: o.point.y - soccer.height / 2
+				x: e.point.x - soccer.width / 2,
+				y: e.point.y - soccer.height / 2
 			};
 			// ボールクリックでインパルスを与える
 			// ApplyImpulse()はBox2Dの機能です。
-			soccerBody.b2body.ApplyImpulse(b2.vec2(delta.x * -5, delta.y * -5), b2.vec2(pos.x, pos.y));
+			soccerBody.b2Body.ApplyImpulse(box2d.vec2(delta.x * -5, delta.y * -5), box2d.vec2(pos.x, pos.y));
 		});
 
 		scene.update.add(() => {
 			// 物理エンジンの世界をすすめる
-			b2.step(1 / game.fps);
+			box2d.step(1 / game.fps);
 		});
 
 		function getEntityPosition(entity: g.E) {
@@ -173,5 +178,6 @@ export = () => {
 			};
 		}
 	});
-	return scene;
+
+	game.pushScene(scene);
 };

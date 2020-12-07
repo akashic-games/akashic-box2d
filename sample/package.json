@@ -1,14 +1,21 @@
 {
   "name": "akashic-box2d-example",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "scripts": {
+    "prepare": "npm run scan",
+    "start": "akashic-sandbox .",
+    "scan": "akashic-cli-scan asset script && akashic-cli-scan globalScripts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
+  "devDependencies": {
+    "@akashic/akashic-cli-scan": "^0.5.71",
+    "@akashic/akashic-sandbox": "^0.17.1"
+  },
   "dependencies": {
-    "@akashic-extension/akashic-box2d": "~2.0.0",
-    "box2dweb": "~2.1.0-b"
+    "@akashic-extension/akashic-box2d": "~3.0.0"
   }
 }
