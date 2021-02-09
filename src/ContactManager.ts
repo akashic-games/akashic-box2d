@@ -20,8 +20,8 @@ export class ContactManager {
 	 */
 	box2d: Box2D;
 
-	private _beginContactTriggerMap: { [id: string]: g.Trigger<void>; } = {};
-	private _endContactTriggerMap: { [id: string]: g.Trigger<void>; } = {};
+	private _beginContactTriggerMap: { [id: string]: g.Trigger<void> } = {};
+	private _endContactTriggerMap: { [id: string]: g.Trigger<void> } = {};
 
 	/**
 	 * `ContactManager` のインスタンスを生成する。

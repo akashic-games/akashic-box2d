@@ -68,7 +68,11 @@ export class Box2D {
 	 * @param bodyDef 対象のb2BodyDef
 	 * @param fixtureDef 対象のb2FixtureDefまたは対象のb2FixtureDefの配列
 	 */
-	createBody(entity: g.E, bodyDef: box2dweb.Dynamics.b2BodyDef, fixtureDef: box2dweb.Dynamics.b2FixtureDef | box2dweb.Dynamics.b2FixtureDef[]): EBody | null {
+	createBody(
+		entity: g.E,
+		bodyDef: box2dweb.Dynamics.b2BodyDef,
+		fixtureDef: box2dweb.Dynamics.b2FixtureDef | box2dweb.Dynamics.b2FixtureDef[]
+	): EBody | null {
 		for (let i = 0; i < this.bodies.length; i++) {
 			if (this.bodies[i].entity === entity) {
 				return null;
