@@ -4,7 +4,7 @@
   "description": "Box2D physics engine for Akashic",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "npm run build && npm run doc",
+    "prepare": "npm run build && npm run doc",
     "clean": "rm -rf lib && rm -rf doc",
     "build": "tsc",
     "doc": "typedoc --out ./doc --mode file && cp -r ./img ./doc",
