@@ -7,7 +7,7 @@
     "prepare": "npm run build && npm run doc",
     "clean": "shx rm -rf lib && shx rm -rf doc",
     "build": "npm run clean && tsc -p tsconfig.json",
-    "doc": "typedoc --out ./doc --mode file --gaID UA-162208211-1 && shx cp -r ./img ./doc",
+    "doc": "typedoc --out ./doc --mode file && shx cp -r ./img ./doc",
     "jest": "jest",
     "lint": "eslint src/*.ts src/**/*.ts --fix",
     "test": "npm run jest && npm run lint"
