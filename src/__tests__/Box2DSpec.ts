@@ -1,15 +1,7 @@
-import * as g from "@akashic/akashic-engine";
 import * as box2dweb from "box2dweb";
 import { Box2D, BodyType, Box2DParameter } from "../";
 
-declare global {
-	namespace NodeJS {
-		interface Global {
-			g: any;
-		}
-	}
-}
-global.g = g;
+global.g = require("@akashic/akashic-engine");
 
 describe("Box2D specs", () => {
 	let entity1: any;

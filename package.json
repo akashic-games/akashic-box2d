@@ -48,6 +48,12 @@
   },
   "typings": "lib/index.d.ts",
   "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "./src/**/*.ts",
+      "!./src/__tests__/**/*.ts"
+    ],
     "moduleFileExtensions": [
       "ts",
       "js"
@@ -57,11 +63,11 @@
     },
     "globals": {
       "ts-jest": {
-        "tsConfig": "tsconfig.json"
+        "tsconfig": "tsconfig.json"
       }
     },
     "testMatch": [
-      "**/__tests__/*.+(ts|js)"
+      "<rootDir>/src/__tests__/**/*Spec.ts"
     ]
   }
 }
