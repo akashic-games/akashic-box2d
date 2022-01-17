@@ -1,5 +1,5 @@
 <p align="center">
-<img src="img/akashic.png"/>
+<img src="https://raw.githubusercontent.com/akashic-games/akashic-box2d/master/img/akashic.png"/>
 </p>
 
 # akashic-box2d
@@ -33,7 +33,7 @@ var b2 = require("@akashic-extension/akashic-box2d");
 詳細な利用方法については、以下を参照してください。
 
 * [akashic-box2dの利用方法](https://github.com/akashic-games/akashic-box2d/blob/master/getstarted.md)
-* [APIリファレンス](https://akashic-games.github.io/reference/akashic-box2d/index.html)
+* [APIリファレンス](https://akashic-games.github.io/akashic-box2d/doc/index.html)
 * このリポジトリ同梱のサンプルコンテンツ
   * [JavaScript](https://github.com/akashic-games/akashic-box2d/blob/master/sample)
   * [TypeScript](https://github.com/akashic-games/akashic-box2d/blob/master/sample-ts)
