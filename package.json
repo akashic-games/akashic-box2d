@@ -7,7 +7,7 @@
     "prepare": "npm run build && npm run doc",
     "clean": "shx rm -rf lib && shx rm -rf doc",
     "build": "npm run clean && tsc -p tsconfig.json",
-    "doc": "typedoc --out ./public/doc src/index.ts",
+    "doc": "typedoc --out ./public/api src/index.ts",
     "jest": "jest",
     "lint": "eslint src/*.ts src/**/*.ts --fix",
     "test": "npm run jest && npm run lint"
