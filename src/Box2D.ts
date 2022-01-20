@@ -1,5 +1,5 @@
 import * as box2dweb from "box2dweb";
-import { EBody, Box2DFixtureDef, Box2DBodyDef } from "./parateters";
+import { EBody, Box2DFixtureDef, Box2DBodyDef } from "./parameters";
 
 /**
  * `Box2D` のインスタンス生成時に指定するパラメータ。

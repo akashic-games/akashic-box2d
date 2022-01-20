@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## unreleased changes
+* ファイル名の修正
+
 ## 3.0.0
 * akashic-engine@3.0.0 に追従
 * `Box2DOption` を `Box2DParameter` に変更

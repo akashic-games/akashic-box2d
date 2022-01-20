@@ -4,5 +4,5 @@
 import * as Box2DWeb from "box2dweb";
 export * from "./Box2D";
 export * from "./ContactManager";
-export * from "./parateters";
+export * from "./parameters";
 export { Box2DWeb };

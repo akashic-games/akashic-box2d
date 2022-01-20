@@ -1,14 +1,6 @@
-import * as g from "@akashic/akashic-engine";
 import { Box2D, BodyType, ContactManager } from "../";
 
-declare global {
-	namespace NodeJS {
-		interface Global {
-			g: any;
-		}
-	}
-}
-global.g = g;
+global.g = require("@akashic/akashic-engine");
 
 describe("ContactManager specs", () => {
 	it("constructor", () => {
