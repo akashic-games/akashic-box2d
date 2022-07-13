@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## unreleased changes
+## 3.1.0
 * ファイル名の修正
+* box2dweb.d.ts の `b2MouseJointDef` に `target` を追加
 
 ## 3.0.0
 * akashic-engine@3.0.0 に追従

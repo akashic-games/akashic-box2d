@@ -2,7 +2,7 @@
 * `box2dweb.d.ts` is a type definition
 * for box2dweb npm package (https://www.npmjs.com/package/box2dweb).
 * It is a part of @akashic-extension/akashic-box2d.
-* 
+*
 * Box2DWeb-2.1.d.ts Copyright (c) 2012-2013 Josh Baldwin http://github.com/jbaldwin/box2dweb.d.ts
 * There are a few competing javascript Box2D ports.
 * This definitions file is for Box2dWeb.js ->
@@ -480,7 +480,7 @@ declare module "box2dweb" {
 			public static MulMV(A: b2Mat22, v: b2Vec2): b2Vec2;
 
 			/**
-			* 
+			*
 			* @param A
 			* @param v
 			* @return
@@ -488,7 +488,7 @@ declare module "box2dweb" {
 			public static MulTMV(A: b2Mat22, v: b2Vec2): b2Vec2;
 
 			/**
-			* 
+			*
 			* @param T
 			* @param v
 			* @return
@@ -496,7 +496,7 @@ declare module "box2dweb" {
 			public static MulX(T: b2Transform, v: b2Vec2): b2Vec2;
 
 			/**
-			* 
+			*
 			* @param T
 			* @param v
 			* @return
@@ -536,7 +536,7 @@ declare module "box2dweb" {
 			public static DistanceSquared(a: b2Vec2, b: b2Vec2): number;
 
 			/**
-			* 
+			*
 			* @param s
 			* @param a
 			* @return
@@ -544,7 +544,7 @@ declare module "box2dweb" {
 			public static MulFV(s: number, a: b2Vec2): b2Vec2;
 
 			/**
-			* 
+			*
 			* @param A
 			* @param B
 			* @return
@@ -552,7 +552,7 @@ declare module "box2dweb" {
 			public static AddMM(A: b2Mat22, B: b2Mat22): b2Mat22;
 
 			/**
-			* 
+			*
 			* @param A
 			* @param B
 			* @return
@@ -560,7 +560,7 @@ declare module "box2dweb" {
 			public static MulMM(A: b2Mat22, B: b2Mat22): b2Mat22;
 
 			/**
-			* 
+			*
 			* @param A
 			* @param B
 			* @return
@@ -1960,7 +1960,7 @@ declare module "box2dweb" {
 			/**
 			* Compute the mass properties of this shape using its dimensions and density. The inertia tensor is computed about the local origin, not the centroid.
 			* @param massData Calculate the mass, this argument is `out`.
-			* @param density 
+			* @param density
 			**/
 			public ComputeMass(massData: b2MassData, density: number): void;
 
@@ -2917,7 +2917,7 @@ declare module "box2dweb" {
 			/**
 			* Splits a body into two, preserving dynamic properties
 			* @note This provides a feature specific to this port.
-			* @param callback 
+			* @param callback
 			* @return The newly created bodies from the split.
 			**/
 			public Split(callback: (fixture: b2Fixture) => boolean): b2Body;
@@ -3685,11 +3685,11 @@ declare module "box2dweb" {
 
 			/**
 			* Ray-cast the world for all fixtures in the path of the ray. Your callback Controls whether you get the closest point, any point, or n-points The ray-cast ignores shapes that contain the starting point.
-			* @param callback A callback function which must be of signature: 
+			* @param callback A callback function which must be of signature:
 			*	function Callback(
-			*		fixture:b2Fixture,	// The fixture hit by the ray 
-			*		point:b2Vec2,		// The point of initial intersection 
-			*		normal:b2Vec2,		// The normal vector at the point of intersection 
+			*		fixture:b2Fixture,	// The fixture hit by the ray
+			*		point:b2Vec2,		// The point of initial intersection
+			*		normal:b2Vec2,		// The normal vector at the point of intersection
 			*		fraction:Number		// The fractional length along the ray of the intersection
 			*	 ):Number
 			*	 Callback should return the new length of the ray as a fraction of the original length. By returning 0, you immediately terminate. By returning 1, you continue wiht the original ray. By returning the current fraction, you proceed to find the closest point.
@@ -4243,7 +4243,7 @@ declare module "box2dweb" {
 
 			/**
 			* Get the reaction force on body2 at the joint anchor in Newtons.
-			* @param inv_dt 
+			* @param inv_dt
 			* @return Reaction force (N)
 			**/
 			public GetReactionForce(inv_dt: number): Box2D.Common.Math.b2Vec2;
@@ -4948,6 +4948,11 @@ declare module "box2dweb" {
 			* The maximum constraint force that can be exerted to move the candidate body.
 			**/
 			public maxForce: number;
+
+			/**
+			 * The initial world target point. This is assumed to coincide with the body anchor initially.
+			 */
+			public target: Box2D.Common.Math.b2Vec2; // Added by DWANGO Co., Ltd. on 2022-07-13
 
 			/**
 			* Constructor.
