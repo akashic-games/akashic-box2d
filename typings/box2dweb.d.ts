@@ -4952,7 +4952,7 @@ declare module "box2dweb" {
 			/**
 			 * The initial world target point. This is assumed to coincide with the body anchor initially.
 			 */
-			public target: Box2D.Common.Math.b2Vec2; // akashic で追加
+			public target: Box2D.Common.Math.b2Vec2; // Added by DWANGO Co., Ltd. on 2022-07-13
 
 			/**
 			* Constructor.
