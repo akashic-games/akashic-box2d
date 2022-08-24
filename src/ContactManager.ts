@@ -1,5 +1,5 @@
 import * as box2dweb from "box2dweb";
-import { Box2D, EBody } from "./";
+import type { Box2D, EBody } from "./";
 
 /**
  * `ContactManager` のインスタンス生成時に指定するパラメータ。

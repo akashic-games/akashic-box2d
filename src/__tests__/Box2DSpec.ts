@@ -1,5 +1,6 @@
 import * as box2dweb from "box2dweb";
-import { Box2D, BodyType, Box2DParameter } from "../";
+import type { Box2DParameter } from "../";
+import { Box2D, BodyType } from "../";
 
 global.g = require("@akashic/akashic-engine");
 
