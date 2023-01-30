@@ -2,7 +2,7 @@
 // game.json の globalScripts フィールドにファイル名を列挙しておく必要がある点に注意
 const b2 = require("@akashic-extension/akashic-box2d");
 const game = g.game;
-module.exports = function () {
+module.exports = () => {
     const scene = new g.Scene({
         game: game,
         assetIds: ["soccer", "pentagon"]
@@ -118,7 +118,7 @@ module.exports = function () {
         // 接触イベントのリスナーを生成
         const contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener();
         // 接触開始時のイベントリスナー
-        contactListener.BeginContact = (contact) => {
+        contactListener.BeginContact = contact => {
             // サッカーボールと地面がぶつかったら地面の色を青にする
             if (box2d.isContact(floorBody, soccerBody, contact)) {
                 floor.cssColor = "blue";
@@ -126,7 +126,7 @@ module.exports = function () {
             }
         };
         // 接触が離れた時のイベントリスナー
-        contactListener.EndContact = (contact) => {
+        contactListener.EndContact = contact => {
             // サッカーボールと地面が離れたら地面の色を黒にする
             if (box2d.isContact(floorBody, soccerBody, contact)) {
                 floor.cssColor = "black";
@@ -135,7 +135,7 @@ module.exports = function () {
         };
         // イベントリスナーを設定
         box2d.world.SetContactListener(contactListener);
-        soccer.onPointDown.add((e) => {
+        soccer.onPointDown.add(e => {
             const pos = getEntityPosition(soccer);
             const delta = {
                 x: e.point.x - soccer.width / 2,
