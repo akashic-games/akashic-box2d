@@ -8,7 +8,7 @@ export = () => {
 		assetIds: ["soccer", "pentagon"]
 	});
 
-	scene.loaded.add(() => {
+	scene.onLoad.add(() => {
 		// 物理エンジン世界の生成
 		const box2d = new b2.Box2D({
 			gravity: [0, 9.8],
@@ -155,7 +155,7 @@ export = () => {
 		// イベントリスナーを設定
 		box2d.world.SetContactListener(contactListener);
 
-		soccer.pointDown.add(e => {
+		soccer.onPointDown.add(e => {
 			const pos = getEntityPosition(soccer);
 			const delta = {
 				x: e.point.x - soccer.width / 2,
@@ -166,7 +166,7 @@ export = () => {
 			soccerBody.b2Body.ApplyImpulse(box2d.vec2(delta.x * -5, delta.y * -5), box2d.vec2(pos.x, pos.y));
 		});
 
-		scene.update.add(() => {
+		scene.onUpdate.add(() => {
 			// 物理エンジンの世界をすすめる
 			box2d.step(1 / game.fps);
 		});
