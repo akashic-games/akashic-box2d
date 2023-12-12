@@ -98,7 +98,7 @@ akashic-box2dでは、物理演算対象のエンティティを管理するオ�
 ボディを作成するには、まずボディの元になるエンティティを作成します。
 
 ```javascript
-var entity = new g.FilledRect({scene: scene, cssColor: "red", width: game.width, height: 50, x: 100, y: 0});
+var entity = new g.FilledRect({scene: scene, cssColor: "red", width: g.game.width, height: 50, x: 100, y: 0});
 scene.append(entity);
 entity.modified();
 ```
@@ -151,8 +151,8 @@ var entityDef = box2d.createBodyDef({
 
 次に、 `box2d.createBody()` を利用してエンティティに紐づいたボディを作成し、そのボディを物理エンジンの世界へ追加します。
 
-`box2d.createBody()` の戻り値は、ボディを示す `b2.Box2DOptions.EBody` のインスタンスです。
-`b2.Box2DOptions.EBody` はエンティティ `entity` とb2Body `b2body` のインスタンスをメンバとして所持しています。
+`box2d.createBody()` の戻り値は、ボディを示す `box2d.EBody` です。
+`box2d.EBody` はエンティティ `entity` と b2Body クラスのインスタンス `b2body` をメンバとして所持しています。(以降、 b2Body クラスをインスタンス化したものを小文字の `b2body` と記述します。)
 
 ```javascript
 var body = box2d.createBody(entity, entityDef, entityFixDef);
@@ -164,7 +164,7 @@ var body = box2d.createBody(entity, entityDef, entityFixDef);
 ```javascript
 scene.update.add(function() {
   // 物理エンジンの世界を進める
-  box2d.step(1/game.fps);
+  box2d.step(1/g.game.fps);
 });
 ```
 
@@ -180,7 +180,7 @@ scene.update.add(function() {
 まず地面となるエンティティを作成します。
 
 ```javascript
-var floorEntity = new g.FilledRect({scene: scene, cssColor: "black", width: game.width, height: 50, y: game.height - 50});
+var floorEntity = new g.FilledRect({scene: scene, cssColor: "black", width: g.game.width, height: 50, y: g.game.height - 50});
 scene.append(floorEntity);
 floorEntity.modified();
 ```
