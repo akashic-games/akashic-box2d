@@ -151,8 +151,8 @@ var entityDef = box2d.createBodyDef({
 
 次に、 `box2d.createBody()` を利用してエンティティに紐づいたボディを作成し、そのボディを物理エンジンの世界へ追加します。
 
-`box2d.createBody()` の戻り値は、ボディを示す `box2d.EBody` です。
-`box2d.EBody` はエンティティ `entity` と b2Body クラスのインスタンス `b2body` をメンバとして所持しています。(以降、 b2Body クラスをインスタンス化したものを小文字の `b2body` と記述します。)
+`box2d.createBody()` の戻り値は、ボディを示す `b2.EBody` です。
+`b2.EBody` はエンティティ `entity` と b2Body クラスのインスタンス `b2body` をメンバとして所持しています。(以降、 b2Body クラスをインスタンス化したものを小文字の `b2body` と記述します。)
 
 ```javascript
 var body = box2d.createBody(entity, entityDef, entityFixDef);
