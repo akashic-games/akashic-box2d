@@ -1,12 +1,7 @@
-<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@akashic-extension/akashic-box2d</title><meta name="description" content="Documentation for @akashic-extension/akashic-box2d"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@akashic-extension/akashic-box2d</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@akashic-extension/akashic-box2d</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography"><p align="center">
+<!DOCTYPE html><html class="default" lang="en" data-base="."><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@akashic-extension/akashic-box2d</title><meta name="description" content="Documentation for @akashic-extension/akashic-box2d"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search"><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@akashic-extension/akashic-box2d</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>@akashic-extension/akashic-box2d</h1></div><div class="tsd-panel tsd-typography"><p align="center">
 <img src="https://raw.githubusercontent.com/akashic-games/akashic-box2d/master/img/akashic.png"/>
 </p>
-
-
-<a href="#akashic-box2d" id="akashic-box2d" style="color: inherit; text-decoration: none;">
-  <h1>akashic-box2d</h1>
-</a>
-<p><strong>akashic-box2d</strong> は、2D物理演算ライブラリである<a href="https://github.com/hecht-software/box2dweb">Box2DWeb</a>をAkashicで利用するためのモジュールです。</p>
+<a id="akashic-box2d" class="tsd-anchor"></a><h1 class="tsd-anchor-link">akashic-box2d<a href="#akashic-box2d" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p><strong>akashic-box2d</strong> は、2D物理演算ライブラリである<a href="https://github.com/hecht-software/box2dweb">Box2DWeb</a>をAkashicで利用するためのモジュールです。</p>
 <p>本モジュールでは、AkashicでBox2DWebを使う際に便利となるよう、次の機能を提供します。</p>
 <ul>
 <li>AkashicのエンティティとBox2Dとの紐づけ</li>
@@ -15,55 +10,40 @@
 </ul>
 <p>本モジュールは <strong>AkashicとBox2DWebとの紐づけ</strong> と <strong>一部の便利機能</strong> のみを提供しています。
 そのため、その他多くの機能はBox2DWebを直接利用することになります。</p>
+<a id="利用方法" class="tsd-anchor"></a><h2 class="tsd-anchor-link">利用方法<a href="#利用方法" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p><a href="https://github.com/akashic-games/akashic-cli">akashic-cli</a>をインストールした後、</p>
+<pre><code class="sh"><span class="hl-0">akashic</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">@akashic-extension/akashic-box2d</span>
+</code><button type="button">Copy</button></pre>
 
-<a href="#利用方法" id="利用方法" style="color: inherit; text-decoration: none;">
-  <h2>利用方法</h2>
-</a>
-<p><a href="https://github.com/akashic-games/akashic-cli">akashic-cli</a>をインストールした後、</p>
-<pre><code class="language-sh"><span class="hl-0">akashic install @akashic-extension/akashic-box2d</span>
-</code></pre>
 <p>でインストールできます。コンテンツからは、</p>
-<pre><code class="language-javascript"><span class="hl-1">var</span><span class="hl-0"> </span><span class="hl-2">b2</span><span class="hl-0"> = </span><span class="hl-3">require</span><span class="hl-0">(</span><span class="hl-4">&quot;@akashic-extension/akashic-box2d&quot;</span><span class="hl-0">);</span>
-</code></pre>
+<pre><code class="javascript"><span class="hl-3">var</span><span class="hl-1"> </span><span class="hl-4">b2</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&quot;@akashic-extension/akashic-box2d&quot;</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
 <p>で利用してください。
 詳細な利用方法については、以下を参照してください。</p>
 <ul>
 <li><a href="https://github.com/akashic-games/akashic-box2d/blob/master/getstarted.md">akashic-box2dの利用方法</a></li>
 <li><a href="https://akashic-games.github.io/akashic-box2d/api/index.html">APIリファレンス</a></li>
-<li>このリポジトリ同梱のサンプルコンテンツ<ul>
+<li>このリポジトリ同梱のサンプルコンテンツ
+<ul>
 <li><a href="https://github.com/akashic-games/akashic-box2d/blob/master/sample">JavaScript</a></li>
 <li><a href="https://github.com/akashic-games/akashic-box2d/blob/master/sample-ts">TypeScript</a></li>
 </ul>
 </li>
 </ul>
 <p>Akashic Engineの詳細な利用方法については、 <a href="https://akashic-games.github.io/">公式ページ</a> を参照してください。</p>
-
-<a href="#ビルド方法" id="ビルド方法" style="color: inherit; text-decoration: none;">
-  <h2>ビルド方法</h2>
-</a>
-<p><strong>akashic-box2d</strong> はTypeScriptで書かれたライブラリであるため、ビルドにはNode.jsが必要です。</p>
+<a id="ビルド方法" class="tsd-anchor"></a><h2 class="tsd-anchor-link">ビルド方法<a href="#ビルド方法" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p><strong>akashic-box2d</strong> はTypeScriptで書かれたライブラリであるため、ビルドにはNode.jsが必要です。</p>
 <p><code>npm run build</code> によりgulpを使ってビルドできます。</p>
-<pre><code class="language-sh"><span class="hl-0">npm install</span><br/><span class="hl-0">npm run build</span>
-</code></pre>
+<pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span>
+</code><button type="button">Copy</button></pre>
 
-<a href="#テスト方法" id="テスト方法" style="color: inherit; text-decoration: none;">
-  <h2>テスト方法</h2>
-</a>
-<pre><code class="language-sh"><span class="hl-0">npm </span><span class="hl-3">test</span>
-</code></pre>
+<a id="テスト方法" class="tsd-anchor"></a><h2 class="tsd-anchor-link">テスト方法<a href="#テスト方法" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">test</span>
+</code><button type="button">Copy</button></pre>
 
-<a href="#注意点" id="注意点" style="color: inherit; text-decoration: none;">
-  <h2>注意点</h2>
-</a>
-<p>Box2DWebでは <code>Math.random()</code> が使われている箇所があります。(該当メソッド: <code>Box2D.Common.Math.b2Math.Random()</code> , <code>Box2D.Common.Math.b2Math.RandomRange()</code> )</p>
+<a id="注意点" class="tsd-anchor"></a><h2 class="tsd-anchor-link">注意点<a href="#注意点" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Box2DWebでは <code>Math.random()</code> が使われている箇所があります。(該当メソッド: <code>Box2D.Common.Math.b2Math.Random()</code> , <code>Box2D.Common.Math.b2Math.RandomRange()</code> )</p>
 <p>該当メソッドは利用せず、かわりに <code>g.game.random</code> を利用してください。</p>
-
-<a href="#ライセンス" id="ライセンス" style="color: inherit; text-decoration: none;">
-  <h2>ライセンス</h2>
-</a>
-<p>本リポジトリは MIT License の元で公開されています。
+<a id="ライセンス" class="tsd-anchor"></a><h2 class="tsd-anchor-link">ライセンス<a href="#ライセンス" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>本リポジトリは MIT License の元で公開されています。
 詳しくは <a href="https://github.com/akashic-games/akashic-box2d/blob/master/LICENSE">LICENSE</a> をご覧ください。</p>
 <p>ただし、画像ファイルおよび音声ファイルは
 <a href="https://creativecommons.org/licenses/by/2.1/jp/">CC BY 2.1 JP</a> の元で公開されています。</p>
 <p>また、本リポジトリの <a href="https://github.com/akashic-games/akashic-box2d/blob/master/patch/index.js">patch/index.js</a> のライセンスはファイル中記述されています。そちらをご覧ください。</p>
-</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li><li class=" tsd-kind-namespace"><a href="modules/Box2DWeb.html">Box2DWeb</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-enum"><a href="enums/BodyType.html" class="tsd-kind-icon">Body<wbr/>Type</a></li><li class="tsd-kind-class"><a href="classes/Box2D.html" class="tsd-kind-icon">Box2D</a></li><li class="tsd-kind-class"><a href="classes/ContactManager.html" class="tsd-kind-icon">Contact<wbr/>Manager</a></li><li class="tsd-kind-interface"><a href="interfaces/Box2DBodyDef.html" class="tsd-kind-icon">Box2DBody<wbr/>Def</a></li><li class="tsd-kind-interface"><a href="interfaces/Box2DFixtureDef.html" class="tsd-kind-icon">Box2DFixture<wbr/>Def</a></li><li class="tsd-kind-interface"><a href="interfaces/Box2DParameter.html" class="tsd-kind-icon">Box2DParameter</a></li><li class="tsd-kind-interface"><a href="interfaces/ContactManagerParameter.html" class="tsd-kind-icon">Contact<wbr/>Manager<wbr/>Parameter</a></li><li class="tsd-kind-interface"><a href="interfaces/EBody.html" class="tsd-kind-icon">EBody</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li><li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#akashic-box2d"><span>akashic-<wbr/>box2d</span></a><ul><li><a href="#利用方法"><span>利用方法</span></a></li><li><a href="#ビルド方法"><span>ビルド方法</span></a></li><li><a href="#テスト方法"><span>テスト方法</span></a></li><li><a href="#注意点"><span>注意点</span></a></li><li><a href="#ライセンス"><span>ライセンス</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">@akashic-extension/akashic-box2d</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
