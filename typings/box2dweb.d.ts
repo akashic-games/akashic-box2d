@@ -4278,6 +4278,12 @@ declare module "box2dweb" {
 			* @param data Your custom data.
 			**/
 			public SetUserData(data: any): void;
+
+			/**
+			* Set the motor speed, usually in meters per second.
+			* @param speed New motor speed.
+			**/
+			public SetMotorSpeed(speed: number): void;
 		}
 	}
 
