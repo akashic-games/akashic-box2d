@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 3.2.0
+* box2dweb.d.ts の `b2Joint` に `SetMotorSpeed()` を追加
+
 ## 3.1.0
 * ファイル名の修正
 * box2dweb.d.ts の `b2MouseJointDef` に `target` を追加
