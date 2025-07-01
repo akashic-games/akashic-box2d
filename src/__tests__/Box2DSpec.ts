@@ -2,6 +2,7 @@ import * as box2dweb from "box2dweb";
 import type { Box2DParameter } from "../";
 import { Box2D, BodyType } from "../";
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 global.g = require("@akashic/akashic-engine");
 
 describe("Box2D specs", () => {
