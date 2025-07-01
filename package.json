@@ -33,7 +33,7 @@
     "box2dweb": "~2.1.0-b"
   },
   "devDependencies": {
-    "@akashic/eslint-config": "^3.0.0",
+    "@akashic/eslint-config": "^3.0.2",
     "@types/jest": "29.5.0",
     "@types/node": "22.10.9",
     "jest": "^29.2.5",
