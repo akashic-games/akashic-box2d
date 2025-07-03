@@ -157,7 +157,7 @@ const entityDef = box2d.createBodyDef({
 const body = box2d.createBody(entity, entityDef, entityFixDef);
 ```
 
-`EBody` は、画面に描画される対象 (Akashic Engine のエンティティ) と、物理演算の処理対象 (Box2DWeb のボディ) をまとめて扱うで、次のプロパティを持ちます。
+`EBody` は、画面に描画される対象 (Akashic Engine のエンティティ) と、物理演算の処理対象 (Box2DWeb のボディ) をまとめて扱うオブジェクトで、次のプロパティを持ちます。
 
 - `entity` プロパティ (エンティティ)
 - `b2Body` プロパティ (Box2dWeb のボディ)
