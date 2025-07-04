@@ -32,7 +32,7 @@ akashic install @akashic-extension/akashic-box2d
 akashic-box2dを利用したいシーンで以下の様に `require` を行います。
 
 ```javascript
-var b2 = require("@akashic-extension/akashic-box2d");
+const b2 = require("@akashic-extension/akashic-box2d");
 ```
 
 本ドキュメントのサンプルコードでは、akashic-box2dの機能は `b2` 変数を経由して呼び出すことになります。
@@ -70,7 +70,7 @@ import * as b2 from "@akashic-extension/akashic-box2d";
 
 ```javascript
 scene.loaded.add(function() {
-  var box2d = new b2.Box2D({
+  const box2d = new b2.Box2D({
     gravity: [0, 9.8],
     scale: 50,
     sleep: true
@@ -98,7 +98,7 @@ akashic-box2dでは、物理演算対象のエンティティを管理するオ�
 ボディを作成するには、まずボディの元になるエンティティを作成します。
 
 ```javascript
-var entity = new g.FilledRect({scene: scene, cssColor: "red", width: g.game.width, height: 50, x: 100, y: 0});
+const entity = new g.FilledRect({scene: scene, cssColor: "red", width: g.game.width, height: 50, x: 100, y: 0});
 scene.append(entity);
 entity.modified();
 ```
@@ -117,7 +117,7 @@ akashic-box2dでは、ボディの性質として以下の要素があります�
 これらの性質は `box2d.createFixtureDef()` により設定できます。
 
 ```javascript
-var entityFixDef = box2d.createFixtureDef({
+const entityFixDef = box2d.createFixtureDef({
   density: 1.0, // 密度
   friction: 0.5, // 摩擦係数
   restitution: 0.3, // 反発係数
@@ -142,7 +142,7 @@ var entityFixDef = box2d.createFixtureDef({
 ここではボディタイプをDynamicに設定しましょう。
 
 ```javascript
-var entityDef = box2d.createBodyDef({
+const entityDef = box2d.createBodyDef({
   type: b2.BodyType.Dynamic
 });
 ```
@@ -152,11 +152,17 @@ var entityDef = box2d.createBodyDef({
 次に、 `box2d.createBody()` を利用してエンティティに紐づいたボディを作成し、そのボディを物理エンジンの世界へ追加します。
 
 `box2d.createBody()` の戻り値は、ボディを示す `b2.EBody` です。
-`b2.EBody` はエンティティ `entity` と b2Body クラスのインスタンス `b2body` をメンバとして所持しています。(以降、 b2Body クラスをインスタンス化したものを小文字の `b2body` と記述します。)
 
 ```javascript
-var body = box2d.createBody(entity, entityDef, entityFixDef);
+const body = box2d.createBody(entity, entityDef, entityFixDef);
 ```
+
+`EBody` は、画面に描画される対象 (Akashic Engine のエンティティ) と、物理演算の処理対象 (Box2DWeb のボディ) をまとめて扱うオブジェクトで、次のプロパティを持ちます。
+
+- `entity` プロパティ (エンティティ)
+- `b2Body` プロパティ (Box2dWeb のボディ)
+
+なおこの「`b2Body` プロパティ」は、Box2DWeb の「`b2Body` クラス」のインスタンスです。
 
 `box2d.step()` で物理エンジンの世界の時間を進め、同時にボディと紐づけられたエンティティの座標と角度を変更します。
 このメソッド内では暗黙的に `E#modified()` が呼ばれるため、ユーザが明示的に `E#modified()` を呼び出す必要はありません。
@@ -180,7 +186,7 @@ scene.update.add(function() {
 まず地面となるエンティティを作成します。
 
 ```javascript
-var floorEntity = new g.FilledRect({scene: scene, cssColor: "black", width: g.game.width, height: 50, y: g.game.height - 50});
+const floorEntity = new g.FilledRect({scene: scene, cssColor: "black", width: g.game.width, height: 50, y: g.game.height - 50});
 scene.append(floorEntity);
 floorEntity.modified();
 ```
@@ -188,7 +194,7 @@ floorEntity.modified();
 性質は先ほどのエンティティと同じにします。
 
 ```javascript
-var floorFixDef = box2d.createFixtureDef({
+const floorFixDef = box2d.createFixtureDef({
   density: 1.0, // 密度
   friction: 0.5, // 摩擦係数
   restitution: 0.3, // 反発係数
@@ -199,7 +205,7 @@ var floorFixDef = box2d.createFixtureDef({
 `floorEntity` を地面とするため、ボディタイプをStaticに設定しましょう。
 
 ```javascript
-var floorDef = box2d.createBodyDef({
+const floorDef = box2d.createBodyDef({
   type: b2.BodyType.Static
 });
 ```
@@ -207,7 +213,7 @@ var floorDef = box2d.createBodyDef({
 物理エンジンの世界に `floor` を追加します。
 
 ```javascript
-var floorBody = box2d.createBody(floorEntity, floorDef, floorFixDef);
+const floorBody = box2d.createBody(floorEntity, floorDef, floorFixDef);
 ```
 
 これで地面が生成できました。
@@ -221,7 +227,7 @@ akashic-box2dでは、四角の他に**円**や**多角形**の形状を定義�
 円は `box2d.createCircleShape()` で定義できます。引数には直径を与えます。
 
 ```javascript
-var circleDef = box2d.createFixtureDef({
+const circleDef = box2d.createFixtureDef({
   shape: box2d.createCircleShape(circle.width) // 形状を円として定義
 });
 ```
@@ -231,7 +237,7 @@ var circleDef = box2d.createFixtureDef({
 ![ball](img/ball.png)
 
 ```javascript
-var ball = new g.Sprite({scene: scene, src: scene.assets.ball, width: 100, height: 98});
+const ball = new g.Sprite({scene: scene, src: scene.assets.ball, width: 100, height: 98});
 scene.append(ball);
 ball.modified();
 
@@ -246,7 +252,7 @@ ballDef = box2d.createFixtureDef({
 
 ```javascript
 // 頂点の定義
-var vertices = [
+const vertices = [
   box2d.vec2(-10, -10),
   box2d.vec2(5, -10),
   box2d.vec2(10, 0),
@@ -254,7 +260,7 @@ var vertices = [
   box2d.vec2(-5, 5),
 ];
 
-var polygonDef = box2d.createFixtureDef({
+const polygonDef = box2d.createFixtureDef({
   shape: box2d.createPolygonShape(vertices) // 頂点から構成される形状を多角形として定義
 });
 ```
@@ -266,11 +272,11 @@ var polygonDef = box2d.createFixtureDef({
 ![pentagon](img/pentagon.png)
 
 ```javascript
-var pentagon = new g.Sprite({scene: scene, src: scene.assets.pentagon, width: 100, height: 95});
+const pentagon = new g.Sprite({scene: scene, src: scene.assets.pentagon, width: 100, height: 95});
 scene.append(pentagon);
 pentagon.modified();
 
-var vertices = [
+const vertices = [
   box2d.vec2(0, -48),
   box2d.vec2(50, -12),
   box2d.vec2(30, 48),
@@ -298,11 +304,11 @@ pentagonDef = box2d.createFixtureDef({
 ボディの操作には[Box2DWebのAPI](http://www.box2dflash.org/docs/2.1a/reference/Box2D/Dynamics/b2Body.html)を直接利用します。
 
 そのためにはBox2DWebのb2Bodyインスタンスが必要になります。
-b2Bodyインスタンスは `body.b2body` により取得できます。
+b2Bodyインスタンスは `body.b2Body` により取得できます。
 
 ```javascript
 body = box2d.createBody( ... );
-var b2body = body.b2body;
+const b2body = body.b2Body;
 ```
 
 Box2DWebでは、例えばボディに対して瞬間的な力を加える `ApplyImpulse()` があります。
@@ -362,7 +368,7 @@ entity.pointDown.add(function(o) {
 以下のようにBox2DWebのインスタンスから `b2ContactListener` を生成します。
 
 ```javascript
-var contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
+const contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
 ```
 
 `b2ContactListener`に`BeginContact`イベントを追加します。
@@ -399,7 +405,7 @@ box2d.world.SetContactListener(contactListener);
 
 ```javascript
 // 接触イベントのリスナーを生成
-var contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
+const contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
 // 接触開始時のイベントリスナー
 contactListener.BeginContact = function (contact) {
   // body1とbody2がぶつかったらbodyEntity1の色を赤にする
@@ -429,7 +435,7 @@ box2d.world.SetContactListener(contactListener);
 ユーザデータはボディの定義時に指定することができます。
 
 ```javascript
-var bodyDef = createBodyDef({
+const bodyDef = createBodyDef({
   userData: "hoge"
 });
 ```
@@ -452,7 +458,7 @@ body3Def = createBodyDef({
 ...
 
 // 接触イベントのリスナーを生成
-var contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
+const contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener;
 // 接触開始時のイベントリスナー
 contactListener.BeginContact = function (contact) {
   if (box2d.isContact(body1, body, contact)) {
@@ -470,8 +476,8 @@ box2d.world.SetContactListener(contactListener);
 
 ```javascript
 contactListener.BeginContact = function (contact) {
-  var bodyA = contact.GetFixtureA().GetBody();
-  var bodyB = contact.GetFixtureB().GetBody();
+  const bodyA = contact.GetFixtureA().GetBody();
+  const bodyB = contact.GetFixtureB().GetBody();
 }
 
 ```
@@ -512,9 +518,9 @@ Box2D(Box2DWeb) の機能を追加・変更するためのパッチが用意さ�
 使い方は以下のようになります。詳しくは [patch/index.d.ts](./patch/index.d.ts) のコメントを御覧ください。
 
 ```javascript
-var patch = require("@akashic-extension/akashic-box2d/patch");
+const patch = require("@akashic-extension/akashic-box2d/patch");
 
-var box2d = new b2.Box2D( ... );
+const box2d = new b2.Box2D( ... );
 
 patch.patchBox2D(box2d, { maxTOILoop: 10 });
 ```
@@ -528,7 +534,7 @@ patch.patchBox2D(box2d, { maxTOILoop: 10 });
 使い方は以下のようになります。詳しくは [patch/index.d.ts](./patch/index.d.ts) のコメントを御覧ください。
 
 ```javascript
-var patch = require("@akashic-extension/akashic-box2d/patch");
+const patch = require("@akashic-extension/akashic-box2d/patch");
 
 patch.patchBox2DMath(box2d, { tableSize: 8192 });
 ```
@@ -546,8 +552,8 @@ patch.patchBox2DMath(box2d, { tableSize: 8192 });
 したがって、以下のコードは意図しない結果となります。
 
 ```javascript
-entity.angle = b2body.GetAngle(); // GetAngle()はBox2DWebでのボディの角度をラジアンで取得する関数
-b2body.SetAngle(entity.angle); // SetAngle()はBox2DWebでのボディの角度をラジアンで設定する関数
+entity.angle = body.b2Body.GetAngle(); // GetAngle()はBox2DWebでのボディの角度をラジアンで取得する関数
+body.b2body.SetAngle(entity.angle); // SetAngle()はBox2DWebでのボディの角度をラジアンで設定する関数
 ```
 
 `box2d` はこれら単位の違いを変換するための関数を用意しています。
@@ -568,8 +574,8 @@ entity.y = 100;
 entity.angle = 180;
 
 // OK
-b2body.SetPosition(box2d.vec2(100 + entity.width / 2, 100 + entity.height / 2));
-b2body.SetAngle(box2d.radian(180));
+body.b2Body.SetPosition(box2d.vec2(100 + entity.width / 2, 100 + entity.height / 2));
+body.b2Body.SetAngle(box2d.radian(180));
 ```
 
 Box2DWebのボディの座標基準は中心にあるため、エンティティの `width` と `height` から座標を補正する必要があります。
