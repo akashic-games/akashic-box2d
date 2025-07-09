@@ -114,12 +114,16 @@ export class Box2D {
 
 	/**
 	 * このクラスに追加された `EBody` を削除する。
+	 * step() 中や、接触判定の通知中などは実行できない。step() の呼び出し後などに呼ぶこと。
 	 * @param ebody 削除する `EBody`
 	 */
 	removeBody(ebody: EBody): void {
 		const index = this.bodies.indexOf(ebody);
 		if (index === -1) {
 			return;
+		}
+		if (this.world.IsLocked()) {
+			throw new Error("removeBody(): can't remove a body while the world is locked (step() is running). Please call after step()");
 		}
 		this.world.DestroyBody(ebody.b2Body);
 		this.bodies.splice(index, 1);
@@ -180,6 +184,7 @@ export class Box2D {
 
 	/**
 	 * ボディ同士の接触を、Box2DWebのユーザデータを参照して検出する。
+	 * このメソッドは userData に文字列を設定している場合を想定している。
 	 * @param body1 対象のボディ
 	 * @param body2 対象のボディ
 	 * @param contact 対象のb2Contacts
