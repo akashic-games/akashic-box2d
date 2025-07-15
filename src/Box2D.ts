@@ -114,7 +114,7 @@ export class Box2D {
 
 	/**
 	 * このクラスに追加された `EBody` を削除する。
-	 * step() 中や、接触判定の通知中などは実行できない。step() の呼び出し後などに呼ぶこと。
+	 * step() 中は削除できない。 (例えば接触判定のコールバック内など)
 	 * @param ebody 削除する `EBody`
 	 */
 	removeBody(ebody: EBody): void {
@@ -184,7 +184,7 @@ export class Box2D {
 
 	/**
 	 * ボディ同士の接触を、Box2DWebのユーザデータを参照して検出する。
-	 * このメソッドは userData に文字列を設定している場合を想定している。
+	 * このメソッドはプリミティブ型を設定している場合を想定している。
 	 * @param body1 対象のボディ
 	 * @param body2 対象のボディ
 	 * @param contact 対象のb2Contacts
