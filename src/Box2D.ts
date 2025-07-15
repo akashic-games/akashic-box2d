@@ -183,8 +183,7 @@ export class Box2D {
 	}
 
 	/**
-	 * ボディ同士の接触を、Box2DWebのユーザデータを参照して検出する。
-	 * このメソッドはプリミティブ型を設定している場合を想定している。
+	 * ボディ同士の接触を、Box2DWebのユーザデータの厳密等価により検出する。
 	 * @param body1 対象のボディ
 	 * @param body2 対象のボディ
 	 * @param contact 対象のb2Contacts

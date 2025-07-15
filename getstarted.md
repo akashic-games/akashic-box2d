@@ -484,18 +484,19 @@ contactListener.BeginContact = function (contact) {
 
 ### 接触判定のコールバック内で削除したい場合
 
-ボティは `box2d.step()` 中に削除できません。接触判定のコールバック内で削除したい場合は、コールバック内でリストに登録し、`box2d.step()` の終了後に削除する必要があります。
+`box2d.step()` 中は `box2d.world` がロックされます。そのため、`box2d.step()` 中に呼ばれる接触判定のコールバックではボティを削除することができません。 接触判定のコールバックでボディを削除したい場合には、コールバック内でリストに登録し `box2d.step()` の終了後に削除する必要があります。
 
 ```javascript
 // 接触イベントのリスナーを生成
 const contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener();
 const removeList = [];
-contactListener.EndContact = (contact: any) => {
+contactListener.EndContact = function (contact) {
     if (box2d.isContact(body1, body2, contact)) {
       removeList.push(body2); // 削除対象をリストに追加
     }
     ...
 };
+box2d.step(); // 物理エンジンの世界を進める
 ...
 // step() 終了にまとめて削除
 removeList.forEach(b => box2d.removeBody(b));
