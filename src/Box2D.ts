@@ -114,12 +114,16 @@ export class Box2D {
 
 	/**
 	 * このクラスに追加された `EBody` を削除する。
+	 * step() 中は削除できない。 (例えば接触判定のコールバック内など)
 	 * @param ebody 削除する `EBody`
 	 */
 	removeBody(ebody: EBody): void {
 		const index = this.bodies.indexOf(ebody);
 		if (index === -1) {
 			return;
+		}
+		if (this.world.IsLocked()) {
+			throw new Error("removeBody(): can't remove a body while the world is locked (step() is running). Please call after step()");
 		}
 		this.world.DestroyBody(ebody.b2Body);
 		this.bodies.splice(index, 1);
@@ -179,7 +183,10 @@ export class Box2D {
 	}
 
 	/**
-	 * ボディ同士の接触を、Box2DWebのユーザデータを参照して検出する。
+	 * 指定した二つのボディの接触であるかどうかを判定する。
+	 * ただし、この判定はボディそのものではなく「ボディ生成時に与えた `userData`」が一致するかで行われる。
+	 * 詳細は下記の「複数ボディ同士の接触イベント検出」を参照のこと。
+	 * https://github.com/akashic-games/akashic-box2d/blob/master/getstarted.md
 	 * @param body1 対象のボディ
 	 * @param body2 対象のボディ
 	 * @param contact 対象のb2Contacts
