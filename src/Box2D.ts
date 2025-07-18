@@ -183,7 +183,10 @@ export class Box2D {
 	}
 
 	/**
-	 * ボディ同士の接触を、Box2DWebのユーザデータの厳密等価により検出する。
+	 * 指定した二つのボディの接触であるかどうかを判定する。
+	 * ただし、この判定はボディそのものではなく「ボディ生成時に与えた `userData`」が一致するかで行われる。
+	 * 詳細は下記の「複数ボディ同士の接触イベント検出」を参照のこと。
+	 * https://github.com/akashic-games/akashic-box2d/blob/master/getstarted.md
 	 * @param body1 対象のボディ
 	 * @param body2 対象のボディ
 	 * @param contact 対象のb2Contacts

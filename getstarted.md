@@ -491,10 +491,10 @@ contactListener.BeginContact = function (contact) {
 const contactListener = new b2.Box2DWeb.Dynamics.b2ContactListener();
 const removeList = [];
 contactListener.EndContact = function (contact) {
-    if (box2d.isContact(body1, body2, contact)) {
-      removeList.push(body2); // 削除対象をリストに追加
-    }
-    ...
+  if (box2d.isContact(body1, body2, contact)) {
+    removeList.push(body2); // 削除対象をリストに追加
+  }
+  ...
 };
 box2d.step(); // 物理エンジンの世界を進める
 ...
