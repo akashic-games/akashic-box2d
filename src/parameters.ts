@@ -99,7 +99,7 @@ export interface Box2DFixtureDef {
 	/**
 	 * ボディのユーザデータを指定する。
 	 */
-	userData?: string;
+	userData?: any;
 
 	/**
 	 * フィルタリングデータ。
