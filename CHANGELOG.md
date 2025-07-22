@@ -2,6 +2,7 @@
 
 ## 3.1.1
 * `removeBody()` で `box2dweb.Dynamics.b2World.IsLocked()` が真の場合にエラーとするよう修正
+* `Box2DFixtureDef` の `userData` を `string` から `any` へ変更
 
 ## 3.1.0
 * ファイル名の修正
