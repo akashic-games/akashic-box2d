@@ -545,6 +545,19 @@ const box2d = new b2.Box2D( ... );
 patch.patchBox2D(box2d, { maxTOILoop: 10 });
 ```
 
+patchBox2D を利用する際は `game.json` の `globalScripts` に下記のように patch の js ファイルのパスを手動で追加する必要があります。
+
+```json
+"globalScripts": [
+  ...
+  "node_modules/@akashic-extension/akashic-box2d/patch/index.js",
+  "node_modules/@akashic-extension/akashic-box2d/patch/box2d.js",
+  "node_modules/@akashic-extension/akashic-box2d/patch/math.js"
+]
+```
+
+また、`akashic uninstall` コマンドで akashic-box2d を削除した場合は `game.json` の `globalScripts` から削除されますが、`npm uninstall` コマンドで削除する場合には、手動で `game.json` の `globalScripts` に追加したファイルパスを削除する必要があります。
+
 ### patchBox2DMath
 
 以下の修正が適用されます。
@@ -558,6 +571,19 @@ const patch = require("@akashic-extension/akashic-box2d/patch");
 
 patch.patchBox2DMath(box2d, { tableSize: 8192 });
 ```
+
+patchBox2DMath を利用する際は `game.json` の `globalScripts` に下記のように patch の js ファイルのパスを手動で追加する必要があります。
+
+```json
+"globalScripts": [
+  ...
+  "node_modules/@akashic-extension/akashic-box2d/patch/index.js",
+  "node_modules/@akashic-extension/akashic-box2d/patch/box2d.js",
+  "node_modules/@akashic-extension/akashic-box2d/patch/math.js"
+]
+```
+
+また、`akashic uninstall` コマンドで akashic-box2d を削除した場合は `game.json` の `globalScripts` から削除されますが、`npm uninstall` コマンドで削除する場合には、手動で `game.json` の `globalScripts` に追加したファイルパスを削除する必要があります。
 
 ## 注意事項
 
