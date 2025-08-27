@@ -528,6 +528,17 @@ box2d.destroy();
 
 Box2D(Box2DWeb) の機能を追加・変更するためのパッチが用意されています。パッチは２つあります。
 
+以下のパッチを適用するには `game.json` の `globalScripts` に下記のように patch の js ファイルのパスを手動で追加する必要があります。
+
+```json
+"globalScripts": [
+  ...
+  "node_modules/@akashic-extension/akashic-box2d/patch/index.js",
+  "node_modules/@akashic-extension/akashic-box2d/patch/box2d.js",
+  "node_modules/@akashic-extension/akashic-box2d/patch/math.js"
+]
+```
+
 ### patchBox2D
 
 以下の修正が適用されます。
