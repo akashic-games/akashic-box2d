@@ -513,7 +513,7 @@ removeList.forEach(b => box2d.removeBody(b));
 
 ```javascript
 const distanceJointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
-distanceJointDef.frequencyHz = 1.0;  // 質量の周波数
+distanceJointDef.frequencyHz = 1.0;  // 接合部の弾力性に影響
 distanceJointDef.dampingRatio = 0.5; // 減衰比
 distanceJointDef.length = 0.1; // アンカーポイントの長さ
 ```
