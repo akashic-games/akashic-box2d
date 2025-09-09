@@ -166,6 +166,72 @@ export = () => {
 			soccerBody.b2Body.ApplyImpulse(box2d.vec2(delta.x * -5, delta.y * -5), box2d.vec2(pos.x, pos.y));
 		});
 
+		// ジョイントの性質を定義
+		const jointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
+		jointDef.frequencyHz = 0.7; // 固有振動数
+		jointDef.dampingRatio = 0.1; // 減衰比。0 = 減衰なし、1 = 臨界減衰。
+		jointDef.length = 1.5; // アンカーポイントの長さ
+
+		// ジョイントのドラッグ可能な FilledRect エンティティの生成
+		const jointRect1 = new g.FilledRect({
+			scene: scene,
+			cssColor: "black",
+			x: 220,
+			y: 100,
+			width: 30,
+			height: 30,
+			touchable: true
+		});
+		scene.append(jointRect1);
+
+		// ジョイントの FilledRect エンティティの生成
+		const jointRect2 = new g.FilledRect({
+			scene: scene,
+			cssColor: "gray",
+			x: 270,
+			y: 100,
+			width: 30,
+			height: 30
+		});
+		scene.append(jointRect2);
+
+		// ジョイント用の rect エンティティを Box2D に追加
+		const jointRect1Body = box2d.createBody(jointRect1, dynamicDef, entityDef);
+		const jointRect2Body = box2d.createBody(jointRect2, dynamicDef, entityDef);
+
+		// Initialize 関数で２つの衝突オブジェクトとアンカー（結合点）を指定しジョイントを生成
+		const anchor1 = box2d.vec2(jointRect1.x, jointRect1.y);
+		const anchor2 = box2d.vec2(jointRect2.x, jointRect2.y );
+		jointDef.Initialize(jointRect1Body.b2Body, jointRect2Body.b2Body, anchor1, anchor2);
+		const distanceJoint = box2d.world.CreateJoint(jointDef) as b2.Box2DWeb.Dynamics.Joints.b2DistanceJoint;
+
+		let mouseJoint: b2.Box2DWeb.Dynamics.Joints.b2MouseJoint;
+		let anchor: b2.Box2DWeb.Common.Math.b2Vec2;
+		// マウスと jointRect1Body の紐づけを作成
+		const mouseJointDef = new b2.Box2DWeb.Dynamics.Joints.b2MouseJointDef();
+		mouseJointDef.bodyA = box2d.world.GetGroundBody();  // 物理エンジンの世界
+		mouseJointDef.bodyB = jointRect1Body.b2Body; // 紐付け対象のbody
+		mouseJointDef.maxForce = 1000.0 * jointRect1Body.b2Body.GetMass(); // マウスジョイントが引っ張る力
+		mouseJointDef.collideConnected = true; // 二つのボディの衝突判定を行う
+
+		jointRect1.onPointDown.add((ev) => {
+			anchor = box2d.vec2(ev.point.x, ev.point.y);
+			// マウスジョイントの作成
+			mouseJoint = box2d.world.CreateJoint(mouseJointDef) as b2.Box2DWeb.Dynamics.Joints.b2MouseJoint;
+		});
+
+		jointRect1.onPointMove.add((ev) => {
+			// マウスドラッグしたときに座標を更新
+			anchor.Add(box2d.vec2(ev.prevDelta.x, ev.prevDelta.y));
+			mouseJoint.SetTarget(anchor);
+		});
+
+		jointRect1.onPointUp.add(() => {
+      		// マウスと jointRect1Body の紐づけをを解除
+      		box2d.world.DestroyJoint(mouseJoint);
+      		mouseJoint = null;
+		});
+
 		scene.onUpdate.add(() => {
 			// 物理エンジンの世界をすすめる
 			box2d.step(1 / game.fps);

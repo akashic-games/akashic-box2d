@@ -515,7 +515,7 @@ removeList.forEach(b => box2d.removeBody(b));
 const distanceJointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
 distanceJointDef.frequencyHz = 1.0;  // 固有振動数
 distanceJointDef.dampingRatio = 0.5; // 減衰比
-distanceJointDef.length = 0.1; // アンカーポイントの長さ
+distanceJointDef.length = 1; // アンカーポイントの長さ(px * スケール)
 ```
 
 生成したジョイントの定義の Initialize 関数で２つの衝突オブジェクトとアンカー（結合点）を指定します。
