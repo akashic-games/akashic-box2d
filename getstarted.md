@@ -507,13 +507,13 @@ removeList.forEach(b => box2d.removeBody(b));
 ### ジョイントの生成
 
 ジョイントは物体と物体をつなぐ役割を果たします。つなぎ方にも色々あり Box2D には様々なジョイントが用意されています。
-ここではディスタンスジョイントを利用します。ディスタンスジョイントは、物体と物体の接続点を一定距離に保つだけの単純なジョイントです。
+ここではディスタンスジョイントを作成してみましょう。ディスタンスジョイントは、2つの物体を「一定の長さで結びつける」ジョイントです。硬い棒のように距離を固定したり、バネのように伸び縮みしながら保つことができます。
 
 まずディスタンスジョイントの定義を生成し、必要に応じてプロパティの値を設定します。
 
 ```javascript
 const distanceJointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
-distanceJointDef.frequencyHz = 1.0;  // 接合部の弾力性に影響
+distanceJointDef.frequencyHz = 1.0;  // 固有振動数
 distanceJointDef.dampingRatio = 0.5; // 減衰比
 distanceJointDef.length = 0.1; // アンカーポイントの長さ
 ```
@@ -526,13 +526,13 @@ const anchor2 = box2d.vec2(body2.x, body2.y );
 distanceJointDef.Initialize(body1, body2, anchor1, anchor2);
 ```
 
-次に、 `box2d.world.CreateJoint()` を利用して物体同士をつなぐジョイントが生成され、指定したふたつの物体が接続されます。
+`box2d.world.CreateJoint()` を利用して物体同士をつなぐジョイントが生成され、指定したふたつの物体が接続されます。
 
 ```javascript
 const distanceJoint = box2d.world.CreateJoint(distanceJointDef);
 ```
 
-TypeScript の場合、`box2d.world.CreateJoint()` の戻り型は `Box2D.Dynamics.Joints.b2Joint` になるので、ディスタンスジョイントとして扱う場合にはダウンキャストが必要なことに注意してください。
+TypeScript の場合、`box2d.world.CreateJoint()` の戻り型は `Box2D.Dynamics.Joints.b2Joint` になるので、ディスタンスジョイント固有のメソッドを利用したい場合は、以下のように `as` で明示的にダウンキャストしてください。
 
 ```TypeScript
 const distanceJoint = box2d.world.CreateJoint(jointDef) as b2.Box2DWeb.Dynamics.Joints.b2DistanceJoint;
