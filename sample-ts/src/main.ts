@@ -190,30 +190,30 @@ export = () => {
 		scene.append(jointedRect);
 
 		// ドラッグ可能エンティティを四角に設定
-        entityDef.shape = box2d.createRectShape(draggableRect.width, draggableRect.height);
-        // ドラッグ可能エンティティを Box2D に追加
-        const draggableRectBody = box2d.createBody(draggableRect, dynamicDef, entityDef);
-        // 簡単化のため回転をしないように
-        draggableRectBody.b2Body.SetFixedRotation(true);
+		entityDef.shape = box2d.createRectShape(draggableRect.width, draggableRect.height);
+		// ドラッグ可能エンティティを Box2D に追加
+		const draggableRectBody = box2d.createBody(draggableRect, dynamicDef, entityDef);
+		// 簡単化のため回転をしないように
+		draggableRectBody.b2Body.SetFixedRotation(true);
 		// 距離ジョイントにより接続されるエンティティを四角に設定
-        entityDef.shape = box2d.createRectShape(jointedRect.width, jointedRect.height);
-        // 距離ジョイントにより接続されるエンティティを Box2D に追加
-        const jointedRectBody = box2d.createBody(jointedRect, dynamicDef, entityDef);
+		entityDef.shape = box2d.createRectShape(jointedRect.width, jointedRect.height);
+		// 距離ジョイントにより接続されるエンティティを Box2D に追加
+		const jointedRectBody = box2d.createBody(jointedRect, dynamicDef, entityDef);
 
 		// 距離ジョイントを接続する
-        const draggableRectAnchor = box2d.vec2(draggableRect.x, draggableRect.y);
-        const jointedRectAnchor = box2d.vec2(jointedRect.x, jointedRect.y);
+		const draggableRectAnchor = box2d.vec2(draggableRect.x, draggableRect.y);
+		const jointedRectAnchor = box2d.vec2(jointedRect.x, jointedRect.y);
 
 		// 距離ジョイントの初期化
-        const springJointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
-        springJointDef.Initialize(draggableRectBody.b2Body, jointedRectBody.b2Body, draggableRectAnchor, jointedRectAnchor);
+		const springJointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
+		springJointDef.Initialize(draggableRectBody.b2Body, jointedRectBody.b2Body, draggableRectAnchor, jointedRectAnchor);
 
 		// 距離ジョイントをバネっぽくする
-        springJointDef.frequencyHz = 5; // 固有振動数
-        springJointDef.dampingRatio = 0.5; // 減衰比
+		springJointDef.frequencyHz = 5; // 固有振動数
+		springJointDef.dampingRatio = 0.5; // 減衰比
 
 		// 距離ジョイントを生成
-        box2d.world.CreateJoint(springJointDef);
+		box2d.world.CreateJoint(springJointDef);
 
 		// ドラッグで移動するように
 		{
