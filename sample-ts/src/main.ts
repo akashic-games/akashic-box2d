@@ -166,14 +166,8 @@ export = () => {
 			soccerBody.b2Body.ApplyImpulse(box2d.vec2(delta.x * -5, delta.y * -5), box2d.vec2(pos.x, pos.y));
 		});
 
-		// ジョイントの性質を定義
-		const jointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
-		jointDef.frequencyHz = 0.7; // 固有振動数
-		jointDef.dampingRatio = 0.1; // 減衰比。0 = 減衰なし、1 = 臨界減衰。
-		jointDef.length = 1.5; // アンカーポイントの長さ
-
-		// ジョイントのドラッグ可能な FilledRect エンティティの生成
-		const jointRect1 = new g.FilledRect({
+		// ドラッグ可能なエンティティの生成
+		const draggableRect = new g.FilledRect({
 			scene: scene,
 			cssColor: "black",
 			x: 220,
@@ -182,10 +176,10 @@ export = () => {
 			height: 30,
 			touchable: true
 		});
-		scene.append(jointRect1);
+		scene.append(draggableRect);
 
-		// ジョイントの FilledRect エンティティの生成
-		const jointRect2 = new g.FilledRect({
+		// 距離ジョイントにより接続されるエンティティの生成
+		const jointedRect = new g.FilledRect({
 			scene: scene,
 			cssColor: "gray",
 			x: 270,
@@ -193,44 +187,55 @@ export = () => {
 			width: 30,
 			height: 30
 		});
-		scene.append(jointRect2);
+		scene.append(jointedRect);
 
-		// ジョイント用の rect エンティティを Box2D に追加
-		const jointRect1Body = box2d.createBody(jointRect1, dynamicDef, entityDef);
-		const jointRect2Body = box2d.createBody(jointRect2, dynamicDef, entityDef);
+		// ドラッグ可能エンティティを四角に設定
+        entityDef.shape = box2d.createRectShape(draggableRect.width, draggableRect.height);
+        // ドラッグ可能エンティティを Box2D に追加
+        const draggableRectBody = box2d.createBody(draggableRect, dynamicDef, entityDef);
+        // 簡単化のため回転をしないように
+        draggableRectBody.b2Body.SetFixedRotation(true);
+		// 距離ジョイントにより接続されるエンティティを四角に設定
+        entityDef.shape = box2d.createRectShape(jointedRect.width, jointedRect.height);
+        // 距離ジョイントにより接続されるエンティティを Box2D に追加
+        const jointedRectBody = box2d.createBody(jointedRect, dynamicDef, entityDef);
 
-		// Initialize 関数で２つの衝突オブジェクトとアンカー（結合点）を指定しジョイントを生成
-		const anchor1 = box2d.vec2(jointRect1.x, jointRect1.y);
-		const anchor2 = box2d.vec2(jointRect2.x, jointRect2.y );
-		jointDef.Initialize(jointRect1Body.b2Body, jointRect2Body.b2Body, anchor1, anchor2);
-		const distanceJoint = box2d.world.CreateJoint(jointDef) as b2.Box2DWeb.Dynamics.Joints.b2DistanceJoint;
+		// 距離ジョイントを接続する
+        const draggableRectAnchor = box2d.vec2(draggableRect.x, draggableRect.y);
+        const jointedRectAnchor = box2d.vec2(jointedRect.x, jointedRect.y);
 
-		let mouseJoint: b2.Box2DWeb.Dynamics.Joints.b2MouseJoint;
-		let anchor: b2.Box2DWeb.Common.Math.b2Vec2;
-		// マウスと jointRect1Body の紐づけを作成
-		const mouseJointDef = new b2.Box2DWeb.Dynamics.Joints.b2MouseJointDef();
-		mouseJointDef.bodyA = box2d.world.GetGroundBody();  // 物理エンジンの世界
-		mouseJointDef.bodyB = jointRect1Body.b2Body; // 紐付け対象のbody
-		mouseJointDef.maxForce = 1000.0 * jointRect1Body.b2Body.GetMass(); // マウスジョイントが引っ張る力
-		mouseJointDef.collideConnected = true; // 二つのボディの衝突判定を行う
+		// 距離ジョイントの初期化
+        const springJointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
+        springJointDef.Initialize(draggableRectBody.b2Body, jointedRectBody.b2Body, draggableRectAnchor, jointedRectAnchor);
 
-		jointRect1.onPointDown.add((ev) => {
-			anchor = box2d.vec2(ev.point.x, ev.point.y);
-			// マウスジョイントの作成
-			mouseJoint = box2d.world.CreateJoint(mouseJointDef) as b2.Box2DWeb.Dynamics.Joints.b2MouseJoint;
-		});
+		// 距離ジョイントをバネっぽくする
+        springJointDef.frequencyHz = 5; // 固有振動数
+        springJointDef.dampingRatio = 0.5; // 減衰比
 
-		jointRect1.onPointMove.add((ev) => {
-			// マウスドラッグしたときに座標を更新
-			anchor.Add(box2d.vec2(ev.prevDelta.x, ev.prevDelta.y));
-			mouseJoint.SetTarget(anchor);
-		});
+		// 距離ジョイントを生成
+        box2d.world.CreateJoint(springJointDef);
 
-		jointRect1.onPointUp.add(() => {
-      		// マウスと jointRect1Body の紐づけをを解除
-      		box2d.world.DestroyJoint(mouseJoint);
-      		mouseJoint = null;
-		});
+		// ドラッグで移動するように
+		{
+			let x = 0;
+			let y = 0;
+			draggableRect.onPointDown.add(() => {
+				x = draggableRect.x;
+				y = draggableRect.y;
+			});
+			draggableRect.onPointMove.add(event => {
+				// Box2D 上で座標を移動
+				draggableRectBody.b2Body.SetPosition(box2d.vec2(x + event.startDelta.x, y + event.startDelta.y));
+				// ドラッグ中はスリープを抑止
+				draggableRectBody.b2Body.SetAwake(true);
+				// ドラッグ中はキネマティックに
+				draggableRectBody.b2Body.SetType(b2.BodyType.Kinematic);
+			});
+			draggableRect.onPointUp.add(() => {
+				// ドラッグ終了時に動的物体に戻す
+				draggableRectBody.b2Body.SetType(b2.BodyType.Dynamic);
+			});
+		}
 
 		scene.onUpdate.add(() => {
 			// 物理エンジンの世界をすすめる
