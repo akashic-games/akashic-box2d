@@ -524,14 +524,14 @@ Box2D には、2つのボディとそれぞれのアンカーを指定するこ�
 
 ```javascript
 const anchor1 = box2d.vec2(body1.x, body1.y);
-const anchor2 = box2d.vec2(body2.x, body2.y );
+const anchor2 = box2d.vec2(body2.x, body2.y);
 distanceJointDef.Initialize(body1, body2, anchor1, anchor2);
 ```
 
 初期化した後、必要に応じてプロパティの値を上書き設定します。
 
 ```javascript
-distanceJointDef.frequencyHz = 1.0;  // 固有振動数
+distanceJointDef.frequencyHz = 1.0; // 固有振動数
 distanceJointDef.dampingRatio = 0.5; // 減衰比
 ```
 
