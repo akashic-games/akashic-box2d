@@ -145,6 +145,78 @@ module.exports = () => {
             // ApplyImpulse()はBox2Dの機能です。
             soccerBody.b2Body.ApplyImpulse(box2d.vec2(delta.x * -5, delta.y * -5), box2d.vec2(pos.x, pos.y));
         });
+
+        // ドラッグ可能なエンティティの生成
+        const draggableRect = new g.FilledRect({
+            scene: scene,
+            cssColor: "black",
+            x: 220,
+            y: 100,
+            width: 30,
+            height: 30,
+            touchable: true
+        });
+        scene.append(draggableRect);
+
+        // 距離ジョイントにより接続されるエンティティの生成
+        const jointedRect = new g.FilledRect({
+            scene: scene,
+            cssColor: "gray",
+            x: 270,
+            y: 100,
+            width: 30,
+            height: 30
+        });
+        scene.append(jointedRect);
+
+        // ドラッグ可能エンティティを四角に設定
+        entityDef.shape = box2d.createRectShape(draggableRect.width, draggableRect.height);
+        // ドラッグ可能エンティティを Box2D に追加
+        const draggableRectBody = box2d.createBody(draggableRect, dynamicDef, entityDef);
+        // 簡単化のため回転をしないように
+        draggableRectBody.b2Body.SetFixedRotation(true);
+        // 距離ジョイントにより接続されるエンティティを四角に設定
+        entityDef.shape = box2d.createRectShape(jointedRect.width, jointedRect.height);
+        // 距離ジョイントにより接続されるエンティティを Box2D に追加
+        const jointedRectBody = box2d.createBody(jointedRect, dynamicDef, entityDef);
+
+        // 距離ジョイントを接続する
+        const draggableRectAnchor = box2d.vec2(draggableRect.x, draggableRect.y);
+        const jointedRectAnchor = box2d.vec2(jointedRect.x, jointedRect.y);
+
+        // 距離ジョイントの初期化
+        const springJointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
+        springJointDef.Initialize(draggableRectBody.b2Body, jointedRectBody.b2Body, draggableRectAnchor, jointedRectAnchor);
+
+        // 距離ジョイントをバネっぽくする
+        springJointDef.frequencyHz = 5; // 固有振動数
+        springJointDef.dampingRatio = 0.5; // 減衰比
+
+        // 距離ジョイントを生成
+        box2d.world.CreateJoint(springJointDef);
+
+        // ドラッグで移動するように
+        {
+            let x = 0;
+            let y = 0;
+            draggableRect.onPointDown.add(() => {
+                x = draggableRect.x;
+                y = draggableRect.y;
+            });
+            draggableRect.onPointMove.add(event => {
+                // Box2D 上で座標を移動
+                draggableRectBody.b2Body.SetPosition(box2d.vec2(x + event.startDelta.x, y + event.startDelta.y));
+                // ドラッグ中はスリープを抑止
+                draggableRectBody.b2Body.SetAwake(true);
+                // ドラッグ中はキネマティックに
+                draggableRectBody.b2Body.SetType(b2.BodyType.Kinematic);
+            });
+            draggableRect.onPointUp.add(() => {
+                // ドラッグ終了時に動的物体に戻す
+                draggableRectBody.b2Body.SetType(b2.BodyType.Dynamic);
+            });
+        }
+
         scene.onUpdate.add(() => {
             // 物理エンジンの世界をすすめる
             box2d.step(1 / game.fps);

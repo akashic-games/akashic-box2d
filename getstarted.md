@@ -502,6 +502,62 @@ box2d.step(); // 物理エンジンの世界を進める
 removeList.forEach(b => box2d.removeBody(b));
 ```
 
+## ジョイント
+
+### ジョイントの生成
+
+ジョイントは物体と物体をつなぐ役割を果たします。
+つなぎ方にも色々あり Box2D には様々なジョイントが用意されています。
+
+ここでは距離ジョイントを作成してみましょう。
+距離ジョイントは、2つの物体を「一定の長さで結びつける」ジョイントです。
+硬い棒のように距離を固定したり、バネのように伸び縮みしながら保つことができます。
+
+まず距離ジョイントの定義を生成します。
+
+```javascript
+const distanceJointDef = new b2.Box2DWeb.Dynamics.Joints.b2DistanceJointDef();
+```
+
+次に、2つのボディを距離ジョイントで接続します。
+Box2D には、2つのボディとそれぞれのアンカーを指定することで `b2DistanceJointDef` の各パラメータを初期化する `Initialize()` メソッドが用意されているため、それを利用します。
+
+```javascript
+const anchor1 = box2d.vec2(body1.x, body1.y);
+const anchor2 = box2d.vec2(body2.x, body2.y);
+distanceJointDef.Initialize(body1, body2, anchor1, anchor2);
+```
+
+初期化した後、必要に応じてプロパティの値を上書き設定します。
+
+```javascript
+distanceJointDef.frequencyHz = 1.0; // 固有振動数
+distanceJointDef.dampingRatio = 0.5; // 減衰比
+```
+
+`box2d.world.CreateJoint()` にジョイントの定義を渡すことで、ジョイントが生成されます。
+
+```javascript
+const distanceJoint = box2d.world.CreateJoint(distanceJointDef);
+```
+
+`box2d.world.CreateJoint()` の戻り値の型は共通の `Box2D.Dynamics.Joints.b2Joint` になります。
+そのため、距離ジョイント固有のメソッドを利用したい場合は `b2.Box2DWeb.Dynamics.Joints.b2DistanceJoint` を参照する必要があります。
+
+TypeScript の場合、`as` を使ってダウンキャストすることで、特定のジョイントの型として扱うことができます。
+
+```TypeScript
+const distanceJoint = box2d.world.CreateJoint(jointDef) as b2.Box2DWeb.Dynamics.Joints.b2DistanceJoint;
+```
+
+### ジョイントの破棄
+
+ジョイントを破棄するには、 `box2d.world.DestroyJoint()` を利用します。
+
+```javascript
+box2d.world.DestroyJoint(distanceJoint);
+```
+
 ## 物理エンジンの操作
 
 ### 物理エンジンからボディの破棄
