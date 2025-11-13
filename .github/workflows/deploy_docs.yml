@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+env:
+  NODE_VERSION: 24
+
 permissions:
   contents: write
 
@@ -17,7 +20,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - name: Install and Build
         run: |
