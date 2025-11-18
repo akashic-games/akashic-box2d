@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 3.1.2
+* `Box2D#createBodyDef()` において `linearVelocity` が正しく反映されていなかったバグの修正
+
 ## 3.1.1
 * `removeBody()` で `box2dweb.Dynamics.b2World.IsLocked()` が真の場合にエラーとするよう修正
 * `Box2DFixtureDef` の `userData` を `string` から `any` へ変更

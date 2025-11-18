@@ -283,8 +283,8 @@ export class Box2D {
 		if (bodyDef.linearDamping != null) {
 			def.linearDamping = bodyDef.linearDamping;
 		}
-		if (bodyDef.linearDamping != null) {
-			def.linearDamping = bodyDef.linearDamping;
+		if (bodyDef.linearVelocity != null) {
+			def.linearVelocity = bodyDef.linearVelocity;
 		}
 		if (bodyDef.active != null) {
 			def.active = bodyDef.active;

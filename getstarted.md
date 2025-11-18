@@ -484,7 +484,8 @@ contactListener.BeginContact = function (contact) {
 
 ### 衝突時にボディを削除したい場合
 
-`box2d.step()` 中は `box2d.world` がロックされます。そのため、`box2d.step()` 中に呼ばれる接触判定のコールバックではボティを削除することができません。 接触判定のコールバックでボディを削除したい場合には、コールバック内ではリストに追加しておくだけにし `box2d.step()` の終了後に削除するなどの対応が必要です。
+`box2d.step()` 中は `box2d.world` がロックされます。そのため、`box2d.step()` 中に呼ばれる接触判定のコールバックではボティを削除することができません。
+接触判定のコールバックでボディを削除したい場合には、コールバック内ではリストに追加しておくだけにし `box2d.step()` の終了後に削除するなどの対応が必要です。
 
 ```javascript
 // 接触イベントのリスナーを生成
@@ -623,7 +624,7 @@ patch.patchBox2D(box2d, { maxTOILoop: 10 });
 ```javascript
 const patch = require("@akashic-extension/akashic-box2d/patch");
 
-patch.patchBox2DMath(box2d, { tableSize: 8192 });
+patch.patchBox2DMath({ tableSize: 8192 });
 ```
 
 ## 注意事項
@@ -655,14 +656,14 @@ akashic-box2d 0.1.0では、ゲーム開発者側から物理エンジンの世�
 ボディの座標を(100, 100)に指定したい場合、Box2DWebの `SetPosition()` により指定します。
 
 ```javascript
-// NG: 物理演算結果の座標が上書きされます。
+// ✅️
+body.b2Body.SetPosition(box2d.vec2(100 + entity.width / 2, 100 + entity.height / 2));
+body.b2Body.SetAngle(box2d.radian(180));
+
+// ❌️ 物理演算結果の座標が上書きされます。
 entity.x = 100;
 entity.y = 100;
 entity.angle = 180;
-
-// OK
-body.b2Body.SetPosition(box2d.vec2(100 + entity.width / 2, 100 + entity.height / 2));
-body.b2Body.SetAngle(box2d.radian(180));
 ```
 
 Box2DWebのボディの座標基準は中心にあるため、エンティティの `width` と `height` から座標を補正する必要があります。
