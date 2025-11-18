@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## unreleased changes
+## 3.1.2
 * `Box2D#createBodyDef()` において `linearVelocity` が正しく反映されていなかったバグの修正
 
 ## 3.1.1
