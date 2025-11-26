@@ -725,7 +725,7 @@ declare module "box2dweb" {
 			/**
 			* Time interval = [t0,1], where t0 is in [0,1].
 			**/
-			public t0: b2Vec2;
+			public t0: number;
 
 			/**
 			* Advance the sweep forward, yielding a new initial state.
