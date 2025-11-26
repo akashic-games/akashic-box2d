@@ -2563,6 +2563,13 @@ declare module "box2dweb" {
 			public static b2_staticBody: number;
 
 			/**
+			* Constructor for b2Body.
+			* @param bd The body definition.
+			* @param world The world object.
+			**/
+			constructor(bd: b2BodyDef, world: b2World);
+
+			/**
 			* Apply a force at a world point. If the force is not applied at the center of mass, it will generate a torque and affect the angular velocity. This wakes up the body.
 			* @param force The world force vector, usually in Newtons (N).
 			* @param point The world position of the point of application.
