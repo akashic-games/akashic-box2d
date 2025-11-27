@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## unreleased changes
+* box2dweb.d.ts の型定義を preserve するように修正
+* box2dweb.d.ts の `b2Sweep` の `t0` の型定義を修正
+* box2dweb.d.ts の `b2Body` のコンストラクタの型定義を修正
+
 ## 3.1.2
 * `Box2D#createBodyDef()` において `linearVelocity` が正しく反映されていなかったバグの修正
 
