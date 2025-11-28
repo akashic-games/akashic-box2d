@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## unreleased changes
+## 3.1.3
 * box2dweb.d.ts の型定義を preserve するように修正
 * box2dweb.d.ts の `b2Sweep` の `t0` の型定義を修正
 * box2dweb.d.ts の `b2Body` のコンストラクタの型定義を修正
