@@ -725,7 +725,7 @@ declare module "box2dweb" {
 			/**
 			* Time interval = [t0,1], where t0 is in [0,1].
 			**/
-			public t0: b2Vec2;
+			public t0: number;
 
 			/**
 			* Advance the sweep forward, yielding a new initial state.
@@ -2561,6 +2561,13 @@ declare module "box2dweb" {
 			* Static Body
 			**/
 			public static b2_staticBody: number;
+
+			/**
+			* Constructor for b2Body.
+			* @param bd The body definition.
+			* @param world The world object.
+			**/
+			constructor(bd: b2BodyDef, world: b2World);
 
 			/**
 			* Apply a force at a world point. If the force is not applied at the center of mass, it will generate a torque and affect the angular velocity. This wakes up the body.
