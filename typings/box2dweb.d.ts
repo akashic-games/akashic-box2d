@@ -362,6 +362,10 @@ declare module "box2dweb" {
 
 			/**
 			* Constructor
+			**/
+			constructor();
+			/**
+			* Constructor
 			* @param c1 Column 1
 			* @param c2 Column 2
 			* @param c3 Column 3
@@ -770,6 +774,11 @@ declare module "box2dweb" {
 			**/
 			public R: b2Mat22;
 
+
+			/**
+			* The default constructor does nothing (for performance).
+			**/
+			constructor();
 			/**
 			* The default constructor does nothing (for performance).
 			* @param pos Position
@@ -1129,7 +1138,7 @@ declare module "box2dweb" {
 			/**
 			* ID Key
 			**/
-			public Key: number;
+			public key: number;
 
 			/**
 			* Creates a new Contact ID.
@@ -1577,7 +1586,7 @@ declare module "box2dweb" {
 			/**
 			* Local contact point.
 			**/
-			public m_localpoint: Box2D.Common.Math.b2Vec2;
+			public m_localPoint: Box2D.Common.Math.b2Vec2;
 
 			/**
 			* Normal impluse for this contact point.
@@ -2414,7 +2423,7 @@ declare module "box2dweb" {
 			* @param vertexCount The number of vertices, default is 0 and in the box2dweb.js code it is ignored.
 			* @return Convex polygon shape.
 			**/
-			public SetAsVector(vertices: any[], vertexCount?: number): void;
+			public SetAsVector(vertices: Box2D.Common.Math.b2Vec2[], vertexCount?: number): void;
 
 			/**
 			* Test a point for containment in this shape. This only works for convex shapes.
@@ -3051,12 +3060,12 @@ declare module "box2dweb" {
 			/**
 			* Normal impulses.
 			**/
-			public normalImpulses: Box2D.Common.Math.b2Vec2;
+			public normalImpulses: number[];
 
 			/**
 			* Tangent impulses.
 			**/
-			public tangentImpulses: Box2D.Common.Math.b2Vec2;
+			public tangentImpulses: number[];
 		}
 	}
 

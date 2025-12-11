@@ -1,9 +1,9 @@
+import * as g from "@akashic/akashic-engine";
 import * as box2dweb from "box2dweb";
 import type { Box2DParameter } from "../";
 import { Box2D, BodyType } from "../";
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-global.g = require("@akashic/akashic-engine");
+(globalThis as any).g = g;
 
 describe("Box2D specs", () => {
 	let entity1: any;

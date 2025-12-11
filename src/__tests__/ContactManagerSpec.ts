@@ -1,6 +1,7 @@
+import * as g from "@akashic/akashic-engine";
 import { Box2D, BodyType, ContactManager } from "../";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-global.g = require("@akashic/akashic-engine");
+
+(globalThis as any).g = g;
 
 describe("ContactManager specs", () => {
 	it("constructor", () => {
