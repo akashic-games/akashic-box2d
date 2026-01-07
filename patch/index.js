@@ -3,5 +3,7 @@ var box2d = require("./box2d");
 
 module.exports = {
     patchBox2D: box2d.patchBox2D,
-    patchBox2DMath: math.patchBox2DMath
+    patchBox2DMath: math.patchBox2DMath,
+    overrideMathInstance: math.overrideMathInstance,
+    isAvailableGMath: math.isAvailableGMath
 };

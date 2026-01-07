@@ -77,7 +77,15 @@ function patchBox2DMath(opts) {
         return this.sin(th + Math.PI / 2);
     };
 
-    b2.Common.Math.b2Mat22.prototype.__lutmath = new LutMath();
+    if (isAvailableGMath()) {
+        overrideMathInstance(g.Math);
+    } else {
+        overrideMathInstance(new LutMath());
+    }
+}
+
+function overrideMathInstance(mathInstance) {
+    b2.Common.Math.b2Mat22.prototype.__lutmath = mathInstance;
 
     // override
     b2.Common.Math.b2Mat22.prototype.Set = function(angle) {
@@ -91,6 +99,17 @@ function patchBox2DMath(opts) {
     };
 }
 
+function isAvailableGMath() {
+    try {
+        g.Math.sin(0);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 module.exports = {
-    patchBox2DMath: patchBox2DMath
+    patchBox2DMath: patchBox2DMath,
+    overrideMathInstance: overrideMathInstance,
+    isAvailableGMath: isAvailableGMath
 };

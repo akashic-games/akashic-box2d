@@ -1,5 +1,6 @@
 import * as box2dweb from "box2dweb";
 import type { EBody, Box2DFixtureDef, Box2DBodyDef } from "./parameters";
+import * as patch from "../patch/index";
 
 /**
  * `Box2D` のインスタンス生成時に指定するパラメータ。
@@ -58,6 +59,10 @@ export class Box2D {
 		const b2world = new box2dweb.Dynamics.b2World(new box2dweb.Common.Math.b2Vec2(param.gravity[0], param.gravity[1]), sleep);
 		this.scale = param.scale;
 		this.world = b2world;
+
+		if (patch.isAvailableGMath()) {
+			patch.overrideMathInstance(g.Math);
+		}
 	}
 
 	/**
