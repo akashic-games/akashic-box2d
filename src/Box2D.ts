@@ -1,6 +1,5 @@
 import * as box2dweb from "box2dweb";
 import type { EBody, Box2DFixtureDef, Box2DBodyDef } from "./parameters";
-import * as patch from "../patch/index";
 
 /**
  * `Box2D` のインスタンス生成時に指定するパラメータ。
@@ -60,8 +59,9 @@ export class Box2D {
 		this.scale = param.scale;
 		this.world = b2world;
 
-		if (patch.isAvailableGMath()) {
-			patch.overrideMathInstance(g.Math);
+		// NOTE: patch/math.jsでも同様の処理を行うが、依存関係を避けるため両方に実装を持たせる
+		if (isAvailableGMath()) {
+			overrideMathInstance(g.Math);
 		}
 	}
 
@@ -353,4 +353,26 @@ export class Box2D {
 			entity.modified();
 		}
 	}
+}
+
+function isAvailableGMath(): boolean {
+    try {
+        g.Math.sin(0);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+function overrideMathInstance(mathInstance: any): void {
+	// override
+	box2dweb.Common.Math.b2Mat22.prototype.Set = function(angle: number) {
+		if (angle === undefined) angle = 0;
+		var c = mathInstance.cos(angle);
+		var s = mathInstance.sin(angle);
+		this.col1.x = c;
+		this.col2.x = (-s);
+		this.col1.y = s;
+		this.col2.y = c;
+	};
 }

@@ -1,5 +1,4 @@
-import * as b2 from "box2dweb";
-import * as Box2D from "../src";
+import * as Box2D from "../lib";
 
 /**
  * patchBox2D() のオプショナルなパラメータ。
@@ -57,8 +56,3 @@ export interface PatchBox2DMathOption {
  * @param opts オプション。
  */
 export function patchBox2DMath(opts?: PatchBox2DMathOption): void;
-
-
-export function overrideMathInstance(mathInstance: any): void;
-
-export function isAvailableGMath(): boolean;

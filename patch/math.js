@@ -77,13 +77,12 @@ function patchBox2DMath(opts) {
         return this.sin(th + Math.PI / 2);
     };
 
-    if (isAvailableGMath()) {
-        overrideMathInstance(g.Math);
-    } else {
+    if (!isAvailableGMath()) {
         overrideMathInstance(new LutMath());
     }
 }
 
+// NOTE: patch/math.jsでも同様の処理を行うが、依存関係を避けるため両方に実装を持たせる
 function overrideMathInstance(mathInstance) {
     b2.Common.Math.b2Mat22.prototype.__lutmath = mathInstance;
 
