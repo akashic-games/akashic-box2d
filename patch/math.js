@@ -82,7 +82,7 @@ function patchBox2DMath(opts) {
     }
 }
 
-// NOTE: patch/math.jsでも同様の処理を行うが、依存関係を避けるため両方に実装を持たせる
+// NOTE: src/Box3D.tsでも同様の処理を行うが、依存関係を避けるため両方に実装を持たせる
 function overrideMathInstance(mathInstance) {
     b2.Common.Math.b2Mat22.prototype.__lutmath = mathInstance;
 
