@@ -58,6 +58,11 @@ export class Box2D {
 		const b2world = new box2dweb.Dynamics.b2World(new box2dweb.Common.Math.b2Vec2(param.gravity[0], param.gravity[1]), sleep);
 		this.scale = param.scale;
 		this.world = b2world;
+
+		// NOTE: patch/math.jsでも同様の処理を行うが、依存関係を避けるため両方に実装を持たせる
+		if (isAvailableGMath()) {
+			overrideMathInstance(g.Math);
+		}
 	}
 
 	/**
@@ -348,4 +353,26 @@ export class Box2D {
 			entity.modified();
 		}
 	}
+}
+
+function isAvailableGMath(): boolean {
+	try {
+		g.Math.sin(0);
+	} catch (_) {
+		return false;
+	}
+	return true;
+}
+
+function overrideMathInstance(mathInstance: any): void {
+	// override
+	box2dweb.Common.Math.b2Mat22.prototype.Set = function(angle: number) {
+		if (angle === undefined) angle = 0;
+		const c = mathInstance.cos(angle);
+		const s = mathInstance.sin(angle);
+		this.col1.x = c;
+		this.col2.x = (-s);
+		this.col1.y = s;
+		this.col2.y = c;
+	};
 }
