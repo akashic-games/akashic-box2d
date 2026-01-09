@@ -356,20 +356,20 @@ export class Box2D {
 }
 
 function isAvailableGMath(): boolean {
-    try {
-        g.Math.sin(0);
-    } catch (e) {
-        return false;
-    }
-    return true;
+	try {
+		g.Math.sin(0);
+	} catch (_) {
+		return false;
+	}
+	return true;
 }
 
 function overrideMathInstance(mathInstance: any): void {
 	// override
 	box2dweb.Common.Math.b2Mat22.prototype.Set = function(angle: number) {
 		if (angle === undefined) angle = 0;
-		var c = mathInstance.cos(angle);
-		var s = mathInstance.sin(angle);
+		const c = mathInstance.cos(angle);
+		const s = mathInstance.sin(angle);
 		this.col1.x = c;
 		this.col2.x = (-s);
 		this.col1.y = s;
