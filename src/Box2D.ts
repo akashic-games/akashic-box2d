@@ -59,7 +59,6 @@ export class Box2D {
 		this.scale = param.scale;
 		this.world = b2world;
 
-		// NOTE: patch/math.jsでも同様の処理を行うが、依存関係を避けるため両方に実装を持たせる
 		if (isAvailableGMath()) {
 			overrideMathInstance(g.Math);
 		}
@@ -364,6 +363,7 @@ function isAvailableGMath(): boolean {
 	return true;
 }
 
+// NOTE: patch/math.js との処理の重複に注意。ライブラリ本体と patch を相互に依存させないため意図的に重複させている
 function overrideMathInstance(mathInstance: any): void {
 	// override
 	box2dweb.Common.Math.b2Mat22.prototype.Set = function(angle: number) {
