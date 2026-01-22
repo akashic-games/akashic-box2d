@@ -1,6 +1,8 @@
 var b2 = require("box2dweb");
 
 function patchBox2DMath(opts) {
+    // g.Math が利用できる場合、 Box2D クラスが自動で g.Math を利用するため、パッチを当てる必要はない
+    if (isAvailableGMath()) return;
     opts = opts || {};
     opts.tableSize = typeof opts.tableSize === "number" ? opts.tableSize : 8192 * 4;
     opts.wholePeriod = opts.wholePeriod === undefined ? true : !!opts.wholePeriod;
@@ -76,8 +78,11 @@ function patchBox2DMath(opts) {
     LutMath.prototype.cos = function(th) {
         return this.sin(th + Math.PI / 2);
     };
+}
 
-    b2.Common.Math.b2Mat22.prototype.__lutmath = new LutMath();
+// NOTE: src/Box3D.tsでも同様の処理を行うが、依存関係を避けるため両方に実装を持たせる
+function overrideMathInstance(mathInstance) {
+    b2.Common.Math.b2Mat22.prototype.__lutmath = mathInstance;
 
     // override
     b2.Common.Math.b2Mat22.prototype.Set = function(angle) {
@@ -89,6 +94,15 @@ function patchBox2DMath(opts) {
         this.col1.y = s;
         this.col2.y = c;
     };
+}
+
+function isAvailableGMath() {
+    try {
+        g.Math.sin(0);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
 
 module.exports = {

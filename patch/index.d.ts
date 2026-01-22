@@ -1,4 +1,3 @@
-import * as b2 from "box2dweb";
 import * as Box2D from "../lib";
 
 /**
